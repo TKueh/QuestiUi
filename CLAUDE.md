@@ -10,6 +10,12 @@ Nordhaus kommt aus dem Nachbarordner `../NordhausUI` (`nordhaus-ui`, direkt aus 
 - `src/categories.js` – die acht Lebensbereiche (`setCategories`). `src/index.js` / `src/index.d.ts` – Schnittstelle.
 - `docs/AppFlow.md` – jeder Screen mit Einstieg, Form und Weg weiter. `docs/Inventar.md` – welcher Baustein welche App-Komponente abdeckt. `docs/screens/` – Beschreibung je Screen.
 
+## Effizient arbeiten
+- Eine Runde: ändern → `npm run lint` (Sekunden) → am Ende einmal `npm run check` (Lint → nur veraltete Bilder, parallel → Lint). Einzeln: `npm run shots -- <Name>`, `--changed` nur veraltete, `--no-build` mit vorhandenem Build, `--parallel=N` (Standard Kerne − 2, höchstens 12).
+- Veraltet heißt: Bild älter als der eigene Ordner (Baustein) bzw. `src/app` (Screen), oder als `src/data`, `src/styles`, `src/categories.js`, `.ladle` oder `../NordhausUI/src`. Eine Nordhaus-Änderung rendert hier also alles neu – gewollt, die Bilder sind byte-gleich, wenn sich nichts geändert hat, und `git status` zeigt nur echte Änderungen.
+- Ansehen: `npm run bogen -- --git` legt alle seit dem letzten Commit neu gerenderten Bilder (Bausteine und Screens) auf Bögen in `build/bogen/`; gezielt `npm run bogen -- HeuteScreen QuestRow`.
+- Git wie in Nordhaus: jede Runde ein Commit, vor dem Start `git status` sauber.
+
 ## Regeln
 - Alles Allgemeine ist Nordhaus. Fehlt ein allgemeiner Baustein, wird er in `../NordhausUI` gebaut (mit dessen Regeln), nicht hier.
 - Hier nur Fachliches: Bausteine, die das Datenmodell kennen, Screens, Abläufe. Keine eigenen Tokens, keine eigenen Farben – nur Nordhaus-Variablen (einzige Aliase: `--macro-*` und die Töne `nh-c--protein|carbs|fat` in `src/styles/shared.css`).
@@ -21,5 +27,5 @@ Nordhaus kommt aus dem Nachbarordner `../NordhausUI` (`nordhaus-ui`, direkt aus 
 - Darstellungsformen nach Nordhaus-Gestaltungsregeln Abschnitt 10 (Tab, Register, Unterseite, Formular-Sheet, Detail-Sheet, Dialog).
 - Sprache: Deutsch, Du-Form; Aufgaben heißen Quests.
 - Story-Titel ohne Nummer und ohne `&`/Komma; Gruppenreihenfolge in `.ladle/config.mjs`.
-- Nach jeder Änderung an Baustein, Screen, Daten oder Story `npm run shots <Name>` (ohne Name: alle; `--no-build` nimmt den vorhandenen Build), damit die Bilder stimmen. Skript: `scripts/shots.mjs`, 470 pt breit (430-pt-Gerät samt Phone-Rahmen), @2x.
+- Nach jeder Änderung an Baustein, Screen, Daten oder Story müssen die Bilder stimmen. Skript: `scripts/shots.mjs`, 470 pt breit (430-pt-Gerät samt Phone-Rahmen), @2x; Werkzeuge aus `../NordhausUI/scripts/katalog.mjs`.
 - Keine weiteren Abhängigkeiten oder Build-Konfiguration ohne Rückfrage. Einzige Werkzeug-Abhängigkeit: Playwright für `npm run shots` (einmalig `npx playwright install chromium`).

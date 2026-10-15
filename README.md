@@ -16,8 +16,10 @@ Code/
 cd QuestiUI
 npm install
 npm run dev      # Katalog unter http://localhost:61001
-npm run shots    # ein Bild je Baustein und Screen (Hell · Dunkel); einmalig: npx playwright install chromium
+npm run shots    # ein Bild je Baustein und Screen (Hell · Dunkel), parallel; -- --changed nur veraltete; einmalig: npx playwright install chromium
 npm run lint     # Nordhaus-Gestaltungsregeln im App-Modus prüfen (Exit 1 bei Befunden)
+npm run check    # Lint → nur veraltete Bilder → Lint (vor jedem Commit)
+npm run bogen    # Kontaktbögen in build/bogen/; -- --git nur seit dem letzten Commit neu gerenderte Bilder
 ```
 
 Nordhaus (`npm run dev` dort) läuft auf Port 61000, Questi auf 61001 – beide können gleichzeitig offen sein. Änderungen an Nordhaus erscheinen in Questi sofort, ohne Neuladen. Die Schriften (Hanken Grotesk, JetBrains Mono) kommen lokal aus Nordhaus (`nordhaus-ui/src/fonts.css`) – Katalog und Bilder brauchen kein Netz; `npm run shots` bricht ab, wenn die Schrift fehlt.
