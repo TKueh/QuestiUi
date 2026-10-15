@@ -1,0 +1,84 @@
+.qs-changes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--paper-raised);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 var(--hairline) var(--line);
+}
+/* Die Art-Spalte ist fest (8,4 em der Label-Stufe, wächst mit großer Schrift), damit die Titel eine Spalte bilden */
+.qs-changes li {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+.qs-changes li + li {
+  box-shadow: inset 0 var(--hairline) 0 var(--line);
+}
+.qs-changes-kind {
+  font: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 8.4em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  /* Label-Zeile (14) auf der Mitte der Titelzeile (subhead 20) */
+  padding-top: calc((20px - 14px) / 2);
+}
+.qs-changes li.is-add .qs-changes-kind {
+  color: var(--positive);
+}
+.qs-changes li.is-remove .qs-changes-kind {
+  color: var(--ink-muted);
+}
+.qs-changes li.is-conflict .qs-changes-kind {
+  color: var(--danger);
+}
+.qs-changes li.is-change .qs-changes-kind {
+  color: var(--ink);
+}
+.qs-changes-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.qs-changes-text b {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  font-weight: 500;
+}
+.qs-changes-diff {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.qs-changes-diff del {
+  color: var(--ink-muted);
+  text-decoration: line-through 1px;
+}
+.qs-changes-diff ins {
+  text-decoration: none;
+  color: var(--ink);
+}
+.qs-changes li.is-change .qs-changes-diff ins {
+  font-weight: 500;
+}
+.qs-changes-diff .nh-icon {
+  color: var(--ink-muted);
+  align-self: center;
+}
+.qs-changes-text small {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  color: var(--ink-muted);
+}

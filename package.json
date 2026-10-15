@@ -1,0 +1,23 @@
+{
+  "name": "questi-ui",
+  "version": "2.3.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "dev": "ladle serve --port 61001",
+    "build": "ladle build",
+    "shots": "node scripts/shots.mjs",
+    "lint": "node ../NordhausUI/scripts/lint.mjs --root ."
+  },
+  "dependencies": {
+    "nordhaus-ui": "file:../NordhausUI",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@ladle/react": "^5.1.0",
+    "playwright": "^1.56.0"
+  }
+}

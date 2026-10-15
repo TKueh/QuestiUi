@@ -1,0 +1,21 @@
+{
+  "prefix": "qs-",
+  "tokens": "../NordhausUI",
+  "frei": {
+    "radius": [
+      ".qs-device",
+      ".qs-device--flat",
+      ".qs-device-content",
+      ".qs-bat",
+      ".qs-bat::after"
+    ],
+    "farbwert": [
+      "/qs-device/",
+      "/qs-island/",
+      "/qs-homeind/"
+    ],
+    "glyphe": [
+      ".qs-bat"
+    ]
+  }
+}

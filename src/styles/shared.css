@@ -1,0 +1,76 @@
+/* Questi UI – Fachbausteine. Keine eigenen Tokens: die Makro-Töne sind Aliase auf Nordhaus-Datentöne. */
+:root {
+  --macro-protein: var(--data-teal);
+  --macro-carbs: var(--data-ochre);
+  --macro-fat: var(--data-violet);
+}
+/* Grundregeln aus Nordhaus base.css/shared.css (Stand 6.3) gelten dort nur für nh-Klassen – hier dieselben für den eigenen Präfix qs-:
+   Box-Modell, tabellarische Ziffern, Schrift der Bedienelemente, ein Fokus-Kanal, reduzierte Bewegung. Nichts Eigenes, nur der Präfix.
+   Den Innenring (outline-offset −4, auf Graphit in on-ink) brauchen nur Nordhaus-Zeilen und -Tasten; qs- hat keine randabfallende
+   Taste und keine fokussierbare Stelle auf Graphit – die Haken-Taste der ShoppingRow trägt den Ring außen wie die Nordhaus-Checkbox. */
+[class^='qs-'],
+[class*=' qs-'],
+[class^='qs-'] *,
+[class*=' qs-'] * {
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+}
+:where([class^='qs-'], [class*=' qs-']):where(button, input, select, textarea, optgroup),
+:where([class^='qs-'], [class*=' qs-']) :where(button, input, select, textarea, optgroup) {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+/* Fokus nur für Stellen, die nicht schon in einem Nordhaus-Baustein liegen – sonst überstimmt diese spätere Regel dessen Ausnahmen (Dialog, Sheet) */
+:where([class^='qs-'], [class*=' qs-']):not(:where([class^='nh-'], [class*=' nh-'])):focus-visible,
+:where([class^='qs-'], [class*=' qs-'])
+  :where(a[href], button, summary, [tabindex]):not(
+    :where([class^='nh-'], [class*=' nh-'], [class^='nh-'] *, [class*=' nh-'] *)
+  ):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is([class^='qs-'], [class*=' qs-']),
+  :is([class^='qs-'], [class*=' qs-'])::before,
+  :is([class^='qs-'], [class*=' qs-'])::after,
+  :is([class^='qs-'], [class*=' qs-']) *,
+  :is([class^='qs-'], [class*=' qs-']) *::before,
+  :is([class^='qs-'], [class*=' qs-']) *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.qs-questlist,
+.qs-shoplist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.qs-questgroup,
+.qs-shopgroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.qs-agenda-title b,
+.qs-budget,
+.qs-weight-v {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.qs-changes,
+.qs-import,
+.qs-trainsum,
+.qs-daypanel,
+.qs-hist,
+.qs-daymode,
+.qs-finance,
+.qs-nutri,
+.qs-ingr {
+  flex-shrink: 0;
+}

@@ -1,0 +1,154 @@
+.nh-c--protein {
+  --c: var(--macro-protein);
+}
+.nh-c--carbs {
+  --c: var(--macro-carbs);
+}
+.nh-c--fat {
+  --c: var(--macro-fat);
+}
+.qs-nutri {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.qs-nutri-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.qs-nutri-kcal {
+  font: var(--text-numeral-md);
+  letter-spacing: var(--tracking-numeral-md);
+  font-variant-numeric: tabular-nums;
+}
+.qs-nutri-kcal small {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  color: var(--ink-muted);
+}
+.qs-nutri-note {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  color: var(--ink-muted);
+}
+/* NutritionPanel – Energieanteile als Messstreifen: 4-pt-Segmente mit Fugen über einer Haarlinie, Viertel-Teilung mit Zahlen darunter */
+.qs-nutri-bar {
+  display: flex;
+  /* Fuge zwischen den Segmenten */
+  gap: calc(var(--hairline) * 2);
+  height: 4px;
+}
+.qs-nutri-bar i {
+  display: block;
+  height: 100%;
+  background: var(--c);
+  min-width: 2px;
+}
+.qs-nutri-ticks {
+  position: relative;
+  height: 18px;
+  /* die Skala liegt space-1 unter dem Streifen, nicht einen ganzen Spaltenabstand */
+  margin-top: calc(var(--space-1) - var(--space-3));
+  border-top: var(--hairline) solid var(--line-strong);
+}
+.qs-nutri-ticks span {
+  position: absolute;
+  top: 0;
+  width: var(--hairline);
+  height: 5px;
+}
+.qs-nutri-ticks span::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--line-strong);
+}
+.qs-nutri-ticks span:first-child,
+.qs-nutri-ticks span:last-child {
+  height: 8px;
+}
+.qs-nutri-ticks span:first-child::before,
+.qs-nutri-ticks span:last-child::before {
+  background: var(--ink-muted);
+}
+.qs-nutri-ticks span:last-child {
+  margin-left: calc(var(--hairline) * -1);
+}
+.qs-nutri-ticks small {
+  font: var(--text-axis);
+  letter-spacing: var(--tracking-axis);
+  position: absolute;
+  top: 6px;
+  left: 0;
+  transform: translateX(-50%);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.qs-nutri-macros {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.qs-nutri-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--touch);
+  padding: var(--space-3) 0;
+  box-shadow: inset 0 calc(var(--hairline) * -1) 0 var(--line);
+}
+.qs-nutri-row dt {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  color: var(--ink);
+}
+.qs-nutri-row dt i {
+  flex: none;
+  width: 12px;
+  height: 2px;
+  background: var(--c);
+}
+.qs-nutri-row.is-plain dt {
+  color: var(--ink-muted);
+}
+.qs-nutri-row.is-plain dt i {
+  background: none;
+}
+.qs-nutri-row dd {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex: none;
+}
+.qs-nutri-share {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  min-width: 3em;
+  text-align: right;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.qs-nutri-row b {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  font-weight: 500;
+  min-width: 3.4em;
+  text-align: right;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.qs-nutri-row b small {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  font-weight: 400;
+  color: var(--ink-muted);
+}

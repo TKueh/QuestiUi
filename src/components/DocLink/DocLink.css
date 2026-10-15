@@ -1,0 +1,40 @@
+.qs-doclink {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--line-strong);
+  border-radius: var(--radius-xs);
+  min-height: var(--touch);
+}
+.qs-doclink:hover {
+  text-decoration-color: currentColor;
+}
+.qs-doclink--chip {
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  text-decoration: none;
+  height: var(--touch);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-key);
+  color: var(--ink);
+  gap: var(--space-1);
+}
+.qs-doclink--chip > span {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--line-strong);
+}
+.qs-doclink--chip:hover > span {
+  text-decoration-color: currentColor;
+}
+.qs-doclink--chip .nh-icon {
+  color: var(--ink-muted);
+}

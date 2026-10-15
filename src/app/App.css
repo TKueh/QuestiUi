@@ -1,0 +1,57 @@
+.qs-screen-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: var(--safe-top);
+  scrollbar-width: none;
+}
+.qs-screen-scroll::-webkit-scrollbar {
+  display: none;
+}
+/* Toast über der TabBar – im Gerät, nicht über der Seite */
+.qs-toast {
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: calc(var(--tabbar-h) + var(--hairline) + var(--safe-bottom) + var(--space-3));
+  z-index: 40;
+}
+/* Prototyp: Werkzeuge links, Gerät rechts; schmal untereinander */
+.qs-proto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-8);
+  padding: var(--gutter);
+}
+.qs-proto-tools {
+  flex: 1 1 240px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+.qs-proto-note {
+  margin: 0;
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  color: var(--ink-muted);
+}
+.qs-proto .qs-device {
+  flex: none;
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .qs-proto {
+    padding: 0;
+    gap: var(--space-4);
+  }
+  /* Schmal: die Werkzeuge fluchten auf den gutter des Screens darunter */
+  .qs-proto-tools {
+    padding: 0 var(--gutter);
+  }
+  .qs-proto .qs-device {
+    width: 100%;
+  }
+}

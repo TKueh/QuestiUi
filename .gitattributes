@@ -1,0 +1,5 @@
+# Zeilenenden einheitlich LF (Windows-Git und Cloud sehen dieselben Dateien)
+* text=auto eol=lf
+*.png binary
+*.woff2 binary
+*.tgz binary

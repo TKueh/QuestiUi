@@ -1,0 +1,12 @@
+.qs-life-gift {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+/* Taste in einer Lebenszeile: eigene Ebene, damit ihre 44-pt-Erweiterung nicht unter der Zeile liegt */
+.qs-life-action {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  padding: var(--space-1) 0;
+}

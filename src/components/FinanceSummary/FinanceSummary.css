@@ -1,0 +1,12 @@
+.qs-finance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.qs-finance-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}

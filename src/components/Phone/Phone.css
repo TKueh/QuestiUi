@@ -1,0 +1,122 @@
+.qs-device {
+  position: relative;
+  max-width: 100%;
+  width: var(--screen-w);
+  height: var(--screen-h);
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+  border-radius: var(--device-radius);
+  box-shadow: 0 0 0 var(--hairline) var(--line);
+}
+.qs-device-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.qs-sbar {
+  font: var(--text-body);
+  letter-spacing: var(--tracking-body);
+  font-weight: 500;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 54px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-8) 0 var(--space-12);
+  pointer-events: none;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.qs-island {
+  position: absolute;
+  left: 50%;
+  top: 11px;
+  width: 126px;
+  height: 37px;
+  transform: translateX(-50%);
+  border-radius: var(--radius-full);
+  background: #000;
+}
+.qs-sbar-icons {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+.qs-sig {
+  width: 18px;
+  height: 11px;
+  background: linear-gradient(
+    90deg,
+    currentColor 0 3px,
+    transparent 3px 5px,
+    currentColor 5px 8px,
+    transparent 8px 10px,
+    currentColor 10px 13px,
+    transparent 13px 15px,
+    currentColor 15px 18px
+  );
+  -webkit-mask: linear-gradient(to top, #000 0 100%);
+  clip-path: polygon(
+    0 75%,
+    17% 75%,
+    17% 55%,
+    28% 55%,
+    28% 35%,
+    45% 35%,
+    45% 15%,
+    72% 15%,
+    72% 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+/* Geräteattrappe – nur Vorschau, kein Baustein einer App (Ausnahme im Regelwerk) */
+.qs-bat {
+  width: 26px;
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  position: relative;
+}
+.qs-bat::after {
+  content: '';
+  position: absolute;
+  inset: 1.5px 6px 1.5px 1.5px;
+  background: currentColor;
+  border-radius: 1.5px;
+}
+.qs-homeind {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 140px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: var(--radius-full);
+  background: var(--ink);
+  z-index: 70;
+  pointer-events: none;
+}
+.qs-device .nh-sechead {
+  margin: 0;
+}
+/* ---------- 2.2 · App, Geräte, Rückmeldung ---------- */
+/* Gerät ohne Insel (SE, kleinste Breite): eckig, 20-pt-Statusleiste, keine Home-Leiste */
+.qs-device--flat .qs-sbar {
+  height: 20px;
+  padding: 0 var(--space-3);
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  font-weight: 500;
+}
+.qs-device[data-theme] {
+  color-scheme: normal;
+}

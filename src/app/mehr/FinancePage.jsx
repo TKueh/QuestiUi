@@ -1,0 +1,119 @@
+import React, { Fragment, useState } from 'react';
+import N, { Badge, BarChart, IconButton, List, ListItem } from 'nordhaus-ui';
+import { FinanceSummary } from '../../components/FinanceSummary/FinanceSummary.jsx';
+import { LifeRow } from '../../components/LifeRow/LifeRow.jsx';
+import { SubBar, col, money, useNav } from '../shared.jsx';
+import { CONTRACTS, GOALS } from './shared.jsx';
+
+const { addDays, eur, iso, parse } = N.utils;
+
+function FinancePage() {
+  const nav = useNav();
+  const tab = useState('o');
+  const groups = {};
+  const order = [];
+  CONTRACTS.forEach((x) => {
+    if (!groups[x[3]]) {
+      groups[x[3]] = { amount: 0, tone: x[2], n: 0 };
+      order.push(x[3]);
+    }
+    groups[x[3]].amount += x[1];
+    groups[x[3]].n++;
+  });
+  const total = CONTRACTS.reduce((a, x) => a + x[1], 0);
+  const ins = CONTRACTS.filter((x) => x[3] === 'Versicherungen');
+  const body =
+    tab[0] === 'c' ? (
+      <List>
+        {CONTRACTS.map((x) => (
+          <ListItem key={x[0]} category={x[2]} title={x[0]} description={x[3]} value={x[1]} unit="€" decimals={2} />
+        ))}
+      </List>
+    ) : tab[0] === 'g' ? (
+      <BarChart
+        orientation="horizontal"
+        data={GOALS.map((g) => Object.assign({}, g, { display: `${money(g.value)} / ${money(g.total)}` }))}
+      />
+    ) : (
+      <Fragment>
+        <FinanceSummary
+          total={total}
+          free={2100 - total}
+          caption={`${CONTRACTS.length} Verträge und Sparposten · Netto 2.100 €`}
+          rows={order.map((k) => ({
+            label: k,
+            amount: groups[k].amount,
+            tone: groups[k].tone,
+          }))}
+        />
+        <div>
+          <N.SectionHeader title="Nächste Fristen" count={2} />
+          <List>
+            <LifeRow
+              kind="birthday"
+              date={iso(addDays(new Date(), 9))}
+              title="Kfz-Versicherung"
+              meta={`Kündigungsfrist endet ${parse(iso(addDays(new Date(), 9))).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`}
+              amount={46.8}
+              action={
+                <Badge tone="danger" led={true}>
+                  Prüfen
+                </Badge>
+              }
+            />
+            <LifeRow
+              kind="birthday"
+              date={iso(addDays(new Date(), 17))}
+              title="Handyvertrag"
+              meta="Mindestlaufzeit endet"
+              amount={24.99}
+            />
+          </List>
+        </div>
+        <N.Accordion
+          variant="boxed"
+          icon="coin"
+          title="Versicherungen"
+          subtitle={`${ins.length} Verträge`}
+          meta={eur(groups.Versicherungen.amount)}
+        >
+          <List>
+            {ins.map((x) => (
+              <ListItem key={x[0]} title={x[0]} value={x[1]} unit="€" decimals={2} />
+            ))}
+          </List>
+        </N.Accordion>
+      </Fragment>
+    );
+  return (
+    <Fragment>
+      <SubBar
+        nav={true}
+        backLabel="Pläne"
+        title="Finanzplan"
+        actions={
+          <IconButton
+            icon="edit"
+            label="Plan bearbeiten"
+            onClick={() => {
+              nav.toast({ message: 'Der Finanzplan ist pausiert – zum Bearbeiten erst fortsetzen.' });
+            }}
+          />
+        }
+      />
+      <N.Tabs
+        label="Finanzen"
+        value={tab[0]}
+        onChange={tab[1]}
+        items={[
+          { id: 'o', label: 'Übersicht' },
+          { id: 'c', label: 'Verträge', count: CONTRACTS.length },
+          { id: 'g', label: 'Ziele', count: GOALS.length },
+        ]}
+      />
+      <div style={col(8, 'var(--space-5) var(--gutter) var(--space-8)')}>{body}</div>
+    </Fragment>
+  );
+}
+
+export { FinancePage };

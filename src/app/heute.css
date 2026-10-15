@@ -1,0 +1,10 @@
+/* Erledigte Quests: kompakt unter den offenen */
+.qs-done {
+  margin-top: var(--space-3);
+}
+.qs-note {
+  margin: 0;
+  font: var(--text-subhead);
+  letter-spacing: var(--tracking-subhead);
+  color: var(--ink-muted);
+}

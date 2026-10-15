@@ -1,0 +1,61 @@
+.qs-weeksum-cols {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+}
+.qs-weeksum-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.qs-weeksum-val {
+  font: var(--text-index);
+  letter-spacing: var(--tracking-index);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+/* WeekSummary – Wochenpegel: je Tag ein Stapel kurzer Striche, einer je Aufgabe; erledigt Graphit, offen line; pausiert gestrichelt; heute als Beschriftung in signal mit Unterstrich */
+.qs-weeksum-bar {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  /* Teilung: höchstens 12 Striche à 2 pt auf der Höhe über dem Fuß */
+  gap: calc((64px - var(--space-1)) / 12 - 2px);
+  width: 16px;
+  height: 64px;
+  padding-bottom: var(--space-1);
+  border-bottom: var(--hairline) solid var(--line-strong);
+}
+.qs-weeksum-bar i {
+  flex: none;
+  height: 2px;
+  background: var(--line-strong);
+}
+.qs-weeksum-bar i.is-on {
+  background: var(--ink);
+}
+.qs-weeksum-col.is-full .qs-weeksum-bar i {
+  background: var(--ink);
+}
+.qs-weeksum-col.is-paused .qs-weeksum-bar {
+  border-bottom-style: dashed;
+}
+.qs-weeksum-col.is-paused .qs-weeksum-val {
+  color: var(--ink-muted);
+}
+.qs-weeksum-col.is-today .qs-weeksum-day {
+  color: var(--current);
+  box-shadow: inset 0 -2px 0 var(--current);
+  padding-bottom: var(--space-1);
+}
+.qs-weeksum-col.is-today .qs-weeksum-val {
+  color: var(--ink);
+  font-weight: 500;
+}
+.qs-weeksum-day {
+  font: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}

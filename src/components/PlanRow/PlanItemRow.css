@@ -1,0 +1,40 @@
+.qs-planitem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--row-h);
+  /* rechts wie die eigene Taste im ListItem: das Icon der kleinen Taste fluchtet auf space-4 */
+  padding: var(--space-2) calc(var(--space-4) - 8px) var(--space-2) var(--space-4);
+}
+.qs-planitem-kind {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  box-shadow: inset 0 0 0 var(--hairline) var(--line);
+  color: var(--ink);
+  flex: none;
+}
+.qs-planitem-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.qs-planitem-text b {
+  font: var(--text-body);
+  letter-spacing: var(--tracking-body);
+  font-weight: 500;
+}
+.qs-planitem-text span {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.qs-planitem-text small {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  color: var(--ink-muted);
+}

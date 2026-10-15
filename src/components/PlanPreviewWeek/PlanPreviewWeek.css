@@ -1,0 +1,70 @@
+.qs-planprev {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.qs-planprev-head {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-muted);
+}
+.qs-planprev-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+  box-shadow: inset 0 var(--hairline) 0 var(--ink);
+  padding-top: var(--space-2);
+}
+.qs-planprev-day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.qs-planprev-wd {
+  font: var(--text-caption);
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-align: center;
+}
+/* PlanPreviewWeek – ein Fahrplan aus kurzen Zeilen: das Änderungszeichen in eigener Zelle, keine getönten Chips */
+.qs-planprev-item {
+  font: var(--text-axis);
+  letter-spacing: var(--tracking-axis);
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  padding: var(--space-1) 0;
+  border-bottom: var(--hairline) solid var(--line);
+  white-space: nowrap;
+  color: var(--ink-muted);
+}
+.qs-planprev-item > span:not(.nh-vh) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.qs-planprev-item b {
+  flex: none;
+  /* eigene Zelle des Änderungszeichens; das Zeichen steht mittig, die Zelle trennt es vom Wort */
+  width: 8px;
+  font-weight: 500;
+  text-align: center;
+}
+.qs-planprev-item.is-add {
+  color: var(--positive);
+  font-weight: 500;
+  border-bottom-color: var(--positive);
+}
+.qs-planprev-item.is-change {
+  color: var(--ink);
+  font-weight: 500;
+  border-bottom-color: var(--ink);
+}
+.qs-planprev-item.is-remove > span {
+  text-decoration: line-through;
+}
