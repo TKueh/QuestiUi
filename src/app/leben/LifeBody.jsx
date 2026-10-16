@@ -138,7 +138,7 @@ function LifeBody() {
                   <Button
                     variant="key"
                     size="sm"
-                    icon="calendar"
+                    icon="plus"
                     onClick={() => {
                       nav.open('newQuest', { title: x.title, date: 'tomorrow', category: 'personal' });
                     }}

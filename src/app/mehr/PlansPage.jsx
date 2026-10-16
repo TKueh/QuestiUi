@@ -32,6 +32,7 @@ function PlansPage() {
             variant="key"
             size="sm"
             icon="upload"
+            collapse={true}
             onClick={() => {
               nav.open('planImport');
             }}
