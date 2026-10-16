@@ -23,14 +23,14 @@ Rückmeldung nach jeder Handlung, die etwas sichert oder abhakt: ein Toast über
 | | `QuestDetailScreen` | Heute → Quest | Detail-Sheet | Schritte · Alles abhaken / Wieder öffnen |
 | | `MahlzeitScreen` | Heute → Mittagsportion | Detail-Sheet (kompakt) | Abhaken |
 | | `EinkaufScreen` | Heute → Einkauf | Detail-Sheet (groß) | Artikel abhaken; vollständig = Quest erledigt |
-| | `TrainingScreen` | Heute → Training; Termin → Starten | Detail-Sheet (groß) | Sätze · Training abschließen |
+| | `TrainingScreen` | Heute → Training; Termin → Starten | Detail-Sheet (groß) | Sätze · Gewicht (Stepper) · Training abschließen |
 | | `TrainingAbschlussScreen` | Training → abschließen | Detail-Sheet | Training sichern → Heute |
-| | `NeueQuestScreen` | **+** in jedem Tab; Leben → Planen; Tagespanel → Quest | Formular-Sheet | Hinzufügen |
+| | `NeueQuestScreen` | **+** in jedem Tab; Leben → Planen; Tagespanel → Quest | Formular-Sheet | Zeit (Uhrzeit · Ganztägig · Ohne), Wiederholung, Erinnerung, Bereich, Schritte, Notiz · Hinzufügen |
 | | `NeueQuestFehlerScreen` | Neue Quest → Hinzufügen ohne Titel, Ende vor Beginn | Formular-Sheet | Felder korrigieren |
 | 2 Kalender | `KalenderScreen` | Tab Kalender (Liste ist Standard) | Tab | Tag wählen → Tagespanel → Termin |
 | | `KalenderWocheScreen` | Kalender → Woche | Register | Termin · Tageskopf → Liste des Tages |
 | | `KalenderMonatScreen` | Kalender → Monat | Register | ‹ Heute › blättert · Tag → Tagespanel |
-| | `TerminScreen` | Kalender → Termin | Detail-Sheet (kompakt) | Starten (Training) · Abhaken · Verschieben |
+| | `TerminScreen` | Kalender → Termin | Detail-Sheet (kompakt) | Starten (Training) · Abhaken · Verschieben (Tag und Beginn im Sheet) |
 | 3 Leben | `LebenScreen` | Tab Leben (Geburtstage) | Tab + Register | Zeile → Eintrag · Status · **+ Geburtstag** · Geschenk einplanen |
 | | `LebenBacklogScreen` | Leben → Vorhaben | Register | **+ Vorhaben** (Formular-Sheet) · Planen → Neue Quest · Termin → Monat |
 | | `LebenWuenscheScreen` | Leben → Wünsche | Register | **+ Wunsch** (Formular-Sheet) · Status |
@@ -49,7 +49,7 @@ Rückmeldung nach jeder Handlung, die etwas sichert oder abhakt: ein Toast über
 | | `UngesichertScreen` | Planeditor → Zurück mit Änderungen | Dialog | Sichern · Verwerfen · Weiter bearbeiten |
 | | `SpeicherfehlerScreen` | Planeditor → Sichern fehlgeschlagen | Unterseite | Erneut versuchen |
 | | `PlanImportScreen` | Meine Pläne → Importieren | Detail-Sheet (groß) | Plan übernehmen |
-| | `FinanzplanScreen` | Meine Pläne → Finanzplan | Unterseite | – (pausiert) |
+| | `FinanzplanScreen` | Meine Pläne → Finanzplan | Unterseite | Fortsetzen (pausiert) |
 | | `EinstellungenScreen` | Mehr → Einstellungen | Unterseite | Darstellung und Kontrast wirken sofort |
 
 ## Gemeinsame Daten
@@ -57,6 +57,6 @@ Rückmeldung nach jeder Handlung, die etwas sichert oder abhakt: ein Toast über
 Alle Zahlen kommen aus `Questi.demo` und stimmen deshalb überall überein – auch nach jeder Handlung:
 
 - **Woche:** Quests je Tag aus den Plänen; Heute, Wochenleiste, Filter, Liste, Woche, Monat, Tagespanel und Fortschritt rechnen aus denselben Quests. Termine sind Quests mit Uhrzeit plus Kalenderblöcke.
-- **Geburtstage:** Lena hat am Donnerstag dieser Woche Geburtstag – in Leben, Kalender (ganztägig) und als Quest; ihr Geschenk ist besorgt und taucht als Ausgabe von 65 € auf.
+- **Geburtstage:** kommen aus Leben – jeder Geburtstag steht im Kalender ganztägig (Woche) bzw. als Marke (Monat), auch ein neu angelegter. Lena hat am Donnerstag dieser Woche Geburtstag – in Leben, Kalender und als Quest; ihr Geschenk ist besorgt und taucht als Ausgabe von 65 € auf.
 - **Ausgaben:** Die Summe des Ausgabenbuchs ist der Monatswert; Geschenke & Wünsche rechnet dieselben Beträge zusammen.
 - **Pläne:** Die Zahl in „Mehr“ ist die Zahl der aktiven und pausierten Pläne in „Meine Pläne“; ein Import erhöht beide.

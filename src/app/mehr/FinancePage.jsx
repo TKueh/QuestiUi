@@ -1,13 +1,16 @@
 import React, { Fragment, useState } from 'react';
-import N, { Badge, BarChart, IconButton, List, ListItem } from 'nordhaus-ui/src/bare.js';
+import N, { Badge, BarChart, Button, List, ListItem } from 'nordhaus-ui/src/bare.js';
 import { FinanceSummary } from '../../components/FinanceSummary/FinanceSummary.jsx';
 import { LifeRow } from '../../components/LifeRow/LifeRow.jsx';
+import { demo } from '../../data/demo.js';
 import { FoldUnder, SubBar, col, money } from '../shared.jsx';
 import { CONTRACTS, GOALS } from './shared.jsx';
 
 const { addDays, eur, iso, parse } = N.utils;
 
 function FinancePage() {
+  const s = demo.use();
+  const paused = (s.plans.filter((p) => p.id === 'finance')[0] || {}).status === 'paused';
   const tab = useState('o');
   const groups = {};
   const order = [];
@@ -87,15 +90,7 @@ function FinancePage() {
     );
   return (
     <Fragment>
-      <SubBar
-        nav={true}
-        backLabel="Pläne"
-        title="Finanzplan"
-        actions={
-          /* pausiert: Bearbeiten ist verriegelt (gestrichelt, sichtbar – Regel 6) */
-          <IconButton icon="edit" label="Plan bearbeiten" disabled={true} />
-        }
-      />
+      <SubBar nav={true} backLabel="Pläne" title="Finanzplan" />
       <FoldUnder>
         <N.Tabs
           label="Finanzen"
@@ -109,9 +104,27 @@ function FinancePage() {
         />
       </FoldUnder>
       <div style={col(8)}>
-        <N.Notice icon="pause" eyebrow="Pausiert" title="Der Finanzplan ruht">
-          Fristen und Beträge bleiben sichtbar; neue Quests entstehen erst, wenn du ihn fortsetzt.
-        </N.Notice>
+        {paused ? (
+          <N.Notice
+            icon="pause"
+            eyebrow="Pausiert"
+            title="Der Finanzplan ruht"
+            action={
+              <Button
+                variant="key"
+                size="sm"
+                icon="play"
+                onClick={() => {
+                  demo.act.setPlanStatus('finance', 'active');
+                }}
+              >
+                Fortsetzen
+              </Button>
+            }
+          >
+            Fristen und Beträge bleiben sichtbar; neue Quests entstehen erst, wenn du ihn fortsetzt.
+          </N.Notice>
+        ) : null}
         {body}
       </div>
     </Fragment>

@@ -18,54 +18,83 @@ function TerminSheet({ date, title }) {
   const e = evs.filter((x) => x.title === title)[0] || evs.filter((x) => x.questId).slice(-1)[0] || evs[0];
   const q = e && e.questId ? S.findQuest(s, e.questId) : null;
   const rest = evs.filter((x) => x !== e && !x.allDay);
-  const actions = q
-    ? [
-        <Button
-          key="m"
-          variant="secondary"
-          icon="clock"
-          onClick={() => {
-            nav.close();
-            nav.toast({ message: 'Verschieben folgt in der App – im Kalender per Ziehen.' });
-          }}
-        >
-          Verschieben
-        </Button>,
-        q.workout ? (
+  /* Verschieben: Tag und Beginn im Sheet wählen, die Dauer bleibt */
+  const moving = React.useState(false);
+  const to = React.useState({ date: d.date, time: e.start });
+  const actions =
+    q && moving[0]
+      ? [
           <Button
-            key="s"
-            variant="accent"
-            onClick={() => {
-              nav.open('training', { id: q.id });
-            }}
-          >
-            Starten
-          </Button>
-        ) : S.qDone(q) ? (
-          /* erledigt: nichts mehr abzuschließen – der Rückweg ohne accent (Regel 10) */
-          <Button
-            key="s"
+            key="c"
             variant="secondary"
             onClick={() => {
-              demo.act.toggle(q.id, false);
+              moving[1](false);
             }}
           >
-            Wieder öffnen
-          </Button>
-        ) : (
+            Abbrechen
+          </Button>,
           <Button
-            key="s"
+            key="v"
             variant="accent"
             onClick={() => {
-              demo.act.toggle(q.id, true);
+              demo.act.moveQuest(q.id, to[0].date, to[0].time);
               nav.close();
+              nav.toast({
+                tone: 'success',
+                message: `„${e.title}“ liegt jetzt ${to[0].date === iso(new Date()) ? 'heute' : dateLong(to[0].date)} um ${to[0].time}.`,
+              });
             }}
           >
-            Abhaken
-          </Button>
-        ),
-      ]
-    : null;
+            Verschieben
+          </Button>,
+        ]
+      : q
+        ? [
+            <Button
+              key="m"
+              variant="secondary"
+              icon="clock"
+              onClick={() => {
+                moving[1](true);
+              }}
+            >
+              Verschieben
+            </Button>,
+            q.workout ? (
+              <Button
+                key="s"
+                variant="accent"
+                onClick={() => {
+                  nav.open('training', { id: q.id });
+                }}
+              >
+                Starten
+              </Button>
+            ) : S.qDone(q) ? (
+              /* erledigt: nichts mehr abzuschließen – der Rückweg ohne accent (Regel 10) */
+              <Button
+                key="s"
+                variant="secondary"
+                onClick={() => {
+                  demo.act.toggle(q.id, false);
+                }}
+              >
+                Wieder öffnen
+              </Button>
+            ) : (
+              <Button
+                key="s"
+                variant="accent"
+                onClick={() => {
+                  demo.act.toggle(q.id, true);
+                  nav.close();
+                }}
+              >
+                Abhaken
+              </Button>
+            ),
+          ]
+        : null;
   return (
     <N.Sheet
       inline={true}
@@ -102,6 +131,27 @@ function TerminSheet({ date, title }) {
       }
       actions={actions}
     >
+      {q && moving[0] ? (
+        <N.FieldRow>
+          <N.DateField
+            label="Tag"
+            value={to[0].date}
+            min={iso(new Date())}
+            max={s.week[6].date}
+            onChange={(v) => {
+              to[1]((x) => Object.assign({}, x, { date: v }));
+            }}
+          />
+          <N.TimeField
+            label="Beginn"
+            value={to[0].time}
+            minuteStep={5}
+            onChange={(v) => {
+              to[1]((x) => Object.assign({}, x, { time: v }));
+            }}
+          />
+        </N.FieldRow>
+      ) : null}
       <div>
         <KeyValue
           label="Wiederholung"

@@ -192,7 +192,7 @@ function initRoute(def, s) {
   };
 }
 /* ein Satz für dasselbe Sichern – Leiste, Dialog, Editor */
-const planSaved = () => `Trainingsplan gesichert – gilt ab ${S.dshort(S.nextMonday())}.`;
+const planSaved = () => `Trainingsplan gesichert – gilt ab ${S.dshort(S.nextMonday()).replace(/\.$/, '')}.`;
 function App(props) {
   const s = demo.use();
   const def = ROUTES[props.start] || ROUTES.HeuteScreen;
@@ -226,6 +226,8 @@ function App(props) {
       set({ sheet: null });
     },
     tab: (id, o = {}) => {
+      /* den offenen Tab erneut antippen: zurück zum Anfang (wie iOS) */
+      if (id === route.tab && scrollRef.current) scrollRef.current.scrollTo({ top: 0 });
       set((x) => {
         const v = Object.assign({}, x.views);
         if (o.view) v[id] = o.view;

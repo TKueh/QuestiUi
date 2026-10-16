@@ -5,7 +5,7 @@ Mehr → Krank & Urlaub (auch über Einstellungen → Tagesmodus). Tagesmodus No
 Mehr → Einstellungen. Darstellung als Kacheln (Automatisch · Hell · Dunkel) und „Kontrast erhöhen“ wirken sofort auf das Gerät; Tagesmodus Normal/Krank/Urlaub wie in „Krank & Urlaub“; Verbindungen mit LED-Status. Vier gleichrangige Gruppen ohne Nummern – keine Folge, wie in Mehr.
 
 # FinanzplanScreen
-Meine Pläne → Finanzplan (pausiert). Unterseite mit Zurück · Titel · Bearbeiten und den Registern Übersicht · Verträge · Ziele. Eine Vertragsliste ist die Quelle: Übersicht (Monatssumme, frei verfügbar, Verteilung), Gruppe „Versicherungen“ und Register „Verträge“ rechnen daraus; Ziele als Messstrecken. Nächste Fristen mit Datumsfenster, die nächste in `danger` mit „Prüfen“.
+Meine Pläne → Finanzplan (pausiert). Unterseite mit Zurück und Titel, darunter die Meldung „Pausiert“ mit „Fortsetzen“, und den Registern Übersicht · Verträge · Ziele. Eine Vertragsliste ist die Quelle: Übersicht (Monatssumme, frei verfügbar, Verteilung), Gruppe „Versicherungen“ und Register „Verträge“ rechnen daraus; Ziele als Messstrecken. Nächste Fristen mit Datumsfenster, die nächste in `danger` mit „Prüfen“.
 
 # HealthScreen
 Mehr → Gesundheit (auch Fortschritt → Gesundheit). Zeitraum, Gewicht als Kennzahl mit neutraler Veränderung und Liniendiagramm (Trainings als Striche an der Achse), Ruhepuls und Schritte als Kennzahlenkarten mit Mini-Verlauf, Krafttraining-Zusammenfassung. **+** öffnet „Gewicht“ (`MessungScreen`); eine neue Messung erscheint sofort in Kennzahl und Verlauf.

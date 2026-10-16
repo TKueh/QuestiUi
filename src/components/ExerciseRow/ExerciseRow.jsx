@@ -62,6 +62,7 @@ function ExerciseRow(props) {
           <WeightDisplay value={props.weight} planned={props.planned} onEdit={props.onEditWeight} />
         ) : null}
       </div>
+      {props.editor || null}
       <ToggleRow
         sets={Array.from({ length: sets }, (_, i) => ({
           value: (props.setValues && props.setValues[i]) || props.reps,

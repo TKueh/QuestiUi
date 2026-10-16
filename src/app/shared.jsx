@@ -148,7 +148,7 @@ function QuestRows({ items }) {
           category={q.category}
           title={q.title}
           description={q.description}
-          time={q.time}
+          time={q.allDay ? 'Ganztägig' : q.time}
           steps={q.steps ? [q.stepsDone, q.steps] : undefined}
           status={q.missed ? 'missed' : undefined}
           done={S.qDone(q)}

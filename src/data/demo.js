@@ -134,7 +134,6 @@ const TEMPLATES = [
   {
     hl: 'Judo · Lena hat Geburtstag',
     extra: [WORK],
-    allDay: { title: 'Lena hat Geburtstag', category: 'birthday' },
     quests: [
       PAUSES,
       {
@@ -483,6 +482,7 @@ const WORKOUTS = {
 };
 
 const REPEAT_LABEL = {
+  once: 'Einmalig',
   daily: 'Täglich',
   workdays: 'Werktags',
   weekly: 'Wöchentlich',
@@ -501,14 +501,31 @@ function withSpent(st) {
     wishes: st.wishes.map((w) => Object.assign({}, w, { spent: spent(w.id) })),
   });
 }
-let STATE = withSpent(buildState());
+/* Ganztägig je Tag: Geburtstage aus Leben (Monat und Tag) und ganztägige Quests – Kalender, Woche, Monat, Heute lesen dasselbe */
+function allDaysFor(st, d) {
+  const md = d.date.slice(5);
+  return st.birthdays
+    .filter((b) => b.date && b.date.slice(5) === md)
+    .map((b) => ({ title: `${b.name} hat Geburtstag`, category: 'birthday', birthday: b.id }))
+    .concat(d.quests.filter((q) => q.allDay).map((q) => ({ title: q.title, category: q.category, questId: q.id })));
+}
+function derive(st) {
+  const x = withSpent(st);
+  return Object.assign(x, {
+    week: x.week.map((d) => {
+      const all = allDaysFor(x, d);
+      return Object.assign({}, d, { allDays: all, allDay: all[0] || null });
+    }),
+  });
+}
+let STATE = derive(buildState());
 
 let SUBS = [];
 function getState() {
   return STATE;
 }
 function setState(fn) {
-  STATE = withSpent(Object.assign({}, STATE, fn(STATE), { v: STATE.v + 1 }));
+  STATE = derive(Object.assign({}, STATE, fn(STATE), { v: STATE.v + 1 }));
   SUBS.slice().forEach((f) => {
     f();
   });
@@ -551,7 +568,11 @@ function dayCats(d) {
   return order.map((k) => [k, c[k]]);
 }
 function dayEvents(d) {
-  const out = d.allDay ? [{ allDay: true, title: d.allDay.title, category: d.allDay.category }] : [];
+  const out = (d.allDays || (d.allDay ? [d.allDay] : [])).map((a) =>
+    Object.assign({ allDay: true }, a, {
+      done: a.questId ? qDone(d.quests.filter((q) => q.id === a.questId)[0] || {}) : false,
+    }),
+  );
   d.extra.forEach((e) => {
     out.push(
       Object.assign(
@@ -562,7 +583,7 @@ function dayEvents(d) {
     );
   });
   d.quests.forEach((q) => {
-    if (q.time)
+    if (q.time && !q.allDay)
       out.push({
         start: q.time,
         end: q.end,
@@ -639,6 +660,9 @@ function monthEvents(s, month) {
       total: st.total,
       done: key < today ? st.done : 0,
     };
+    /* Geburtstage aus Leben auch außerhalb der laufenden Woche */
+    const b = s.birthdays.filter((x) => x.date && x.date.slice(5) === key.slice(5))[0];
+    if (b) Object.assign(EV[key], { milestone: 'birthday', preview: b.name, tone: 'birthday' });
   }
   s.week.forEach((d) => {
     const st = dayStats(d);
@@ -712,6 +736,8 @@ function shopStats(s) {
   const n = all.filter((x) => x.checked).length;
   return { done: n, total: all.length };
 }
+/* Gewichte, die im Training geändert wurden – gelten für Anzeige, Last und Abschluss */
+let WEIGHTS = {};
 function workout(q) {
   const w = WORKOUTS[(q && q.workout) || 'A'];
   return w.map((e, i) => ({
@@ -720,7 +746,7 @@ function workout(q) {
     sets: e[1],
     reps: e[2],
     rest: e[3],
-    weight: e[4],
+    weight: WEIGHTS[e[0]] != null ? WEIGHTS[e[0]] : e[4],
     note: e[5],
     planned: !!e[6],
   }));
@@ -802,49 +828,99 @@ const act = {
     setState((s) =>
       mapQuest(s, id, (q) => {
         const on = v == null ? !qDone(q) : v;
-        return q.steps ? { stepsDone: on ? q.steps : 0, done: on, missed: false } : { done: on, missed: false };
+        return q.steps
+          ? {
+              stepsDone: on ? q.steps : 0,
+              stepsState: Array.from({ length: q.steps }, () => on),
+              done: on,
+              missed: false,
+            }
+          : { done: on, missed: false };
       }),
     );
+  },
+  /* Quest auf einen anderen Tag oder eine andere Zeit legen; die Dauer bleibt */
+  moveQuest: (id, date, time) => {
+    setState((s) => {
+      const q = s.week.flatMap((d) => d.quests).filter((x) => x.id === id)[0];
+      if (!q) return {};
+      const len = q.time && q.end ? hmn(q.end) - hmn(q.time) : 0;
+      const clock = (h) => `${pad(Math.floor(h))}:${pad(Math.round((h % 1) * 60))}`;
+      const moved = Object.assign({}, q, {
+        id: q.id.replace(/^[^:]+/, date),
+        date,
+        time: time || q.time,
+        end: time && len ? clock(hmn(time) + len) : q.end,
+        slot: time ? hmn(time) : q.slot,
+      });
+      return {
+        week: s.week.map((d) => {
+          const rest = d.quests.filter((x) => x.id !== id);
+          return d.date === date
+            ? Object.assign({}, d, { quests: rest.concat([moved]).sort((a, b) => a.slot - b.slot) })
+            : rest.length !== d.quests.length
+              ? Object.assign({}, d, { quests: rest })
+              : d;
+        }),
+      };
+    });
+  },
+  setPlanStatus: (id, status) => {
+    setState((s) => ({ plans: s.plans.map((p) => (p.id === id ? Object.assign({}, p, { status }) : p)) }));
+  },
+  setWeight: (name, v) => {
+    WEIGHTS = Object.assign({}, WEIGHTS, { [name]: v });
+    setState((s) => ({ training: Object.assign({}, s.training, { weights: WEIGHTS }) }));
   },
   setSteps: (id, arr) => {
     setState((s) =>
       mapQuest(s, id, (q) => {
         const n = arr.filter(Boolean).length;
-        return { stepsDone: n, done: n >= q.steps };
+        return { stepsDone: n, stepsState: arr.slice(), done: n >= q.steps };
       }),
     );
   },
+  /* Eigene Quest: Schritte, Notiz, ganztägig, Erinnerung; die Wiederholung legt sie an jedem passenden Tag ab dem Datum an
+     (die Vorschau kennt die laufende Woche; monatlich und jährlich treffen hier nur das Datum selbst) */
   addQuest: (q) => {
     setState((s) => {
-      const di = Math.max(
-        0,
-        s.week.findIndex((d) => d.date === q.date),
-      );
-
       const n = s.added + 1;
-      const item = {
-        id: `${q.date}:neu${n}`,
+      const from = s.week.findIndex((d) => d.date === q.date);
+      const hits = (i) =>
+        i === from ||
+        (i > from &&
+          (q.repeat === 'daily' ||
+            (q.repeat === 'workdays' && i < 5) ||
+            ((q.repeat === 'weekly' || q.repeat === 'biweekly') && (q.days || []).includes(i))));
+      const steps = (q.steps || []).filter((x) => x && x.trim());
+      const item = (d) => ({
+        id: `${d.date}:neu${n}`,
         k: `neu${n}`,
-        date: q.date,
+        date: d.date,
         category: q.category || 'personal',
         title: q.title,
         description:
-          q.description ||
-          (q.repeat && q.repeat !== 'once' ? REPEAT_LABEL[q.repeat] || 'Wiederkehrend' : 'Eigene Quest'),
-        time: q.time || undefined,
-        end: q.end || undefined,
-        slot: q.time ? hmn(q.time) : 23,
+          q.note || (q.repeat && q.repeat !== 'once' ? REPEAT_LABEL[q.repeat] || 'Wiederkehrend' : 'Eigene Quest'),
+        note: q.note || undefined,
+        time: q.allDay ? undefined : q.time || undefined,
+        end: q.allDay ? undefined : q.end || undefined,
+        allDay: !!q.allDay,
+        slot: q.allDay ? -1 : q.time ? hmn(q.time) : 23,
+        steps: steps.length || undefined,
+        stepItems: steps.length ? steps : undefined,
+        stepsState: steps.length ? steps.map(() => false) : undefined,
+        repeat: q.repeat || 'once',
+        days: q.days,
+        reminder: q.reminder,
         done: false,
         stepsDone: 0,
         own: true,
-      };
+      });
       return {
         added: n,
         week: s.week.map((d, i) =>
-          i === di
-            ? Object.assign({}, d, {
-                quests: d.quests.concat([item]).sort((a, b) => a.slot - b.slot),
-              })
+          (from < 0 ? i === 0 : hits(i))
+            ? Object.assign({}, d, { quests: d.quests.concat([item(d)]).sort((a, b) => a.slot - b.slot) })
             : d,
         ),
       };
@@ -1009,7 +1085,8 @@ const act = {
     }));
   },
   reset: () => {
-    STATE = withSpent(buildState());
+    WEIGHTS = {};
+    STATE = derive(buildState());
     SUBS.slice().forEach((f) => {
       f();
     });
@@ -1047,4 +1124,4 @@ const demo = {
   },
 };
 
-export { demo, WD_LONG, hmn, setState };
+export { REPEAT_LABEL, demo, WD_LONG, hmn, setState };

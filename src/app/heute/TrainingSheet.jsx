@@ -14,6 +14,8 @@ function TrainingSheet({ id, preset }) {
   const q = S.findQuest(s, id) || S.nextQuest(s, (x) => !!x.workout);
 
   const ex = S.workout(q);
+  /* welche Übung gerade ihr Gewicht zeigt (Stepper unter der Übung) */
+  const editing = React.useState(null);
 
   const sets =
     s.training.sets ||
@@ -75,6 +77,23 @@ function TrainingSheet({ id, preset }) {
               weight={e.weight == null ? undefined : e.weight === 0 ? 'KG' : e.weight}
               planned={e.planned}
               note={e.note}
+              onEditWeight={() => {
+                editing[1](editing[0] === i ? null : i);
+              }}
+              editor={
+                editing[0] === i && typeof e.weight === 'number' ? (
+                  <N.Stepper
+                    label={`Gewicht ${e.name}`}
+                    value={e.weight}
+                    min={0}
+                    step={e.weight >= 20 ? 2.5 : 1}
+                    unit="kg"
+                    onChange={(v) => {
+                      demo.act.setWeight(e.name, v);
+                    }}
+                  />
+                ) : null
+              }
               doneSets={(sets[i] || []).filter(Boolean).length}
               setsValue={sets[i]}
               onSets={(v) => {

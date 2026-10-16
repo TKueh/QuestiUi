@@ -17,17 +17,26 @@ const REPEAT = [
   { value: 'monthly', label: 'Monatlich' },
   { value: 'yearly', label: 'Jährlich' },
 ];
+/* Erinnerung: mit Uhrzeit relativ zum Beginn, ganztägig und ohne Uhrzeit am Morgen oder am Vortag */
+const REMIND_TIME = ['Keine', 'Zum Beginn', '15 Minuten vorher', '30 Minuten vorher', '1 Stunde vorher', 'Am Vortag'];
+const REMIND_DAY = ['Keine', 'Am Morgen', 'Am Vortag'];
 function NewQuestSheet(props) {
   const nav = useNav();
   const s = demo.use();
   const t = S.today(s);
   const title = useState(props.title != null ? props.title : props.invalid ? '' : 'Judo-Tasche packen');
   const date = useState(props.date || 'today');
-  const noTime = useState(false);
+  const mode = useState('time'); // time · allday · none
+  const noTime = [mode[0] !== 'time'];
+  const note = useState('');
+  const steps = useState([]);
+  const remind = useState('Keine');
   const start = useState(props.invalid ? '19:00' : '18:30');
   const end = useState(props.invalid ? '18:30' : '18:45');
   const rep = useState('once');
-  const days = useState([1, 3]);
+  const days = useState(() => [
+    (parse(date[0] === 'today' || date[0] === 'tomorrow' ? t.date : date[0]).getDay() + 6) % 7,
+  ]);
   const cat = useState(props.category || 'personal');
   const tried = useState(!!props.invalid);
   const iDate = date[0] === 'today' ? t.date : date[0] === 'tomorrow' ? iso(addDays(parse(t.date), 1)) : date[0];
@@ -63,6 +72,10 @@ function NewQuestSheet(props) {
       date: iDate,
       time: noTime[0] ? null : start[0],
       end: noTime[0] ? null : end[0],
+      allDay: mode[0] === 'allday',
+      note: note[0].trim() || undefined,
+      steps: steps[0].map((x) => x.title),
+      reminder: remind[0] !== 'Keine' ? remind[0] : undefined,
       repeat: rep[0],
       days: rep[0] === 'weekly' || rep[0] === 'biweekly' ? days[0] : undefined,
       category: cat[0],
@@ -100,15 +113,29 @@ function NewQuestSheet(props) {
           {errDate}
         </N.Notice>
       ) : null}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-        <N.Checkbox label="Ohne Uhrzeit" checked={noTime[0]} onChange={noTime[1]} />
-        {!noTime[0] ? (
-          <N.FieldRow>
-            <N.TimeField label="Beginn" value={start[0]} onChange={start[1]} minuteStep={5} />
-            <N.TimeField id="qs-nq-end" label="Ende" value={end[0]} onChange={end[1]} minuteStep={5} error={errTime} />
-          </N.FieldRow>
-        ) : null}
+      {/* Zeit: drei kurze Werte – Schnellwahl; Uhrzeiten nur, wenn es eine gibt */}
+      <div className="nh-field">
+        <span className="nh-label">Zeit</span>
+        <N.ChoiceRow.Quick
+          label="Zeit"
+          value={mode[0]}
+          onChange={(v) => {
+            mode[1](v);
+            remind[1]('Keine');
+          }}
+          options={[
+            { value: 'time', label: 'Uhrzeit' },
+            { value: 'allday', label: 'Ganztägig' },
+            { value: 'none', label: 'Ohne Uhrzeit' },
+          ]}
+        />
       </div>
+      {!noTime[0] ? (
+        <N.FieldRow>
+          <N.TimeField label="Beginn" value={start[0]} onChange={start[1]} minuteStep={5} />
+          <N.TimeField id="qs-nq-end" label="Ende" value={end[0]} onChange={end[1]} minuteStep={5} error={errTime} />
+        </N.FieldRow>
+      ) : null}
       {/* Wiederholung als Auswahlfeld: eine Zeile für beliebig viele Rhythmen; das Detail erscheint nur, wo es etwas zu wählen gibt */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
         <N.Select label="Wiederholung" value={rep[0]} onChange={rep[1]} options={REPEAT} hint={repHint} />
@@ -117,6 +144,12 @@ function NewQuestSheet(props) {
         ) : null}
       </div>
       <N.Select
+        label="Erinnerung"
+        value={remind[0]}
+        onChange={remind[1]}
+        options={mode[0] === 'time' ? REMIND_TIME : REMIND_DAY}
+      />
+      <N.Select
         label="Bereich"
         value={cat[0]}
         onChange={cat[1]}
@@ -124,7 +157,25 @@ function NewQuestSheet(props) {
           value: k,
           label: CATEGORIES[k].label,
         }))}
+        hint={
+          cat[0] === 'birthday'
+            ? 'Den Geburtstag selbst legst du in Leben an („+ Geburtstag“) – hier entsteht eine Aufgabe dazu, z. B. „Geschenk besorgen“.'
+            : undefined
+        }
       />
+      {/* Teilaufgaben: jede Zeile ein Schritt; daraus entstehen Zählwerk und Schrittliste im Detail */}
+      <div className="nh-field">
+        <span className="nh-label">
+          Schritte <span className="nh-opt">· optional</span>
+        </span>
+        <N.EditableList
+          value={steps[0]}
+          onChange={steps[1]}
+          addLabel="Schritt hinzufügen"
+          placeholder="Schritt beschreiben"
+        />
+      </div>
+      <N.TextArea label="Notiz" optional={true} value={note[0]} onChange={note[1]} placeholder="Was gehört dazu?" />
     </N.Sheet>
   );
 }

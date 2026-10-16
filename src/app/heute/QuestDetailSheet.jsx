@@ -1,14 +1,15 @@
 import React from 'react';
 import N, { Button, KeyValue } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
-import { demo } from '../../data/demo.js';
+import { REPEAT_LABEL, demo } from '../../data/demo.js';
 import { S, dateLong, useNav } from '../shared.jsx';
 
 function QuestDetailSheet({ id }) {
   const s = demo.use();
   const nav = useNav();
   const q = S.findQuest(s, id) || S.today(s).quests[0];
-  const steps = q.steps ? Array.from({ length: q.steps }, (_, i) => i < q.stepsDone) : null;
+  /* Zustand je Schritt (welcher abgehakt ist, nicht nur wie viele) */
+  const steps = q.steps ? q.stepsState || Array.from({ length: q.steps }, (_, i) => i < q.stepsDone) : null;
   const STEP = [
     ['Erste', '10:30'],
     ['Zweite', '13:30'],
@@ -87,19 +88,27 @@ function QuestDetailSheet({ id }) {
           onChange={(v) => {
             demo.act.setSteps(q.id, v);
           }}
-          items={STEP.slice(0, q.steps).map((x) => ({
-            title: `${x[0]} Bewegungspause`,
-            description: '2 Minuten locker rudern oder gehen.',
-            time: x[1],
-          }))}
+          items={
+            q.stepItems
+              ? q.stepItems.map((t) => ({ title: t }))
+              : STEP.slice(0, q.steps).map((x) => ({
+                  title: `${x[0]} Bewegungspause`,
+                  description: '2 Minuten locker rudern oder gehen.',
+                  time: x[1],
+                }))
+          }
         />
       ) : null}
       <div>
         <KeyValue
           label="Wiederholung"
-          value={q.own ? 'Einmalig' : q.steps ? 'Werktags · Woche A und B' : 'Laut Plan'}
+          value={q.own ? REPEAT_LABEL[q.repeat] || 'Einmalig' : q.steps ? 'Werktags · Woche A und B' : 'Laut Plan'}
         />
-        <KeyValue label="Erinnerung" value={q.steps ? 'Zu jedem Schritt' : q.time ? '30 Minuten vorher' : 'Keine'} />
+        <KeyValue
+          label="Erinnerung"
+          value={q.own ? q.reminder || 'Keine' : q.steps ? 'Zu jedem Schritt' : q.time ? '30 Minuten vorher' : 'Keine'}
+        />
+        {q.allDay ? <KeyValue label="Zeit" value="Ganztägig" /> : null}
         <KeyValue
           label="Herkunft"
           value={

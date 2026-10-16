@@ -16,4 +16,4 @@ Kalender · Woche – Zeitraster über die volle Höhe. Kopf wie in allen Kalend
 - Spalten ≈ 56 pt; vollständige Inhalte öffnet ein Tipp im Sheet (`TerminScreen`).
 
 # TerminScreen
-Kalender → Termin antippen (Woche, Monat oder Liste). Kompaktes Sheet über dem Raster: Bereich und Quelle oben, Zeit als Label, Titel, Umfang; Wiederholung und Erinnerung als Wertzeilen; darunter die übrigen Termine desselben Tages. Ist der Termin ein Krafttraining, führt „Starten“ ins Training, sonst hakt „Abhaken“ die Quest ab. Kalenderblöcke haben keine Aktion.
+Kalender → Termin antippen (Woche, Monat oder Liste). Kompaktes Sheet über dem Raster: Bereich und Quelle oben, Zeit als Label, Titel, Umfang; Wiederholung und Erinnerung als Wertzeilen; darunter die übrigen Termine desselben Tages. „Verschieben“ zeigt Tag und Beginn im Sheet (die Dauer bleibt) und legt die Quest dorthin. Ist der Termin ein Krafttraining, führt „Starten“ ins Training, sonst hakt „Abhaken“ die Quest ab. Kalenderblöcke haben keine Aktion.

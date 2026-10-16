@@ -18,11 +18,12 @@ function LifeBody() {
       <Fragment>
         <N.TopBar
           variant="toolbar"
-          leading={React.createElement('span', { className: 'nh-label' }, 'Ab dieser Woche · 60 Tage')}
+          leading={React.createElement(
+            'span',
+            { className: 'nh-label' },
+            `Ab dieser Woche · 60 Tage · Archiv ${N.utils.idx(s.archive.birthdays)}`,
+          )}
         >
-          <Button variant="text" size="sm" disabled={true}>
-            {`Archiv ${N.utils.idx(s.archive.birthdays)}`}
-          </Button>
           <Button
             variant="key"
             size="sm"
@@ -87,12 +88,9 @@ function LifeBody() {
           leading={React.createElement(
             'span',
             { className: 'nh-label' },
-            `Offen ${N.utils.idx(c.projects)} · Erledigt ${N.utils.idx(c.projectsDone)}`,
+            `Offen ${N.utils.idx(c.projects)} · Erledigt ${N.utils.idx(c.projectsDone)} · Archiv ${N.utils.idx(s.archive.projects)}`,
           )}
         >
-          <Button variant="text" size="sm" disabled={true}>
-            {`Archiv ${N.utils.idx(s.archive.projects)}`}
-          </Button>
           <Button
             variant="key"
             size="sm"
