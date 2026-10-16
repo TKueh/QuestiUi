@@ -7,6 +7,16 @@ import { S, dateLong, useNav } from '../shared.jsx';
 const { addDays, iso, parse } = N.utils;
 
 /* Neue Quest – Pflichtfeld und Zeitprüfung beim Hinzufügen; mit Eingaben fragt Abbrechen nach */
+/* Rhythmen einer Quest – das Auswahlfeld wächst mit, die Zeile bleibt eine */
+const REPEAT = [
+  { value: 'once', label: 'Einmalig' },
+  { value: 'daily', label: 'Täglich' },
+  { value: 'workdays', label: 'Werktags' },
+  { value: 'weekly', label: 'Wöchentlich' },
+  { value: 'biweekly', label: 'Alle zwei Wochen' },
+  { value: 'monthly', label: 'Monatlich' },
+  { value: 'yearly', label: 'Jährlich' },
+];
 function NewQuestSheet(props) {
   const nav = useNav();
   const s = demo.use();
@@ -21,6 +31,15 @@ function NewQuestSheet(props) {
   const cat = useState(props.category || 'personal');
   const tried = useState(!!props.invalid);
   const iDate = date[0] === 'today' ? t.date : date[0] === 'tomorrow' ? iso(addDays(parse(t.date), 1)) : date[0];
+  const D = parse(iDate);
+  const repHint =
+    rep[0] === 'monthly'
+      ? `Jeden Monat am ${D.getDate()}.`
+      : rep[0] === 'yearly'
+        ? `Jedes Jahr am ${D.toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`
+        : rep[0] === 'workdays'
+          ? 'Montag bis Freitag'
+          : undefined;
   const errTitle = tried[0] && !title[0].trim() ? 'Gib der Quest einen Namen.' : null;
   const errTime =
     tried[0] && !noTime[0] && start[0] && end[0] && hmn(end[0]) <= hmn(start[0])
@@ -45,6 +64,7 @@ function NewQuestSheet(props) {
       time: noTime[0] ? null : start[0],
       end: noTime[0] ? null : end[0],
       repeat: rep[0],
+      days: rep[0] === 'weekly' || rep[0] === 'biweekly' ? days[0] : undefined,
       category: cat[0],
     });
     nav.close();
@@ -89,22 +109,11 @@ function NewQuestSheet(props) {
           </N.FieldRow>
         ) : null}
       </div>
-      <div className="nh-field">
-        <span className="nh-label">Wiederholung</span>
-        <N.ChoiceRow.Quick
-          label="Wiederholung"
-          value={rep[0]}
-          onChange={rep[1]}
-          options={[
-            { value: 'once', label: 'Einmalig' },
-            { value: 'daily', label: 'Täglich' },
-            { value: 'weekly', label: 'Wöchentlich' },
-          ]}
-        />
-        {rep[0] === 'weekly' ? (
-          <div style={{ marginTop: 'var(--space-3)' }}>
-            <N.WeekdayPicker value={days[0]} onChange={days[1]} />
-          </div>
+      {/* Wiederholung als Auswahlfeld: eine Zeile für beliebig viele Rhythmen; das Detail erscheint nur, wo es etwas zu wählen gibt */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+        <N.Select label="Wiederholung" value={rep[0]} onChange={rep[1]} options={REPEAT} hint={repHint} />
+        {rep[0] === 'weekly' || rep[0] === 'biweekly' ? (
+          <N.WeekdayPicker label="An diesen Tagen" value={days[0]} onChange={days[1]} />
         ) : null}
       </div>
       <N.Select

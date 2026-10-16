@@ -482,6 +482,15 @@ const WORKOUTS = {
   ],
 };
 
+const REPEAT_LABEL = {
+  daily: 'Täglich',
+  workdays: 'Werktags',
+  weekly: 'Wöchentlich',
+  biweekly: 'Alle zwei Wochen',
+  monthly: 'Monatlich',
+  yearly: 'Jährlich',
+};
+
 /* ---------- Speicher: eine Quelle, alle Screens hören mit ---------- */
 /* Ausgegeben je Geschenk und Wunsch kommt aus dem Ausgabenbuch (ref) – eine Quelle, gleiche Zahl in Leben, Fortschritt, Ausgaben */
 function withSpent(st) {
@@ -821,7 +830,7 @@ const act = {
         title: q.title,
         description:
           q.description ||
-          (q.repeat && q.repeat !== 'once' ? (q.repeat === 'daily' ? 'Täglich' : 'Wöchentlich') : 'Eigene Quest'),
+          (q.repeat && q.repeat !== 'once' ? REPEAT_LABEL[q.repeat] || 'Wiederkehrend' : 'Eigene Quest'),
         time: q.time || undefined,
         end: q.end || undefined,
         slot: q.time ? hmn(q.time) : 23,

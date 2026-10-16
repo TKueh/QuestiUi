@@ -14,7 +14,7 @@ Mahlzeit als kompaktes Sheet: Energie groß und leicht, Makro-Balken nach Energi
 „Neue Quest“ nach einem Hinzufügen mit fehlendem Titel und Ende vor Beginn. Beide Fehler stehen am Feld (Linie und Satz in `danger`, LED, `role="alert"`), der Satz sagt, was zu tun ist. Hinzufügen bleibt wirkungslos und setzt den Fokus auf das erste fehlerhafte Feld, bis beides stimmt.
 
 # NeueQuestScreen
-Eigene Quest anlegen – die **+**-Taste im Kopf jedes Tabs bedeutet überall „Neue Quest“. Formular-Sheet „Abbrechen · Neue Quest · Hinzufügen“: Titel (Pflicht), Datum, „Ohne Uhrzeit“ oder Beginn und Ende, Wiederholung, Bereich.
+Eigene Quest anlegen – die **+**-Taste im Kopf jedes Tabs bedeutet überall „Neue Quest“. Formular-Sheet „Abbrechen · Neue Quest · Hinzufügen“: Titel (Pflicht), Datum, „Ohne Uhrzeit“ oder Beginn und Ende, Wiederholung als Auswahlfeld (Einmalig · Täglich · Werktags · Wöchentlich · Alle zwei Wochen · Monatlich · Jährlich) – Wochentage erscheinen nur bei wöchentlich, Monat und Jahr nennen den Tag als Satz –, Bereich.
 - Hinzufügen prüft: fehlender Titel, Ende vor Beginn. Der Fehler steht am Feld, der Fokus springt dorthin, das Sheet bleibt offen (`NeueQuestFehlerScreen`).
 - Mit Eingaben fragt Abbrechen nach (`dirty`). Nach dem Hinzufügen steht die Quest in Heute, im Kalender und im Fortschritt; ein Toast bestätigt.
 
