@@ -13,7 +13,7 @@ import {
   TrainingSheet,
 } from './heute.jsx';
 import { CalListBody, CalMonthBody, CalWeekBody, TerminSheet } from './kalender.jsx';
-import { EntrySheet, LifeBody } from './leben.jsx';
+import { EntrySheet, ItemSheet, LifeBody } from './leben.jsx';
 import {
   CalImportSheet,
   DayModeSheet,
@@ -170,6 +170,7 @@ const SHEETS = {
   search: SearchSheet,
   termin: TerminSheet,
   entry: EntrySheet,
+  item: ItemSheet,
   measurement: MeasurementSheet,
   expense: ExpenseSheet,
   dayMode: DayModeSheet,

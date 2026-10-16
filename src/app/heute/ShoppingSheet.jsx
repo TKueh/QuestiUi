@@ -88,7 +88,7 @@ function ShoppingSheet({ id }) {
               <h3>{g.title}</h3>
               <span>{N.utils.frac(g.items.filter((x) => x.checked).length, g.items.length)}</span>
             </div>
-            <List>
+            <List boxed={false}>
               {g.items.map((x) => (
                 <ShoppingRow
                   key={x.name}

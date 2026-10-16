@@ -12,7 +12,9 @@ Jeder Screen in Hell und Dunkel bis zum Ende gescrollt (64 Blickfelder je Theme)
 
 **Bewusst so gelassen, mit Grund in der Doku:** Monat ohne Strich für Ernährung (steht an jedem Tag) und Meilenstein-Icon statt Strichen (Kalender.md); Wochenraster ohne Auswahl, hellere Heute-Spalte ist Token-Vorgabe (G39).
 
-**Offen (Feinschliff, eigene Runde):** G41 Training/Geburtstage im Dunkeln (Datentöne – Kern-Tokens), Tafeln in Tafeln (Einkauf, Abschluss), Makrobalken-Rest, „72,4 kg heute“ doppelt und + gegen „+ Messung“ in Gesundheit, Fluchten unter „Zuletzt“, Ausgaben-Kopf dreifach, Import (Dateiname doppelt, Mono), Fristbetrag über der Titelzeile, „Wohnen“ mit Haushalts-Icon, Unterstriche im Planeditor, „+ Vorhaben“/„+ Wunsch“ (brauchen eigene Formulare), Datumsformate kurz/lang, Wochenbeginn ohne Bedienung, Dunkel-Miniatur, Avatar und Satz-Tasten im Dunkeln.
+**Stand 16.10., Abschluss:** Auch der Feinschliff ist behoben – „+ Vorhaben“ und „+ Wunsch“ (eigenes Formular-Sheet), Einkauf und Abschluss ohne Tafel in der Tafel, Makrobalken bis zum Anschlag, „+ Messung“ beschriftet wie im Register, Ausgaben-Kopf ohne Doppelung, Import ohne doppelten Dateinamen und ohne Mono, Fristbetrag in der Zweitzeile, „Wohnen“ mit Haus-Icon, feste Detailspalte im Planeditor; im Dunkeln Training und Geburtstage weiter getrennt (Datentöne), Miniatur mit Kante, Avatar als `slab`. Durchgeklickt im Browser: Ausgabe bearbeiten und zuordnen (kommt in Leben an), Vorhaben und Wunsch anlegen (Fehler am Feld, Zähler, Budget), Planeditor (Rhythmus, Wochentage, Legende nur mit Änderungen, Sichern), Mahlzeit (Wieder öffnen, Toast mit Widerrufen).
+
+**Bewusst so gelassen:** „72,4 kg heute“ unter der Kurve ist die Ablesung des angetippten Punkts (ohne Antippen der letzte); unter „Zuletzt“ trägt nur die eigene Messung den Stift – deren Wert steht deshalb eine Zelle weiter innen; kurzes Datum in Listen („Sa, 24. Okt.“), langes im Feld („Mi., 11. November“); Wochenbeginn und Aktuelle Woche sind Ablesungen ohne Bedienung; erledigte Satz-Tasten bleiben Graphit (Regel 6 „eingerastet“).
 
 ## A · Querschnitt – eine Änderung, viele Screens
 

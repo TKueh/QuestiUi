@@ -152,3 +152,7 @@
   font-weight: 400;
   color: var(--ink-muted);
 }
+/* Rest bis 100 % (Ballaststoffe, Rundung): Haarlinien-Ton statt Lücke – der Balken endet am Anschlag */
+.qs-nutri-bar .nh-c--rest {
+  --c: var(--line);
+}

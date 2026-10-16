@@ -917,6 +917,13 @@ const act = {
       };
     });
   },
+  addLifeItem: (list, item) => {
+    setState((s) => {
+      const o = {};
+      o[list] = s[list].concat([Object.assign({ id: `${list[0]}${Date.now()}` }, item)]);
+      return o;
+    });
+  },
   setStatus: (list, id, v) => {
     setState((s) => {
       const o = {};

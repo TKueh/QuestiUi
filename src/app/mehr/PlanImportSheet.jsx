@@ -41,8 +41,6 @@ function PlanImportSheet() {
         file={{ name: 'Essensplan Herbst.pdf', size: 186400 }}
       />
       <ImportPreview
-        file="Essensplan Herbst.pdf"
-        meta="4 Seiten · gelesen"
         stats={[
           { label: 'Bausteine', value: '13' },
           { label: 'Termine', value: '21' },

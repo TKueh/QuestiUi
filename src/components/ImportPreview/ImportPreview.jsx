@@ -6,16 +6,19 @@ const { cx } = N.utils;
 function ImportPreview({ className, file, meta, error, stats, children, excerpt }) {
   return (
     <div className={cx('qs-import', className)}>
-      <div className="qs-import-head">
-        <Icon name="file" size={22} />
-        <span>
-          <b>{file}</b>
-          <small>{meta}</small>
-        </span>
-        <Badge tone={error ? 'danger' : 'positive'} led={true}>
-          {error ? 'Fehler' : 'Gelesen'}
-        </Badge>
-      </div>
+      {/* ohne file steht die Datei schon darüber (FileDrop) – der Kopf entfällt, nichts doppelt */}
+      {file ? (
+        <div className="qs-import-head">
+          <Icon name="file" size={22} />
+          <span>
+            <b>{file}</b>
+            <small>{meta}</small>
+          </span>
+          <Badge tone={error ? 'danger' : 'positive'} led={true}>
+            {error ? 'Fehler' : 'Gelesen'}
+          </Badge>
+        </div>
+      ) : null}
       {stats ? (
         <div className="qs-import-stats">
           {stats.map((s, i) => (

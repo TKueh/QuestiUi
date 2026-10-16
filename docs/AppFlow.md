@@ -32,8 +32,8 @@ Rückmeldung nach jeder Handlung, die etwas sichert oder abhakt: ein Toast über
 | | `KalenderMonatScreen` | Kalender → Monat | Register | ‹ Heute › blättert · Tag → Tagespanel |
 | | `TerminScreen` | Kalender → Termin | Detail-Sheet (kompakt) | Starten (Training) · Abhaken · Verschieben |
 | 3 Leben | `LebenScreen` | Tab Leben (Geburtstage) | Tab + Register | Zeile → Eintrag · Status · **+ Geburtstag** · Geschenk einplanen |
-| | `LebenBacklogScreen` | Leben → Vorhaben | Register | Planen → Neue Quest · Termin → Monat |
-| | `LebenWuenscheScreen` | Leben → Wünsche | Register | Status |
+| | `LebenBacklogScreen` | Leben → Vorhaben | Register | **+ Vorhaben** (Formular-Sheet) · Planen → Neue Quest · Termin → Monat |
+| | `LebenWuenscheScreen` | Leben → Wünsche | Register | **+ Wunsch** (Formular-Sheet) · Status |
 | | `EintragScreen` | Leben → Geburtstag | Formular-Sheet | Sichern |
 | 4 Fortschritt | `FortschrittScreen` | Tab Fortschritt (Alltag) | Tab + Register | – |
 | | `GeschenkeWuenscheScreen` | Fortschritt → Geschenke & Wünsche | Register | bearbeitet wird in Leben |

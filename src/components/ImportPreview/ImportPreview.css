@@ -41,8 +41,10 @@
     inset 0 calc(var(--hairline) * -1) 0 var(--line);
 }
 .qs-import-excerpt {
-  font: var(--text-code);
-  letter-spacing: var(--tracking-code);
+  /* Klartext aus der Datei, kein Code – Mono nur für Code (Regel 2) */
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  white-space: pre-wrap;
   margin: 0;
   max-height: 120px;
   overflow: auto;

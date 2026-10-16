@@ -31,6 +31,7 @@ function FinanceSummary(props) {
           label: r.label,
           value: r.amount,
           tone: r.tone,
+          icon: r.icon,
           display: eur(r.amount, { maximumFractionDigits: r.amount % 1 ? 2 : 0 }),
         }))}
       />

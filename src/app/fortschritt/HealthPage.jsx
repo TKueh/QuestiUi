@@ -12,12 +12,18 @@ function HealthPage() {
         backLabel="Mehr"
         title="Gesundheit"
         eyebrow="Gemessen · ohne Bewertung"
-        actions={React.createElement(N.AddButton, {
-          label: 'Messung erfassen',
-          onClick: () => {
-            nav.open('measurement');
+        actions={React.createElement(
+          N.Button,
+          {
+            variant: 'key',
+            size: 'sm',
+            icon: 'plus',
+            onClick: () => {
+              nav.open('measurement');
+            },
           },
-        })}
+          'Messung',
+        )}
       />
       <HealthBody />
     </Fragment>

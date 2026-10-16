@@ -43,6 +43,7 @@ function FinancePage() {
             label: k,
             amount: groups[k].amount,
             tone: groups[k].tone,
+            icon: k === 'Wohnen' ? 'home' : undefined,
           }))}
         />
         <div>
@@ -53,8 +54,7 @@ function FinancePage() {
               tone="finance"
               date={iso(addDays(new Date(), 9))}
               title="Kfz-Versicherung"
-              meta={`Kündigungsfrist endet ${parse(iso(addDays(new Date(), 9))).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`}
-              amount={46.8}
+              meta={`${eur(46.8)} · Kündigung bis ${parse(iso(addDays(new Date(), 9))).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`}
               action={
                 <Badge tone="danger" led={true}>
                   Prüfen
@@ -66,8 +66,7 @@ function FinancePage() {
               tone="finance"
               date={iso(addDays(new Date(), 17))}
               title="Handyvertrag"
-              meta="Mindestlaufzeit endet"
-              amount={24.99}
+              meta={`${eur(24.99)} · Mindestlaufzeit endet`}
             />
           </List>
         </div>

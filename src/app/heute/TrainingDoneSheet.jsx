@@ -47,7 +47,13 @@ function TrainingDoneSheet({ id, preset }) {
         'Training sichern',
       )}
     >
-      <TrainingSummary setsDone={st.done} setsTotal={st.total} load={st.load} duration={hm(q.end) - hm(q.time)} />
+      <TrainingSummary
+        flat={true}
+        setsDone={st.done}
+        setsTotal={st.total}
+        load={st.load}
+        duration={hm(q.end) - hm(q.time)}
+      />
       <div className="nh-field">
         <span className="nh-label">Wie war das Training?</span>
         <FeelingPicker value={s.training.feeling} onChange={demo.act.feeling} />

@@ -93,6 +93,16 @@ function LifeBody() {
           <Button variant="text" size="sm" disabled={true}>
             {`Archiv ${N.utils.idx(s.archive.projects)}`}
           </Button>
+          <Button
+            variant="key"
+            size="sm"
+            icon="plus"
+            onClick={() => {
+              nav.open('item', { kind: 'project' });
+            }}
+          >
+            Vorhaben
+          </Button>
         </N.TopBar>
         <List>
           {s.projects.map((x) => (
@@ -154,7 +164,18 @@ function LifeBody() {
             amount: s.wishes.reduce((a, w) => a + w.amount, 0),
             label: 'Budget',
           })}
-        />
+        >
+          <Button
+            variant="key"
+            size="sm"
+            icon="plus"
+            onClick={() => {
+              nav.open('item', { kind: 'wish' });
+            }}
+          >
+            Wunsch
+          </Button>
+        </N.TopBar>
         <List>
           {s.wishes.map((w) => (
             <LifeRow

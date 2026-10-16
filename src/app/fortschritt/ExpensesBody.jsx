@@ -29,14 +29,7 @@ function ExpensesBody() {
   }
   return (
     <div style={col(8)}>
-      <N.TopBar
-        variant="toolbar"
-        leading={React.createElement(
-          'span',
-          { className: 'nh-label' },
-          `${NOW.toLocaleDateString('de-DE', { month: 'long' })} · ${N.utils.idx(s.expenses.length)} Ausgaben`,
-        )}
-      >
+      <N.TopBar variant="toolbar" leading={React.createElement('span', { className: 'nh-label' }, 'Ausgabenbuch')}>
         <Button
           variant="key"
           size="sm"

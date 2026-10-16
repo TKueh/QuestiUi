@@ -91,3 +91,7 @@
 .qs-mehr .nh-footer {
   padding-inline: 0;
 }
+/* Einkauf im Sheet: Gruppen offen auf Haarlinien wie in Quest und Mahlzeit – keine Tafel in der Tafel (Grundsatz 1) */
+.qs-shopgroup .nh-lgroup-head {
+  padding-inline: 0;
+}
