@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { List } from 'nordhaus-ui';
+import N, { List } from 'nordhaus-ui/src/bare.js';
 import { QuestRow } from './QuestRow.jsx';
 
 const { cx, useCtl } = N.utils;

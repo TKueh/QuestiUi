@@ -1,5 +1,5 @@
 import React from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 
 const { cx } = N.utils;
 

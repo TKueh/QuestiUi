@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Badge, BarChart, Metric } from 'nordhaus-ui';
+import N, { Badge, BarChart, Metric } from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
 import { WeekSummary } from '../../components/WeekSummary/WeekSummary.jsx';
 import { demo } from '../../data/demo.js';

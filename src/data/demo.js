@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 
 const U = N.utils;
 const { addDays, iso, pad, parse } = N.utils;

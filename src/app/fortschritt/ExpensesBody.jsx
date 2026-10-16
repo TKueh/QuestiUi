@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { BarChart, Button, Metric } from 'nordhaus-ui';
+import N, { BarChart, Button, Metric } from 'nordhaus-ui/src/bare.js';
 import { ExpenseRow } from '../../components/ExpenseRow/ExpenseRow.jsx';
 import { HistoryGroup } from '../../components/ExpenseRow/HistoryGroup.jsx';
 import { demo } from '../../data/demo.js';

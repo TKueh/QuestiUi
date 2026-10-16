@@ -1,5 +1,5 @@
 import React from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import Q from '../../index.js';
 
 export default { title: 'Training / ExerciseRow' };

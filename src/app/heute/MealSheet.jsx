@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Button } from 'nordhaus-ui';
+import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { IngredientList } from '../../components/NutritionPanel/IngredientList.jsx';
 import { NutritionPanel } from '../../components/NutritionPanel/NutritionPanel.jsx';

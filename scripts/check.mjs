@@ -1,7 +1,8 @@
-// Questi UI – alles in einem Lauf: Lint (ohne Bild-Stufe) → nur veraltete Bilder neu (parallel) → Lint.
+// Questi UI – alles in einem Lauf: nordhaus.css (Nordhaus-Teilmenge) → Lint (ohne Bild-Stufe) → nur veraltete Bilder neu (parallel) → Lint.
 // Aufruf: npm run check            (vor jedem Commit und am Ende jeder Runde)
 //         npm run check -- --alle   alle Bilder neu statt nur der veralteten
 // Exit 1, sobald eine Stufe Befunde hat. Danach ansehen: npm run bogen (nur neu gerenderte Bilder).
+import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +14,22 @@ const lint = () =>
   spawnSync(process.execPath, ['../NordhausUI/scripts/lint.mjs', '--root', '.'], { cwd: root, encoding: 'utf8' });
 const befunde = (r, mitBild) =>
   r.stdout.split('\n').filter((z) => /^\s+\[/.test(z) && (mitBild || !/\[Bild\]/.test(z)));
+
+// Nordhaus-Teilmenge: src/nordhaus.css neu schreiben, nur wenn sich der Inhalt ändert (sonst gälten alle Bilder als veraltet)
+const css = spawnSync(process.execPath, ['../NordhausUI/scripts/css.mjs', '--root', '.'], {
+  cwd: root,
+  encoding: 'utf8',
+});
+if (css.status) {
+  console.log(`▸ nordhaus.css: Fehler\n${css.stderr}`);
+  process.exit(1);
+}
+const cssDatei = path.join(root, 'src/nordhaus.css');
+const ohneKopf = (s) => s.split('\n').slice(1).join('\n');
+const cssNeu = css.stdout.replace('--out null', '--out src/nordhaus.css');
+const cssAlt = fs.existsSync(cssDatei) ? fs.readFileSync(cssDatei, 'utf8') : '';
+if (ohneKopf(cssNeu) !== ohneKopf(cssAlt)) fs.writeFileSync(cssDatei, cssNeu);
+console.log(`▸ nordhaus.css: ${ohneKopf(cssNeu) !== ohneKopf(cssAlt) ? 'neu erzeugt' : 'aktuell'}`);
 
 const vor = befunde(lint(), false);
 console.log(`▸ Lint: ${vor.length ? vor.length + ' Befunde' : 'ok'}`);

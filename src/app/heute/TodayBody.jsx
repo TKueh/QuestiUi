@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import N, { Badge, EmptyState } from 'nordhaus-ui';
+import N, { Badge, EmptyState } from 'nordhaus-ui/src/bare.js';
 import { WD_LONG, demo } from '../../data/demo.js';
 import { G, MainBar, QuestRows, S, dateLong, useNav, weekAB } from '../shared.jsx';
 

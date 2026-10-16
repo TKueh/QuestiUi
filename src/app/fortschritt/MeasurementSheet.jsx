@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { List } from 'nordhaus-ui';
+import N, { List } from 'nordhaus-ui/src/bare.js';
 import { MeasurementRow } from '../../components/MeasurementRow/MeasurementRow.jsx';
 import { demo } from '../../data/demo.js';
 import { dateShort, useNav } from '../shared.jsx';

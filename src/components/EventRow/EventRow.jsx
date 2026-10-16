@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { ListItem } from 'nordhaus-ui';
+import N, { ListItem } from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
 
 const { cx } = N.utils;

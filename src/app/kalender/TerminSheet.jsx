@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Button, KeyValue, List } from 'nordhaus-ui';
+import N, { Button, KeyValue, List } from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { EventRow } from '../../components/EventRow/EventRow.jsx';

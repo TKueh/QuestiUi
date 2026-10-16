@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
 import { demo, hmn } from '../../data/demo.js';
 import { S, dateLong, useNav } from '../shared.jsx';

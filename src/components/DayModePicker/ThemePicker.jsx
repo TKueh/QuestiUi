@@ -1,5 +1,5 @@
 import React from 'react';
-import { SegmentedControl } from 'nordhaus-ui';
+import { SegmentedControl } from 'nordhaus-ui/src/bare.js';
 
 /* Darstellung System · Hell · Dunkel – Kartentasten mit Theme-Miniaturen */
 function ThemePicker({ className, label, value, defaultValue, onChange }) {

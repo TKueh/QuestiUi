@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import N, { Button } from 'nordhaus-ui';
+import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { ExerciseRow } from '../../components/ExerciseRow/ExerciseRow.jsx';
 import { WD_LONG, demo } from '../../data/demo.js';

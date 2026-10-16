@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { ChartLegend } from 'nordhaus-ui';
+import N, { ChartLegend } from 'nordhaus-ui/src/bare.js';
 
 const { cx } = N.utils;
 

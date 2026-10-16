@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { Button } from 'nordhaus-ui';
+import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { PlanPreviewWeek } from '../../components/PlanPreviewWeek/PlanPreviewWeek.jsx';
 import { demo } from '../../data/demo.js';
 import { S, SubBar, col, useNav } from '../shared.jsx';

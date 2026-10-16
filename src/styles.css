@@ -1,4 +1,4 @@
-/* Questi UI – Styles der App-Schicht. Nordhaus bringt seine Styles selbst mit (nordhaus-ui); Reihenfolge = Kaskade. */
+/* Questi UI – Styles der App-Schicht. Nordhaus-Styles kommen als Teilmenge aus nordhaus.css (vor dieser Datei geladen); Reihenfolge = Kaskade. */
 @import './styles/shared.css';
 @import './components/NutritionPanel/NutritionPanel.css';
 @import './components/LifeRow/LifeRow.css';

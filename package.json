@@ -11,6 +11,7 @@
     "lint": "node ../NordhausUI/scripts/lint.mjs --root .",
     "shots": "node scripts/shots.mjs",
     "check": "node scripts/check.mjs",
+    "css": "node ../NordhausUI/scripts/css.mjs --root . --out src/nordhaus.css",
     "bogen": "node ../NordhausUI/scripts/bogen.mjs --root=."
   },
   "dependencies": {

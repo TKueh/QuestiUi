@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { List } from 'nordhaus-ui';
+import N, { List } from 'nordhaus-ui/src/bare.js';
 
 const { checkMark, cx, useCtl } = N.utils;
 

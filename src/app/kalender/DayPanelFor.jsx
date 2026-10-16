@@ -1,4 +1,4 @@
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import React from 'react';
 import { DayPanel } from '../../components/DayPanel/DayPanel.jsx';
 import { demo } from '../../data/demo.js';

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
 import { G, S, dateLong } from '../shared.jsx';
 import { CalBar } from './CalBar.jsx';

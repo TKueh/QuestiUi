@@ -1,4 +1,4 @@
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 
 /* Die acht Lebensbereiche der Quest-App: Wort, Icon und ein Nordhaus-Datenton. Nordhaus selbst kennt nur die Töne. */
 const CATEGORIES = N.setCategories(

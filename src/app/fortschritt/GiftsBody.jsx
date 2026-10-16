@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { BarChart, Metric } from 'nordhaus-ui';
+import N, { BarChart, Metric } from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
 import { col, money } from '../shared.jsx';
 

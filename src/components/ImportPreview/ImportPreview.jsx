@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Badge, Icon, Metric } from 'nordhaus-ui';
+import N, { Badge, Icon, Metric } from 'nordhaus-ui/src/bare.js';
 
 const { cx } = N.utils;
 

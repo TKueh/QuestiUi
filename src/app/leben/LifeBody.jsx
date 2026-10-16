@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { Badge, Button, List } from 'nordhaus-ui';
+import N, { Badge, Button, List } from 'nordhaus-ui/src/bare.js';
 import { BudgetLabel } from '../../components/BudgetLabel/BudgetLabel.jsx';
 import { LifeRow } from '../../components/LifeRow/LifeRow.jsx';
 import { demo } from '../../data/demo.js';

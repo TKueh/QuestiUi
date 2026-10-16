@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { Button } from 'nordhaus-ui';
+import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { demo, setState } from '../../data/demo.js';
 import { useNav } from '../shared.jsx';
 

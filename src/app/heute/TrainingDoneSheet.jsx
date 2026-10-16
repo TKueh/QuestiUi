@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Button } from 'nordhaus-ui';
+import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { FeelingPicker } from '../../components/TrainingSummary/FeelingPicker.jsx';
 import { TrainingSummary } from '../../components/TrainingSummary/TrainingSummary.jsx';
 import { demo } from '../../data/demo.js';

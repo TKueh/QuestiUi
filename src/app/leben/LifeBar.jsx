@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
 import { MainBar, S, useNav } from '../shared.jsx';
 

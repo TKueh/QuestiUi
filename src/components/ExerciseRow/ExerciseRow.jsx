@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Icon, ToggleRow } from 'nordhaus-ui';
+import N, { Icon, ToggleRow } from 'nordhaus-ui/src/bare.js';
 
 const { cx, idx, num } = N.utils;
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import N, { Button, SegmentedControl } from 'nordhaus-ui';
+import N, { Button, SegmentedControl } from 'nordhaus-ui/src/bare.js';
 import { DEVICES, Phone, deviceFromQuery } from '../components/Phone/Phone.jsx';
 import { ExpenseSheet, HealthPage, MeasurementSheet, StatsBody } from './fortschritt.jsx';
 import {

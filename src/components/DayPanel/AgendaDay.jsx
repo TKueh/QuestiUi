@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Accordion, Badge } from 'nordhaus-ui';
+import N, { Accordion, Badge } from 'nordhaus-ui/src/bare.js';
 import { EventRow } from '../EventRow/EventRow.jsx';
 
 const { cx, parse } = N.utils;

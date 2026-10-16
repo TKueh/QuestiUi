@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Button, KeyValue } from 'nordhaus-ui';
+import N, { Button, KeyValue } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { demo } from '../../data/demo.js';
 import { S, dateLong, useNav } from '../shared.jsx';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { Button, EmptyState, List } from 'nordhaus-ui';
+import N, { Button, EmptyState, List } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { ShoppingRow } from '../../components/ShoppingList/ShoppingList.jsx';
 import { demo } from '../../data/demo.js';

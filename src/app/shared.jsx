@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { IconButton, List } from 'nordhaus-ui';
+import N, { IconButton, List } from 'nordhaus-ui/src/bare.js';
 import { QuestRow } from '../components/QuestRow/QuestRow.jsx';
 import { demo } from '../data/demo.js';
 

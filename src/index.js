@@ -1,6 +1,7 @@
 // Questi UI – öffentliche Schnittstelle. Benannte Exporte, Default-Export = früheres window.Questi.
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import './categories.js';
+import './nordhaus.css';
 import './styles.css';
 import { AgendaDay } from './components/DayPanel/AgendaDay.jsx';
 import { BudgetLabel } from './components/BudgetLabel/BudgetLabel.jsx';

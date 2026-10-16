@@ -1,5 +1,5 @@
 import React from 'react';
-import { SegmentedControl } from 'nordhaus-ui';
+import { SegmentedControl } from 'nordhaus-ui/src/bare.js';
 
 const MODES = [
   { value: 'normal', label: 'Normal', description: 'Alle Pläne aktiv', icon: 'sun' },

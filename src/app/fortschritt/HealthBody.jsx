@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { Button, Metric } from 'nordhaus-ui';
+import N, { Button, Metric } from 'nordhaus-ui/src/bare.js';
 import { TrainingSummary } from '../../components/TrainingSummary/TrainingSummary.jsx';
 import { demo } from '../../data/demo.js';
 import { S, col, useNav } from '../shared.jsx';

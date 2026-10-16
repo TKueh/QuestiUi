@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N from 'nordhaus-ui';
+import N from 'nordhaus-ui/src/bare.js';
 import { DayModePicker } from '../../components/DayModePicker/DayModePicker.jsx';
 import { ThemePicker } from '../../components/DayModePicker/ThemePicker.jsx';
 import { demo } from '../../data/demo.js';

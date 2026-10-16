@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { Badge, CategoryIcon, Icon, ListItem, StatusSelect } from 'nordhaus-ui';
+import N, { Badge, CategoryIcon, Icon, ListItem, StatusSelect } from 'nordhaus-ui/src/bare.js';
 import { BudgetLabel } from '../BudgetLabel/BudgetLabel.jsx';
 
 const { cx } = N.utils;

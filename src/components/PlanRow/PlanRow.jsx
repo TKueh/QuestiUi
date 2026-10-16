@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Badge, ListItem } from 'nordhaus-ui';
+import N, { Badge, ListItem } from 'nordhaus-ui/src/bare.js';
 
 const { cx } = N.utils;
 

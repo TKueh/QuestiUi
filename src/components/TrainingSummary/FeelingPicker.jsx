@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { SegmentedControl } from 'nordhaus-ui';
+import N, { SegmentedControl } from 'nordhaus-ui/src/bare.js';
 
 const { cx, useCtl } = N.utils;
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import N, { Badge, BarChart, IconButton, List, ListItem } from 'nordhaus-ui';
+import N, { Badge, BarChart, IconButton, List, ListItem } from 'nordhaus-ui/src/bare.js';
 import { FinanceSummary } from '../../components/FinanceSummary/FinanceSummary.jsx';
 import { LifeRow } from '../../components/LifeRow/LifeRow.jsx';
 import { SubBar, col, money, useNav } from '../shared.jsx';

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { Button, IconButton } from 'nordhaus-ui';
+import N, { Button, IconButton } from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
 import { MainBar, rangeLabel, useNav } from '../shared.jsx';
 

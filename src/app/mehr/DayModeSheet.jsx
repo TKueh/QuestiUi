@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import N, { Badge, Button } from 'nordhaus-ui';
+import N, { Badge, Button } from 'nordhaus-ui/src/bare.js';
 import { DayModePicker } from '../../components/DayModePicker/DayModePicker.jsx';
 import { demo } from '../../data/demo.js';
 import { S, dateLong, useNav, weekAB } from '../shared.jsx';
