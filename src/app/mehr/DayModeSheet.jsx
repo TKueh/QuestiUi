@@ -29,14 +29,13 @@ function DayModeSheet() {
       size="large"
       open={true}
       onClose={nav.close}
-      context={<Badge>Dein Tag</Badge>}
+      context={<Badge>Tagesmodus</Badge>}
       eyebrow={`${dateLong(iso(new Date()))} · ${weekAB()}`}
-      title="Tag anpassen"
+      title="Krank & Urlaub"
       description="Wenn du krank oder im Urlaub bist, pausieren die passenden Pläne. Pausierte Tage zählen für die Serie neutral."
       actions={
         <Button
           variant="accent"
-          arrow={true}
           onClick={() => {
             demo.act.setMode({ value: m[0], from: start, to: to[0], pause: pause[0] });
             nav.close();

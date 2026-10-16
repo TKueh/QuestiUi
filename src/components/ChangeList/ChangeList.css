@@ -30,7 +30,7 @@
   padding-top: calc((20px - 14px) / 2);
 }
 .qs-changes li.is-add .qs-changes-kind {
-  color: var(--positive);
+  color: var(--ink);
 }
 .qs-changes li.is-remove .qs-changes-kind {
   color: var(--ink-muted);

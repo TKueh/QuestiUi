@@ -22,7 +22,6 @@ function PlanImportSheet() {
       actions={
         <Button
           variant="accent"
-          arrow={true}
           disabled={s.imported}
           onClick={() => {
             demo.act.importPlan();

@@ -63,13 +63,13 @@ function ShoppingSheet({ id }) {
             Wieder öffnen
           </Button>
         ) : (
-          <Button variant="accent" arrow={true} onClick={finish}>
+          <Button variant="accent" onClick={finish}>
             {st.done === st.total ? 'Einkauf abschließen' : 'Alles abhaken'}
           </Button>
         )
       }
     >
-      <div style={{ margin: 'calc(var(--space-2) * -1) calc(var(--gutter) * -1) 0' }}>
+      <div style={{ margin: '0 calc(var(--gutter) * -1)' }}>
         <N.FilterChips
           label="Filter"
           value={f[0]}

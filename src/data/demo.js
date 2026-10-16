@@ -290,7 +290,6 @@ function buildState() {
         rel: 'Freundin',
         gift: 'Keramik-Workshop',
         amount: 65,
-        spent: 65,
         status: 'bought',
       },
       {
@@ -301,7 +300,6 @@ function buildState() {
         rel: 'Familie',
         gift: 'Kochbuch',
         amount: 75,
-        spent: 34.9,
         status: 'bought',
       },
       {
@@ -324,7 +322,6 @@ function buildState() {
         title: 'Kamera-Objektiv 35 mm',
         meta: 'Noch nicht eingeplant',
         amount: 450,
-        spent: 0,
         status: 'idea',
       },
       {
@@ -332,7 +329,6 @@ function buildState() {
         title: 'Laufschuhe',
         meta: `Gekauft am ${addDays(new Date(), -2).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`,
         amount: 140,
-        spent: 139.9,
         status: 'bought',
       },
       {
@@ -340,7 +336,6 @@ function buildState() {
         title: 'Kochkurs',
         meta: `Termin · ${dshort(dayDate(3, 5))}`,
         amount: 90,
-        spent: 0,
         status: 'planned',
       },
     ],
@@ -364,16 +359,36 @@ function buildState() {
         title: 'Keramik-Workshop',
         method: 'Karte',
         payee: 'für Lena',
+        ref: 'lena',
         amount: 65,
       },
       { id: 'e2', d: 0, category: 'household', title: 'Frischeinkauf', method: 'Karte', amount: 38.4 },
       { id: 'e3', d: -2, category: 'training', title: 'Judo-Gürtel', method: 'Bar', amount: 12.9 },
-      { id: 'e4', d: -2, category: 'personal', title: 'Laufschuhe', method: 'PayPal', payee: 'Wunsch', amount: 139.9 },
-      { id: 'e5', d: -5, category: 'birthday', title: 'Kochbuch', method: 'Karte', payee: 'für Papa', amount: 34.9 },
+      {
+        id: 'e4',
+        d: -2,
+        category: 'personal',
+        title: 'Laufschuhe',
+        method: 'PayPal',
+        payee: 'Wunsch',
+        ref: 'w2',
+        amount: 139.9,
+      },
+      {
+        id: 'e5',
+        d: -5,
+        category: 'birthday',
+        title: 'Kochbuch',
+        method: 'Karte',
+        payee: 'für Papa',
+        ref: 'papa',
+        amount: 34.9,
+      },
     ],
     expenseMonths: [182, 240, 96, 310, 205],
     weights: [73.4, 73.2, 73.3, 73.0, 72.9, 73.1, 72.8, 72.7, 72.9, 72.6, 72.5, 72.7, 72.4],
     measurements: [
+      { id: 'm0', d: 0, source: 'Apple Health', value: 72.4 },
       { id: 'm1', d: -1, source: 'Apple Health', value: 72.7 },
       { id: 'm2', d: -2, source: 'Eigene Messung', value: 72.6, own: true },
     ],
@@ -417,7 +432,7 @@ function buildState() {
         id: 'finance',
         category: 'finance',
         title: 'Finanzplan',
-        description: '7 Verträge und Sparposten, 2 Ziele',
+        description: '7 Verträge, 2 Ziele',
         count: 9,
         status: 'paused',
       },
@@ -468,14 +483,23 @@ const WORKOUTS = {
 };
 
 /* ---------- Speicher: eine Quelle, alle Screens hören mit ---------- */
-let STATE = buildState();
+/* Ausgegeben je Geschenk und Wunsch kommt aus dem Ausgabenbuch (ref) – eine Quelle, gleiche Zahl in Leben, Fortschritt, Ausgaben */
+function withSpent(st) {
+  const spent = (id) =>
+    st.expenses.filter((e) => e.ref === id).reduce((a, e) => Math.round((a + e.amount) * 100) / 100, 0);
+  return Object.assign({}, st, {
+    birthdays: st.birthdays.map((b) => (b.amount != null ? Object.assign({}, b, { spent: spent(b.id) }) : b)),
+    wishes: st.wishes.map((w) => Object.assign({}, w, { spent: spent(w.id) })),
+  });
+}
+let STATE = withSpent(buildState());
 
 let SUBS = [];
 function getState() {
   return STATE;
 }
 function setState(fn) {
-  STATE = Object.assign({}, STATE, fn(STATE), { v: STATE.v + 1 });
+  STATE = withSpent(Object.assign({}, STATE, fn(STATE), { v: STATE.v + 1 }));
   SUBS.slice().forEach((f) => {
     f();
   });
@@ -969,7 +993,7 @@ const act = {
     }));
   },
   reset: () => {
-    STATE = buildState();
+    STATE = withSpent(buildState());
     SUBS.slice().forEach((f) => {
       f();
     });

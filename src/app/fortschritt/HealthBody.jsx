@@ -6,6 +6,9 @@ import { S, col, useNav } from '../shared.jsx';
 
 const { num } = N.utils;
 
+const PULSE = [57, 56, 58, 55, 54, 55, 54];
+const STEPS = [6200, 9100, 7400, 8800, 10200, 5300, 8412];
+const avg = (v) => Math.round(v.reduce((a, b) => a + b, 0) / v.length);
 function HealthBody({ register }) {
   const s = demo.use();
   const nav = useNav();
@@ -77,7 +80,7 @@ function HealthBody({ register }) {
         <N.ChartLegend
           items={[
             { label: 'Gewicht', kind: 'line' },
-            { label: 'Training', kind: 'line', tone: 'training' },
+            { label: 'Training (Strich an der Achse)', kind: 'line' },
           ]}
         />
       </div>
@@ -88,13 +91,9 @@ function HealthBody({ register }) {
           gap: 'var(--space-3)',
         }}
       >
-        <N.MetricCard label="Ruhepuls · Ø" value="54" unit="bpm" size="sm" spark={[57, 56, 58, 55, 54, 55, 54]} />
-        <N.MetricCard
-          label="Schritte · Ø"
-          value="8.412"
-          size="sm"
-          spark={[6200, 9100, 7400, 8800, 10200, 5300, 8412]}
-        />
+        {/* Ø aus derselben Reihe, die die Kurve zeichnet – gleiche Daten, gleiche Zahl */}
+        <N.MetricCard label="Ruhepuls · Ø 7 Tage" value={avg(PULSE)} unit="S/min" size="sm" spark={PULSE} />
+        <N.MetricCard label="Schritte · Ø 7 Tage" value={avg(STEPS)} size="sm" spark={STEPS} />
       </div>
       <div>
         <N.SectionHeader title="Krafttraining" />

@@ -61,7 +61,6 @@ function QuestDetailSheet({ id }) {
             <Button
               key="a"
               variant="accent"
-              arrow={true}
               onClick={() => {
                 demo.act.toggle(q.id, true);
                 nav.close();

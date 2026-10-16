@@ -33,7 +33,7 @@ function Demo() {
           total={10}
           onAdd={() => {}}
           events={[
-            { start: '12:30', end: '13:00', title: 'Mittagsbox B', category: 'food', done: true },
+            { start: '12:30', end: '13:00', title: 'Mittagsportion B', category: 'food', done: true },
             { start: '19:00', end: '20:30', title: 'Judo', category: 'training' },
           ]}
         />

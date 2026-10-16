@@ -35,13 +35,16 @@ function PlanPreviewWeek(props) {
           </div>
         ))}
       </div>
-      <ChartLegend
-        items={[
-          { label: 'Neu', kind: 'line', tone: 'positive' },
-          { label: 'Geändert', kind: 'line', tone: 'ink' },
-          { label: 'Entfällt', kind: 'line', tone: 'muted' },
-        ]}
-      />
+      {/* Legende nur mit Änderungen; die Zeichen + ~ − tragen die Bedeutung, nicht die Farbe (F06) */}
+      {days.some((d) => (d.items || []).some((it) => it.state && it.state !== 'same')) ? (
+        <ChartLegend
+          items={[
+            { label: '+ Neu', kind: 'line', tone: 'ink' },
+            { label: '~ Geändert', kind: 'line', tone: 'ink' },
+            { label: '− Entfällt', kind: 'line', tone: 'muted' },
+          ]}
+        />
+      ) : null}
     </div>
   );
 }

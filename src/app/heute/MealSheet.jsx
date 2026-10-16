@@ -37,7 +37,7 @@ function MealSheet({ id }) {
         'Essensplan',
       )}
       eyebrow={dateLong(q.date)}
-      title={`Mittagsbox ${q.meal}`}
+      title={`Mittagsportion ${q.meal}`}
       description={`${q.description}.`}
       status={S.qDone(q) ? 'Erledigt' : 'Tagesaufgabe'}
       actions={
@@ -53,7 +53,6 @@ function MealSheet({ id }) {
         ) : (
           <Button
             variant="accent"
-            arrow={true}
             onClick={() => {
               demo.act.toggle(q.id, true);
               nav.close();

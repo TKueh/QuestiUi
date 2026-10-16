@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Badge, Button, EmptyState, ProgressBar } from 'nordhaus-ui/src/bare.js';
+import N, { Badge, Button, EmptyState } from 'nordhaus-ui/src/bare.js';
 import { EventRow } from '../EventRow/EventRow.jsx';
 
 const { cx, parse } = N.utils;
@@ -15,13 +15,8 @@ function DayPanel({ date, className, today, total, done, onAdd, addLabel, events
         </div>
         {total ? (
           <span className="qs-daypanel-prog">
+            {/* nur das Zählwerk: die Skala des Tages steht schon in der Tageszeile darüber (Regel 12a) */}
             <Badge variant="count" done={done} total={total} label="erledigt" />
-            <ProgressBar
-              value={(done / total) * 100}
-              segments={total}
-              compact={true}
-              label={`${done} von ${total} erledigt`}
-            />
           </span>
         ) : null}
         {onAdd ? (

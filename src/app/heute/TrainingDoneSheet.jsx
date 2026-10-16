@@ -3,7 +3,7 @@ import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { FeelingPicker } from '../../components/TrainingSummary/FeelingPicker.jsx';
 import { TrainingSummary } from '../../components/TrainingSummary/TrainingSummary.jsx';
 import { demo } from '../../data/demo.js';
-import { S, useNav } from '../shared.jsx';
+import { S, dateLong, useNav } from '../shared.jsx';
 
 function TrainingDoneSheet({ id, preset }) {
   const s = demo.use();
@@ -11,14 +11,14 @@ function TrainingDoneSheet({ id, preset }) {
 
   const q = S.findQuest(s, id) || S.nextQuest(s, (x) => !!x.workout);
 
-  let st = S.trainingStats(s, q);
   const ex = S.workout(q);
-  const sets = s.training.sets || [];
-  let open = ex.map((e, i) => [e, (sets[i] || []).filter((v) => !v).length]).filter((x) => x[1] > 0);
-  if (preset && !s.training.sets) {
-    st = { done: 22, total: 24, load: 4280 };
-    open = [[ex[2], 2]];
-  }
+  /* Vorschau: alle Sätze bis auf die letzten zwei der dritten Übung – gerechnet wie im Training, nicht eingetragen */
+  const sets =
+    s.training.sets ||
+    (preset ? ex.map((e, i) => Array.from({ length: e.sets }, (_, k) => !(i === 2 && k >= e.sets - 2))) : []);
+  const st = S.trainingStats(s, q, !s.training.sets && preset ? sets : undefined);
+  const open = ex.map((e, i) => [e, (sets[i] || []).filter((v) => !v).length]).filter((x) => x[1] > 0);
+  const hm = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
   return (
     <N.Sheet
       inline={true}
@@ -26,7 +26,7 @@ function TrainingDoneSheet({ id, preset }) {
       open={true}
       onClose={nav.close}
       category="training"
-      eyebrow={`${q.title.replace(' trainieren', '')} · ${q.time}–${q.end}`}
+      eyebrow={`${dateLong(q.date)} · ${q.time}–${q.end}`}
       title="Training abschließen"
       description={`${st.done} von ${st.total} Sätzen erledigt. Die Werte gehen in den Verlauf unter Gesundheit.`}
       status="Wird lokal gesichert"
@@ -34,7 +34,6 @@ function TrainingDoneSheet({ id, preset }) {
         Button,
         {
           variant: 'accent',
-          arrow: true,
           onClick: () => {
             demo.act.saveTraining(q.id);
             nav.close();
@@ -48,7 +47,7 @@ function TrainingDoneSheet({ id, preset }) {
         'Training sichern',
       )}
     >
-      <TrainingSummary setsDone={st.done} setsTotal={st.total} load={st.load} duration={62} />
+      <TrainingSummary setsDone={st.done} setsTotal={st.total} load={st.load} duration={hm(q.end) - hm(q.time)} />
       <div className="nh-field">
         <span className="nh-label">Wie war das Training?</span>
         <FeelingPicker value={s.training.feeling} onChange={demo.act.feeling} />

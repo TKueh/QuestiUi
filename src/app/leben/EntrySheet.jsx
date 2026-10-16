@@ -13,7 +13,7 @@ function EntrySheet({ id }) {
   const name = useState(b ? b.name : '');
   const date = useState(b ? b.date : iso(addDays(new Date(), 30)));
   const year = useState(b && b.year ? b.year : '');
-  const rel = useState(b && b.rel ? b.rel : 'Freundin / Freund');
+  const rel = useState(b && b.rel ? b.rel : 'Freundin');
   const gift = useState(!!(b && b.gift));
   const idea = useState(b && b.gift ? b.gift : '');
   const budget = useState(b && b.amount ? num(b.amount, 2) : '');
@@ -67,7 +67,7 @@ function EntrySheet({ id }) {
       </N.FieldRow>
       <N.Select
         label="Beziehung"
-        options={['Familie', 'Freundin / Freund', 'Kollegin / Kollege', 'Freundin', 'Kollege']}
+        options={['Familie', 'Freundin', 'Freund', 'Kollegin', 'Kollege']}
         value={rel[0]}
         onChange={rel[1]}
       />
@@ -84,7 +84,7 @@ function EntrySheet({ id }) {
       <N.Select
         label="Erinnerung"
         options={['Am Tag selbst', '3 Tage vorher', '7 Tage vorher', '14 Tage vorher']}
-        defaultValue="7 Tage vorher"
+        defaultValue={(b && b.reminder) || '7 Tage vorher'}
       />
     </N.Sheet>
   );

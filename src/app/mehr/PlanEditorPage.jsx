@@ -5,7 +5,7 @@ import { demo } from '../../data/demo.js';
 import { S, SubBar, col, useNav } from '../shared.jsx';
 import { diffCount } from './shared.jsx';
 
-/* Planeditor: Entwurf lokal; Zurück mit Änderungen fragt (UnsavedDialog), Übernehmen sichert. saveError zeigt den Speicherfehler-Zustand. */
+/* Planeditor: Entwurf lokal; Zurück mit Änderungen fragt (UnsavedDialog), Sichern sichert. saveError zeigt den Speicherfehler-Zustand. */
 function PlanEditorPage({ editor, setEditor }) {
   const s = demo.use();
   const nav = useNav();
@@ -13,16 +13,26 @@ function PlanEditorPage({ editor, setEditor }) {
   const set = setEditor;
   const items = ed.items || s.planA;
   const changes = ed.items ? diffCount(s.planA, ed.items) : 0;
-  const S2 = (t, st) => ({
+  const S2 = (t, st, short) => ({
     title: t,
-    short: t,
+    short: short || t,
     state: st,
+  });
+  /* Vorschau aus Rhythmus und Trainingstagen: A/B wechseln sich ab, Wöchentlich ist immer A; feste Termine bleiben */
+  const rhythm = React.useState('A/B im Wechsel');
+  const wdays = React.useState([0, 2, 5]);
+  const FIX = [[], [S2('Judo')], [], [S2('Judo')], [S2('Fußball')], [], [S2('Vorkochen', 'same', 'Kochen')]];
+  let k = 0;
+  const preview = FIX.map((fix, i) => {
+    if (!wdays[0].includes(i)) return { items: fix };
+    const n = k++;
+    const w = rhythm[0] === 'A/B im Wechsel' && n % 2 ? 'Kraft B' : 'Kraft A';
+    return { items: [S2(w, w === 'Kraft A' && changes ? 'change' : 'same')].concat(fix) };
   });
   return (
     <Fragment>
       <SubBar
         nav={true}
-        border={true}
         backLabel="Pläne"
         title="Trainingsplan"
         onBack={() => {
@@ -32,7 +42,7 @@ function PlanEditorPage({ editor, setEditor }) {
         actions={
           <N.SaveStatus
             state={ed.error ? 'error' : changes ? 'dirty' : 'saved'}
-            label={ed.error ? 'Ungesichert' : changes ? 'Entwurf' : 'Übernommen'}
+            label={ed.error ? 'Ungesichert' : changes ? 'Entwurf' : 'Gesichert'}
           />
         }
       />
@@ -55,22 +65,16 @@ function PlanEditorPage({ editor, setEditor }) {
         </div>
         <div>
           <N.SectionHeader index={2} title="Rhythmus" />
-          <N.Select label="Wiederholen" options={['Wöchentlich', 'A/B im Wechsel']} defaultValue="A/B im Wechsel" />
+          <N.Select
+            label="Wiederholen"
+            options={['Wöchentlich', 'A/B im Wechsel']}
+            value={rhythm[0]}
+            onChange={rhythm[1]}
+          />
           <div style={{ height: 'var(--space-4)' }} />
-          <N.WeekdayPicker defaultValue={[0, 2, 5]} />
+          <N.WeekdayPicker value={wdays[0]} onChange={wdays[1]} />
         </div>
-        <PlanPreviewWeek
-          from={S.dshort(S.nextMonday())}
-          days={[
-            { items: [S2('Kraft A', changes ? 'change' : 'same')] },
-            { items: [S2('Judo')] },
-            { items: [S2('Kraft A', changes ? 'change' : 'same')] },
-            { items: [S2('Judo')] },
-            { items: [S2('Fußball')] },
-            { items: [S2('Kraft B')] },
-            { items: [S2('Vorkochen')] },
-          ]}
-        />
+        <PlanPreviewWeek from={S.dshort(S.nextMonday())} days={preview} />
       </div>
       <div style={{ height: 96 }} />
     </Fragment>

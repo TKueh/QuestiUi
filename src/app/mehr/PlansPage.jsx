@@ -51,7 +51,7 @@ function PlansPage() {
           ))}
         </List>
         <div>
-          <N.SectionHeader index={1} title="Archiv" count={arch.length} />
+          <N.SectionHeader title="Archiv" count={arch.length} />
           <List>
             {arch.map((x) => (
               <PlanRow

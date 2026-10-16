@@ -32,7 +32,6 @@ function CalImportSheet() {
       actions={
         <Button
           variant="accent"
-          arrow={true}
           disabled={!n || s.calendarImport.applied}
           onClick={() => {
             demo.act.applyCalendar();
@@ -48,10 +47,11 @@ function CalImportSheet() {
         file="Arbeit.ics"
         meta="42 Termine · nächste zwei Wochen"
         stats={[
-          { label: 'Neu', value: '1' },
-          { label: 'Geändert', value: '2' },
-          { label: 'Konflikt', value: '1' },
-        ]}
+          ['add', 'Neu'],
+          ['change', 'Geändert'],
+          ['remove', 'Entfällt'],
+          ['conflict', 'Konflikt'],
+        ].map(([t, label]) => ({ label, value: N.utils.idx(items.filter((it) => it.type === t).length) }))}
       />
       <ChangeList items={items} value={sel[0]} onChange={sel[1]} />
     </N.Sheet>

@@ -12,13 +12,9 @@ function LifeRow(props) {
       className={cx('qs-life', `qs-life--${kind}`, props.className)}
       leading={
         kind === 'birthday' ? (
-          <Badge variant="date" date={props.date} tone="birthday" />
+          <Badge variant="date" date={props.date} tone={props.tone || 'birthday'} />
         ) : (
-          <CategoryIcon
-            tone={kind === 'wish' ? 'personal' : 'work'}
-            icon={kind === 'wish' ? 'star' : 'target'}
-            size={40}
-          />
+          <CategoryIcon tone="personal" icon={kind === 'wish' ? 'star' : 'target'} size={40} />
         )
       }
       title={props.title}

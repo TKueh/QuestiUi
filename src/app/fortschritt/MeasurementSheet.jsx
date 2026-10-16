@@ -25,7 +25,7 @@ function MeasurementSheet() {
       inline={true}
       size="compact"
       open={true}
-      title="Gewicht"
+      title="Gewicht erfassen"
       onCancel={nav.close}
       onDone={save}
       doneLabel="Sichern"

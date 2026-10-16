@@ -1,5 +1,5 @@
 import React from 'react';
-import N, { Badge, BarChart, Metric } from 'nordhaus-ui/src/bare.js';
+import N, { BarChart, Metric } from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
 import { WeekSummary } from '../../components/WeekSummary/WeekSummary.jsx';
 import { demo } from '../../data/demo.js';
@@ -32,7 +32,8 @@ function AlltagBody() {
             unit="%"
             caption="erledigt / fällig bis gestern"
           />
-          <Badge variant="streak" label="Serie" {...S.streak(s)} />
+          {/* Serie als Ziffer: neben Zifferblatt und Wochenpegel wäre die Strichliste das dritte Instrument (Regel 12a) */}
+          <Metric size="sm" label="Serie" value={String(S.streak(s).days)} unit="Tage" />
         </div>
       </div>
       <div>

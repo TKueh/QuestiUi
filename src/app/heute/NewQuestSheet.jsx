@@ -80,7 +80,7 @@ function NewQuestSheet(props) {
           {errDate}
         </N.Notice>
       ) : null}
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
         <N.Checkbox label="Ohne Uhrzeit" checked={noTime[0]} onChange={noTime[1]} />
         {!noTime[0] ? (
           <N.FieldRow>

@@ -28,7 +28,7 @@ function Demo() {
       <div className="nh-demo-w nh-list nh-rows--boxed">
         <Q.EventRow allDay={true} title="Lena hat Geburtstag" category="birthday" />
         <Q.EventRow start="08:00" end="12:00" title="Arbeit" category="work" context={true} />
-        <Q.EventRow start="12:30" end="13:00" title="Mittagsbox B essen" category="food" done={true} />
+        <Q.EventRow start="12:30" end="13:00" title="Mittagsportion B essen" category="food" done={true} />
         <Q.EventRow start="19:00" end="20:30" title="Judo" subtitle="Verein · Halle 2" category="training" />
       </div>
     </div>

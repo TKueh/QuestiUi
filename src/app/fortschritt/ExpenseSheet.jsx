@@ -3,7 +3,10 @@ import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { demo, setState } from '../../data/demo.js';
 import { useNav } from '../shared.jsx';
 
-const { eur, iso, num } = N.utils;
+const { addDays, eur, iso, num, parse } = N.utils;
+/* Bereich ↔ Kategorie in beide Richtungen – Bearbeiten öffnet, was gespeichert ist */
+const AREA = { birthday: 'Geschenke', personal: 'Wünsche', household: 'Haushalt', training: 'Training' };
+const CAT = Object.fromEntries(Object.entries(AREA).map(([k, v]) => [v, k]));
 
 function ExpenseSheet({ id, showErrors }) {
   const s = demo.use();
@@ -12,16 +15,20 @@ function ExpenseSheet({ id, showErrors }) {
   const what = useState(e ? e.title : showErrors ? 'Konzertkarten' : '');
   const amount = useState(e ? num(e.amount, 2) : '');
 
-  const area = useState(
-    e ? (e.category === 'birthday' ? 'Geschenke' : e.category === 'personal' ? 'Wünsche' : 'Haushalt') : 'Geschenke',
-  );
+  const area = useState(e ? AREA[e.category] || 'Haushalt' : 'Geschenke');
+  const today = iso(new Date());
+  const date = useState(e ? iso(addDays(new Date(), e.d || 0)) : today);
 
   const method = useState(e ? e.method : 'Karte');
-  const link = useState(showErrors ? 'Geschenk · Mara' : 'Keine Zuordnung');
+  /* Zuordnung aus den Daten: Geschenke (Geburtstage mit Budget) und Wünsche; gespeichert wird die Kennung (ref) */
+  const links = [{ value: 'none', label: 'Keine Zuordnung' }]
+    .concat(s.birthdays.filter((b) => b.amount != null).map((b) => ({ value: b.id, label: `Geschenk · ${b.name}` })))
+    .concat(s.wishes.map((w) => ({ value: w.id, label: `Wunsch · ${w.title}` })));
+  const link = useState(e ? e.ref || 'none' : showErrors ? 'mara' : 'none');
   const tried = useState(!!showErrors);
   const val = parseFloat(String(amount[0]).replace(/\./g, '').replace(',', '.'));
-  const errWhat = tried[0] && !what[0].trim() ? 'Wofür war die Ausgabe?' : null;
-  const errAmount = tried[0] && !(val > 0) ? 'Bitte einen Betrag eingeben.' : null;
+  const errWhat = tried[0] && !what[0].trim() ? 'Gib ein, wofür die Ausgabe war.' : null;
+  const errAmount = tried[0] && !(val > 0) ? 'Gib einen Betrag ein.' : null;
   function save() {
     tried[1](true);
     if (!what[0].trim() || !(val > 0)) {
@@ -32,19 +39,16 @@ function ExpenseSheet({ id, showErrors }) {
       return;
     }
     if (e) demo.act.removeExpense(e.id);
+    const b = s.birthdays.filter((x) => x.id === link[0])[0];
     demo.act.addExpense({
+      ...(e ? { id: e.id } : null),
+      d: Math.round((parse(date[0]) - parse(today)) / 864e5),
       title: what[0].trim(),
       amount: val,
       method: method[0],
-      category:
-        area[0] === 'Geschenke'
-          ? 'birthday'
-          : area[0] === 'Wünsche'
-            ? 'personal'
-            : area[0] === 'Training'
-              ? 'training'
-              : 'household',
-      payee: link[0] !== 'Keine Zuordnung' ? `für ${link[0].split('· ')[1]}` : undefined,
+      category: CAT[area[0]],
+      ref: link[0] !== 'none' ? link[0] : undefined,
+      payee: b ? `für ${b.name}` : link[0] !== 'none' ? 'Wunsch' : undefined,
     });
     setTimeout(() => {
       setState(() => ({
@@ -84,14 +88,9 @@ function ExpenseSheet({ id, showErrors }) {
           onChange={amount[1]}
           error={errAmount}
         />
-        <N.DateField label="Bezahlt am" defaultValue={iso(new Date())} />
+        <N.DateField label="Bezahlt am" value={date[0]} onChange={date[1]} max={today} />
       </N.FieldRow>
-      <N.Select
-        label="Bereich"
-        options={['Geschenke', 'Wünsche', 'Haushalt', 'Training', 'Sonstiges']}
-        value={area[0]}
-        onChange={area[1]}
-      />
+      <N.Select label="Bereich" options={Object.values(AREA)} value={area[0]} onChange={area[1]} />
       <div className="nh-field">
         <span className="nh-label">Bezahlt mit</span>
         <N.ChoiceRow.Quick
@@ -104,7 +103,7 @@ function ExpenseSheet({ id, showErrors }) {
       <N.Select
         label="Zuordnung"
         optional={true}
-        options={['Keine Zuordnung', 'Geschenk · Mara', 'Geschenk · Lena', 'Wunsch · Kamera-Objektiv']}
+        options={links}
         value={link[0]}
         onChange={link[1]}
         hint="Verknüpft die Ausgabe mit dem Eintrag unter Leben."

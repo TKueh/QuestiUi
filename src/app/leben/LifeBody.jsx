@@ -16,7 +16,10 @@ function LifeBody() {
   if (tab === 'b')
     body = (
       <Fragment>
-        <N.TopBar variant="toolbar" leading={React.createElement('span', { className: 'nh-label' }, 'Nächste 60 Tage')}>
+        <N.TopBar
+          variant="toolbar"
+          leading={React.createElement('span', { className: 'nh-label' }, 'Ab dieser Woche · 60 Tage')}
+        >
           <Button variant="text" size="sm" disabled={true}>
             {`Archiv ${N.utils.idx(s.archive.birthdays)}`}
           </Button>
@@ -41,7 +44,7 @@ function LifeBody() {
               meta={relDays(b.date) + (b.age ? ` · ${b.age} Jahre` : '') + (b.rel ? ` · ${b.rel}` : '')}
               gift={b.gift}
               amount={b.amount}
-              spent={b.spent}
+              spent={b.spent || undefined}
               status={b.status}
               statusOptions={b.gift ? GIFT : undefined}
               onStatus={(v) => {
@@ -114,7 +117,7 @@ function LifeBody() {
                   </Badge>
                 ) : x.planned ? (
                   <Button
-                    variant="secondary"
+                    variant="key"
                     size="sm"
                     icon="calendar"
                     onClick={() => {
@@ -148,7 +151,7 @@ function LifeBody() {
           variant="toolbar"
           leading={React.createElement(BudgetLabel, {
             spent: s.wishes.reduce((a, w) => a + (w.spent || 0), 0),
-            amount: 680,
+            amount: s.wishes.reduce((a, w) => a + w.amount, 0),
             label: 'Budget',
           })}
         />

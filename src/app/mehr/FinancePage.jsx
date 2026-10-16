@@ -50,6 +50,7 @@ function FinancePage() {
           <List>
             <LifeRow
               kind="birthday"
+              tone="finance"
               date={iso(addDays(new Date(), 9))}
               title="Kfz-Versicherung"
               meta={`Kündigungsfrist endet ${parse(iso(addDays(new Date(), 9))).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`}
@@ -62,6 +63,7 @@ function FinancePage() {
             />
             <LifeRow
               kind="birthday"
+              tone="finance"
               date={iso(addDays(new Date(), 17))}
               title="Handyvertrag"
               meta="Mindestlaufzeit endet"

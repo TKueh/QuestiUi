@@ -7,7 +7,7 @@ const { cx, useCtl } = N.utils;
 const CHG = {
   add: ['plus', 'Neu'],
   change: ['edit', 'Geändert'],
-  remove: ['minus', 'Entfernt'],
+  remove: ['minus', 'Entfällt'],
   conflict: ['alert', 'Konflikt'],
 };
 function ChangeList(props) {

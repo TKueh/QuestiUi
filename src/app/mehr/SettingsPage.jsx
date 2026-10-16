@@ -3,12 +3,13 @@ import N from 'nordhaus-ui/src/bare.js';
 import { DayModePicker } from '../../components/DayModePicker/DayModePicker.jsx';
 import { ThemePicker } from '../../components/DayModePicker/ThemePicker.jsx';
 import { demo } from '../../data/demo.js';
-import { SubBar, col, weekAB } from '../shared.jsx';
+import { SubBar, col, useNav, weekAB } from '../shared.jsx';
 
 const { iso } = N.utils;
 
 function SettingsPage() {
   const s = demo.use();
+  const nav = useNav();
   return (
     <Fragment>
       <SubBar nav={true} large={true} backLabel="Mehr" title="Einstellungen" />
@@ -17,7 +18,7 @@ function SettingsPage() {
           <span className="nh-label">Darstellung</span>
           <ThemePicker value={s.theme} onChange={demo.act.setTheme} />
         </div>
-        <N.SettingsGroup index={1} title="Allgemein">
+        <N.SettingsGroup title="Allgemein">
           <N.SettingsRow
             icon="contrast"
             label="Kontrast erhöhen"
@@ -39,16 +40,18 @@ function SettingsPage() {
           />
         </div>
         <N.SettingsGroup
-          index={2}
           title="Verbindungen"
           footer="Alles bleibt lokal. Live-Abgleich braucht die native App mit EventKit und HealthKit."
         >
           <N.SettingsRow
             icon="calendar"
             label="Kalenderdateien"
-            description="Import & Export (.ics)"
+            description={s.calendarImport.applied ? 'abgeglichen heute' : 'zuletzt heute 09:12'}
             led={s.calendarImport.applied ? 'on' : 'off'}
             value="Lokal"
+            onClick={() => {
+              nav.open('calImport');
+            }}
           />
           <N.SettingsRow
             icon="heart"

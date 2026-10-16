@@ -9,6 +9,8 @@ function TodayBody() {
   const s = demo.use();
   const nav = useNav();
   const d = S.today(s);
+  /* ein Tag in den Karten immer gleich und kurz: heute oder Wochentag-Kürzel (damit das Label eine Zeile bleibt) */
+  const when = (q) => (q.date === d.date ? 'heute' : WD_LONG[(parse(q.date).getDay() + 6) % 7].slice(0, 2));
   const st = S.dayStats(d);
   const filter = useState(nav.route.filter || 'all');
   const open = d.quests.filter((q) => !S.qDone(q));
@@ -103,11 +105,7 @@ function TodayBody() {
         >
           {shopQ ? (
             <N.MetricCard
-              label={`Einkauf · ${
-                shopQ.date === d.date
-                  ? 'heute'
-                  : WD_LONG[parse(shopQ.date).getDay() === 0 ? 6 : parse(shopQ.date).getDay() - 1]
-              }`}
+              label={`Einkauf · ${when(shopQ)}`}
               value={S.qDone(shopQ) ? 'erledigt' : N.utils.frac(shop.done, shop.total)}
               size="sm"
               onClick={() => {
@@ -117,12 +115,10 @@ function TodayBody() {
           ) : null}
           {gymQ ? (
             <N.MetricCard
-              label={`Training · ${
-                gymQ.date === d.date
-                  ? gymQ.time
-                  : `${WD_LONG[(parse(gymQ.date).getDay() + 6) % 7].slice(0, 2)} ${gymQ.time}`
-              }`}
-              value={gymQ.title.replace(' trainieren', '')}
+              label={`Training · ${when(gymQ)}`}
+              value={N.utils.frac(S.trainingStats(s, gymQ).done, S.trainingStats(s, gymQ).total)}
+              unit="Sätze"
+              caption={`${gymQ.title.replace(' trainieren', '')} · ${gymQ.time}`}
               size="sm"
               onClick={() => {
                 nav.open(S.qDone(gymQ) ? 'trainingDone' : 'training', { id: gymQ.id });
@@ -132,7 +128,7 @@ function TodayBody() {
         </div>
         <Badge variant="streak" label="Serie" {...S.streak(s)} />
       </div>
-      <div style={{ height: 40 }} />
+      <div style={{ height: 'var(--space-8)' }} />
     </Fragment>
   );
 }

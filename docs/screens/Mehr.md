@@ -2,7 +2,7 @@
 Mehr → Krank & Urlaub (auch über Einstellungen → Tagesmodus). Tagesmodus Normal · Krank · Urlaub mit LED, Zeitraum, welche Pläne pausieren, und die Serie, die ab dem Zeitraum neutral zählt. Die Taste trägt die Handlung („Urlaub eintragen“, „Krank melden“); danach zeigt Heute den Modus. Geburtstage und Fristen bleiben immer aktiv – das steht in der Beschreibung, nicht in einer Warnung.
 
 # EinstellungenScreen
-Mehr → Einstellungen. Darstellung als Kacheln (Automatisch · Hell · Dunkel) und „Kontrast erhöhen“ wirken sofort auf das Gerät; Tagesmodus Normal/Krank/Urlaub wie in „Krank & Urlaub“; Verbindungen mit LED-Status. Zwei Gruppen, nummeriert.
+Mehr → Einstellungen. Darstellung als Kacheln (Automatisch · Hell · Dunkel) und „Kontrast erhöhen“ wirken sofort auf das Gerät; Tagesmodus Normal/Krank/Urlaub wie in „Krank & Urlaub“; Verbindungen mit LED-Status. Vier gleichrangige Gruppen ohne Nummern – keine Folge, wie in Mehr.
 
 # FinanzplanScreen
 Meine Pläne → Finanzplan (pausiert). Unterseite mit Zurück · Titel · Bearbeiten und den Registern Übersicht · Verträge · Ziele. Eine Vertragsliste ist die Quelle: Übersicht (Monatssumme, frei verfügbar, Verteilung), Gruppe „Versicherungen“ und Register „Verträge“ rechnen daraus; Ziele als Messstrecken. Nächste Fristen mit Datumsfenster, die nächste in `danger` mit „Prüfen“.
@@ -23,7 +23,7 @@ Gesundheit → **+**. Kompaktes Formular-Sheet: Gewicht groß mit Einheit, Hinwe
 Mehr → Meine Pläne. Jeder Plan als Zeile mit Bereich, Inhalt, Anzahl und letzter Änderung; pausierte und archivierte Pläne sind entsättigt und benannt. Oben „Importieren“ (PDF, Text, JSON). Der Trainingsplan öffnet den Planeditor, der Finanzplan seine Übersicht.
 
 # PlanEditorScreen
-Meine Pläne → Trainingsplan. Übungen umbenennen, verschieben (Taste „Verschieben“), entfernen; Rhythmus (A/B, Wochentage); Sieben-Tage-Vorschau der Änderungen. Die feste Leiste zählt die Änderungen („1 Änderung“) und bietet „Verwerfen · Übernehmen“. Zurück mit Änderungen fragt (`UngesichertScreen`); ein fehlgeschlagenes Sichern zeigt `SpeicherfehlerScreen`.
+Meine Pläne → Trainingsplan. Übungen umbenennen, verschieben (Taste „Verschieben“), entfernen; Rhythmus (A/B, Wochentage); Sieben-Tage-Vorschau aus Rhythmus und Wochentagen, Änderungen mit + ~ −. Die feste Leiste zählt die Änderungen („1 Änderung“) und bietet „Verwerfen · Sichern“. Zurück mit Änderungen fragt (`UngesichertScreen`); ein fehlgeschlagenes Sichern zeigt `SpeicherfehlerScreen`.
 
 # PlanImportScreen
 Meine Pläne → Importieren. Datei (PDF, Text, Questi-JSON) mit Name und Größe, die Importvorschau mit Zahlen und Auszug, ein Prüfhinweis für unklare Mengen in `danger` (Handlungsbedarf), der Name des neuen Plans und das Gültigkeitsdatum in der Aktionsleiste. „Plan übernehmen“ fügt ihn zu „Meine Pläne“ hinzu.

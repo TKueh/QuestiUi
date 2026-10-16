@@ -190,6 +190,8 @@ function initRoute(def, s) {
     extra: {},
   };
 }
+/* ein Satz für dasselbe Sichern – Leiste, Dialog, Editor */
+const planSaved = () => `Trainingsplan gesichert – gilt ab ${S.dshort(S.nextMonday())}.`;
 function App(props) {
   const s = demo.use();
   const def = ROUTES[props.start] || ROUTES.HeuteScreen;
@@ -286,10 +288,10 @@ function App(props) {
           onClick={() => {
             demo.act.savePlan(ed[0].items);
             ed[1]({ items: null });
-            nav.toast({ tone: 'success', message: 'Trainingsplan gesichert – gilt ab Montag.' });
+            nav.toast({ tone: 'success', message: planSaved() });
           }}
         >
-          {ed[0].error ? 'Erneut versuchen' : 'Übernehmen'}
+          {ed[0].error ? 'Erneut versuchen' : 'Sichern'}
         </Button>
       </N.ActionBar>
     );
@@ -358,7 +360,7 @@ function App(props) {
                 if (ed[0].items) demo.act.savePlan(ed[0].items);
                 ed[1]({ items: null });
                 nav.back();
-                nav.toast({ tone: 'success', message: 'Trainingsplan gesichert.' });
+                nav.toast({ tone: 'success', message: planSaved() });
               }}
               onDiscard={() => {
                 ed[1]({ items: null });
@@ -367,7 +369,9 @@ function App(props) {
               onCancel={() => {
                 set({ dialog: null });
               }}
-            />
+            >
+              Wenn du zurückgehst, gehen deine Änderungen verloren.
+            </N.UnsavedDialog>
           ) : null}
           {toast[0] ? (
             <div className="qs-toast" key={toast[0].key}>

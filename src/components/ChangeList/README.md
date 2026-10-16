@@ -1,6 +1,6 @@
 # ChangeList
 
-Änderungsliste zur Prüfung (Plan-Versionen, Kalenderimport): je Zeile Übernehmen-Haken, Art (Neu/Geändert/Entfernt/Konflikt in Farbe + Wort), Titel und Vorher → Nachher. Konflikte sind standardmäßig nicht angehakt.
+Änderungsliste zur Prüfung (Plan-Versionen, Kalenderimport): je Zeile Übernehmen-Haken, Art (Neu/Geändert/Entfällt/Konflikt als Zeichen + Wort), Titel und Vorher → Nachher. Konflikte sind standardmäßig nicht angehakt.
 
 - `items` (`{ type: 'add'|'change'|'remove'|'conflict', title, before, after, note }`), `value` / `defaultValue`, `onChange`.
 - Art-Icons 12 pt mit dem Standardstrich 1,5. Der Pfeil zwischen Vorher und Nachher wird als „wird zu“ gelesen.

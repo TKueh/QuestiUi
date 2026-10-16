@@ -35,7 +35,6 @@ function TerminSheet({ date, title }) {
           <Button
             key="s"
             variant="accent"
-            arrow={true}
             onClick={() => {
               nav.open('training', { id: q.id });
             }}
@@ -57,7 +56,6 @@ function TerminSheet({ date, title }) {
           <Button
             key="s"
             variant="accent"
-            arrow={true}
             onClick={() => {
               demo.act.toggle(q.id, true);
               nav.close();

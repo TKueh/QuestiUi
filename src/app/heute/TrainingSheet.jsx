@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import N, { Button } from 'nordhaus-ui/src/bare.js';
 import { DocLink } from '../../components/DocLink/DocLink.jsx';
 import { ExerciseRow } from '../../components/ExerciseRow/ExerciseRow.jsx';
-import { WD_LONG, demo } from '../../data/demo.js';
+import { demo } from '../../data/demo.js';
 import { S, dateLong, useNav } from '../shared.jsx';
 
-const { iso, parse } = N.utils;
+const { iso } = N.utils;
 
 function TrainingSheet({ id, preset }) {
   const s = demo.use();
@@ -44,7 +44,7 @@ function TrainingSheet({ id, preset }) {
         },
         'Trainingsplan',
       )}
-      eyebrow={`${early ? `${WD_LONG[(parse(q.date).getDay() + 6) % 7]} · vorgezogen` : dateLong(q.date)} · ${q.time}`}
+      eyebrow={`${dateLong(q.date)} · ${q.time}${early ? ' · vorgezogen' : ''}`}
       title={q.title}
       description={`${ex.length} Übungen · Startgewichte aus dem Trainingsplan.`}
       status={`${N.utils.frac(st.done, st.total)} Sätze`}
@@ -53,7 +53,6 @@ function TrainingSheet({ id, preset }) {
         Button,
         {
           variant: 'accent',
-          arrow: true,
           disabled: !st.done,
           onClick: () => {
             nav.open('trainingDone', { id: q.id });
