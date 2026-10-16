@@ -1,4 +1,4 @@
-# Questi UI 2.4
+# Questi UI 2.5
 
 Die Questi-App zum Durchspielen: 32 Screens in fünf Tabs, ein Datenstand, echte Navigation – gebaut aus Nordhaus UI.
 
@@ -35,6 +35,11 @@ Nordhaus (`npm run dev` dort) läuft auf Port 61000, Questi auf 61001 – beide 
 Übernommen aus der Artefakt-Mappe „Questi UI“ (Stand 2.2, 15. Oktober 2026). Jede Karte und jeder Screen wurde gegen das Original gerendert und ist in Hell und Dunkel pixelgleich. Die gespiegelte Nordhaus-Kopie und `werkzeug/build.mjs` entfallen – Nordhaus wird direkt aus `../NordhausUI` geladen. Die Prüfskripte der Mappe (`pruefung/`) sind nicht übernommen.
 
 ## Änderungen
+
+### 2.5 · Ein Satz genügt (16. Oktober 2026)
+
+- **Neue Quest:** ein Satz statt Formular – Tag, Uhrzeit, Rhythmus und Bereich werden erkannt (`app/heute/quickParse.js`) und als Zellen bestätigt (Nordhaus `TokenField`); Enter legt an. Der Tag als Messstrecke (`DayScale`) mit Überschneidung und „Auf … legen“; „Wieder anlegen“ bzw. „Aus Vorhaben“ bei leerem Feld; alle Felder unter „Details“.
+- **Funktion:** Gewicht im Training, Verschieben, Finanzplan fortsetzen, Schritte je Schritt gemerkt, Geburtstage aus Leben im Kalender, Suche in Notizen; doppelte Taste „Später“ entfernt.
 
 ### 2.4 · Durchsicht der 32 Screens (16. Oktober 2026)
 

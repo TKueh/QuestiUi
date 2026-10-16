@@ -8,3 +8,28 @@
   letter-spacing: var(--tracking-subhead);
   color: var(--ink-muted);
 }
+/* Neue Quest: Wieder anlegen als Zellen-Reihe, Überschneidung als Satz mit LED, Details als Spalte */
+.qs-nq-again {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.qs-nq-conflict {
+  font: var(--text-footnote);
+  letter-spacing: var(--tracking-footnote);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  color: var(--danger);
+}
+.qs-nq-conflict .nh-btn {
+  margin-inline-start: auto;
+}
+.qs-nq-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-top: var(--space-2);
+}

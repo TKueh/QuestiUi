@@ -1,91 +1,178 @@
 import React, { useState } from 'react';
-import N from 'nordhaus-ui/src/bare.js';
+import N, { Button, Chip } from 'nordhaus-ui/src/bare.js';
 import { CATEGORIES } from '../../categories.js';
-import { demo, hmn } from '../../data/demo.js';
+import { REPEAT_LABEL, demo, hmn } from '../../data/demo.js';
 import { S, dateLong, useNav } from '../shared.jsx';
+import { addDays, parseQuest, wdOf } from './quickParse.js';
 
-const { addDays, iso, parse } = N.utils;
+const { parse } = N.utils;
 
-/* Neue Quest – Pflichtfeld und Zeitprüfung beim Hinzufügen; mit Eingaben fragt Abbrechen nach */
-/* Rhythmen einer Quest – das Auswahlfeld wächst mit, die Zeile bleibt eine */
-const REPEAT = [
-  { value: 'once', label: 'Einmalig' },
-  { value: 'daily', label: 'Täglich' },
-  { value: 'workdays', label: 'Werktags' },
-  { value: 'weekly', label: 'Wöchentlich' },
-  { value: 'biweekly', label: 'Alle zwei Wochen' },
-  { value: 'monthly', label: 'Monatlich' },
-  { value: 'yearly', label: 'Jährlich' },
-];
-/* Erinnerung: mit Uhrzeit relativ zum Beginn, ganztägig und ohne Uhrzeit am Morgen oder am Vortag */
+/* Neue Quest – „Ein Satz genügt“: Der Satz ist die Quest; was darin steht (Tag, Uhrzeit, Rhythmus, Bereich), erscheint als
+   Zellen und lässt sich antippen (Details) oder verwerfen. Darunter der Kontext des Tages: freie Zeit, Überschneidung,
+   „Wieder anlegen“. Die Details (Zeit, Wiederholung, Erinnerung, Bereich, Schritte, Notiz) sind da, aber nicht im Weg.
+   Mit Eingaben fragt Abbrechen nach. */
+const REPEAT = Object.entries(REPEAT_LABEL).map(([value, label]) => ({ value, label }));
 const REMIND_TIME = ['Keine', 'Zum Beginn', '15 Minuten vorher', '30 Minuten vorher', '1 Stunde vorher', 'Am Vortag'];
 const REMIND_DAY = ['Keine', 'Am Morgen', 'Am Vortag'];
+const WD2 = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const clock = (h) => `${String(Math.floor(h)).padStart(2, '0')}:${String(Math.round((h % 1) * 60)).padStart(2, '0')}`;
+const DEMO = 'Judo-Tasche packen morgen 18:30';
+
 function NewQuestSheet(props) {
   const nav = useNav();
   const s = demo.use();
-  const t = S.today(s);
-  const title = useState(props.title != null ? props.title : props.invalid ? '' : 'Judo-Tasche packen');
-  const date = useState(props.date || 'today');
-  const mode = useState('time'); // time · allday · none
-  const noTime = [mode[0] !== 'time'];
-  const note = useState('');
+  const today = S.today(s).date;
+  /* Vorbelegung aus dem Aufruf (Leben → Planen, Tagespanel): Titel als Satz, Tag und Bereich als eigene Wahl */
+  const pre = {};
+  if (props.date === 'tomorrow') pre.date = addDays(today, 1);
+  else if (props.date && props.date !== 'today') pre.date = props.date;
+  if (props.category) pre.category = props.category;
+  if (props.invalid) Object.assign(pre, { mode: 'time', time: '19:00', end: '18:30' });
+  const text = useState(props.title != null ? props.title : props.invalid ? '' : DEMO);
+  const ignored = useState(() => new Set());
+  const manual = useState(pre);
+  const open = useState(!!props.invalid);
   const steps = useState([]);
+  const note = useState('');
   const remind = useState('Keine');
-  const start = useState(props.invalid ? '19:00' : '18:30');
-  const end = useState(props.invalid ? '18:30' : '18:45');
-  const rep = useState('once');
-  const days = useState(() => [
-    (parse(date[0] === 'today' || date[0] === 'tomorrow' ? t.date : date[0]).getDay() + 6) % 7,
-  ]);
-  const cat = useState(props.category || 'personal');
   const tried = useState(!!props.invalid);
-  const iDate = date[0] === 'today' ? t.date : date[0] === 'tomorrow' ? iso(addDays(parse(t.date), 1)) : date[0];
-  const D = parse(iDate);
-  const repHint =
-    rep[0] === 'monthly'
-      ? `Jeden Monat am ${D.getDate()}.`
-      : rep[0] === 'yearly'
-        ? `Jedes Jahr am ${D.toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`
-        : rep[0] === 'workdays'
-          ? 'Montag bis Freitag'
-          : undefined;
-  const errTitle = tried[0] && !title[0].trim() ? 'Gib der Quest einen Namen.' : null;
+
+  /* Erkannt + selbst gewählt = was angelegt wird; Selbstgewähltes geht vor */
+  const p = parseQuest(text[0], today, ignored[0]);
+  const m = manual[0];
+  const date = m.date || p.date || today;
+  const mode = m.mode || (p.allDay ? 'allday' : p.time ? 'time' : 'none');
+  const start = m.time || p.time || '18:00';
+  const end = m.end || p.end || clock(Math.min(23.75, hmn(start) + 0.5));
+  const repeat = m.repeat || p.repeat || 'once';
+  const days = m.days || p.days || [wdOf(date)];
+  const cat = m.category || p.category || 'personal';
+  const title = p.title;
+  const set = (o) => manual[1]((x) => Object.assign({}, x, o));
+
+  /* Kontext des Tages: Belegtes aus dem Kalender, Überschneidung, nächste freie Zeit gleicher Dauer */
+  const day = s.week.filter((d) => d.date === date)[0];
+  const busy = day
+    ? S.dayEvents(day)
+        .filter((e) => !e.allDay && e.start && e.end)
+        .map((e) => ({ start: e.start, end: e.end, label: e.title }))
+    : [];
+  const len = hmn(end) - hmn(start);
+  const hits = mode === 'time' ? busy.filter((b) => hmn(b.start) < hmn(end) && hmn(b.end) > hmn(start)) : [];
+  let free = null;
+  if (hits.length) {
+    let h = Math.max(...hits.map((b) => hmn(b.end)));
+    for (let k = 0; k < 8 && busy.some((b) => hmn(b.start) < h + len && hmn(b.end) > h); k++)
+      h = Math.max(...busy.filter((b) => hmn(b.start) < h + len && hmn(b.end) > h).map((b) => hmn(b.end)));
+    if (h + len <= 23.75) free = h;
+  }
+  /* Wieder anlegen: zuletzt eigene Quests, sonst offene Vorhaben aus Leben */
+  const own = [];
+  s.week.forEach((d) =>
+    d.quests.forEach((q) => {
+      if (q.own && !own.includes(q.title)) own.push(q.title);
+    }),
+  );
+  const again = own.length
+    ? { label: 'Wieder anlegen', items: own.slice(-3).reverse() }
+    : {
+        label: 'Aus Vorhaben',
+        items: s.projects
+          .filter((x) => !x.done && !x.planned)
+          .map((x) => x.title)
+          .slice(0, 3),
+      };
+
+  /* Zellen: was erkannt oder gewählt ist; der Tag steht immer (als Vorgabe ohne Entfernen) */
+  const dLabel =
+    date === today
+      ? 'Heute'
+      : date === addDays(today, 1)
+        ? `Morgen · ${parse(date).toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric' }).replace('.,', '')}`
+        : parse(date)
+            .toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' })
+            .replace('.,', ',');
+  const tokens = [{ id: 'date', label: dLabel, icon: 'calendar', fixed: !p.hits.date && !m.date }];
+  if (mode === 'time') tokens.push({ id: 'time', label: `${start}–${end}`, icon: 'clock' });
+  if (mode === 'allday') tokens.push({ id: 'allDay', label: 'Ganztägig', icon: 'clock' });
+  if (repeat !== 'once')
+    tokens.push({
+      id: 'repeat',
+      label:
+        repeat === 'weekly' || repeat === 'biweekly'
+          ? `${REPEAT_LABEL[repeat]} · ${days.map((i) => WD2[i]).join(', ')}`
+          : REPEAT_LABEL[repeat],
+      icon: 'repeat',
+    });
+  if (p.hits.category || m.category)
+    tokens.push({ id: 'category', label: (CATEGORIES[cat] || {}).label || cat, tone: cat });
+
+  const errTitle = tried[0] && !title ? 'Schreib, was zu tun ist – z. B. „Judo-Tasche packen morgen 18:30“.' : null;
   const errTime =
-    tried[0] && !noTime[0] && start[0] && end[0] && hmn(end[0]) <= hmn(start[0])
+    tried[0] && mode === 'time' && hmn(end) <= hmn(start)
       ? 'Das Ende liegt vor dem Beginn – wähle eine spätere Uhrzeit.'
       : null;
   const errDate =
-    iDate > s.week[6].date ? `Diese Vorschau kennt nur die laufende Woche bis ${dateLong(s.week[6].date)}.` : null;
+    date > s.week[6].date ? `Diese Vorschau kennt nur die laufende Woche bis ${dateLong(s.week[6].date)}.` : null;
   const dirty =
-    title[0] !== (props.title != null ? props.title : 'Judo-Tasche packen') || date[0] !== (props.date || 'today');
+    text[0] !== (props.title != null ? props.title : DEMO) || Object.keys(m).length > Object.keys(pre).length;
+
   function add() {
     tried[1](true);
-    if (!title[0].trim() || (!noTime[0] && hmn(end[0]) <= hmn(start[0])) || errDate) {
+    if (!title || errDate || (mode === 'time' && hmn(end) <= hmn(start))) {
+      if (title && !errDate) open[1](true);
       setTimeout(() => {
-        const el = document.getElementById(!title[0].trim() ? 'qs-nq-title' : 'qs-nq-end');
+        const el = document.getElementById(!title ? 'qs-nq-title' : 'qs-nq-end');
         if (el) el.focus();
       }, 0);
       return;
     }
     demo.act.addQuest({
-      title: title[0].trim(),
-      date: iDate,
-      time: noTime[0] ? null : start[0],
-      end: noTime[0] ? null : end[0],
-      allDay: mode[0] === 'allday',
+      title,
+      date,
+      time: mode === 'time' ? start : null,
+      end: mode === 'time' ? end : null,
+      allDay: mode === 'allday',
       note: note[0].trim() || undefined,
       steps: steps[0].map((x) => x.title),
       reminder: remind[0] !== 'Keine' ? remind[0] : undefined,
-      repeat: rep[0],
-      days: rep[0] === 'weekly' || rep[0] === 'biweekly' ? days[0] : undefined,
-      category: cat[0],
+      repeat,
+      days: repeat === 'weekly' || repeat === 'biweekly' ? days : undefined,
+      category: cat,
     });
     nav.close();
     nav.toast({
       tone: 'success',
-      message: `„${title[0].trim()}“ steht ${iDate === t.date ? 'heute' : `am ${dateLong(iDate)}`} auf der Liste.`,
+      message: `„${title}“ steht ${date === today ? 'heute' : `am ${dateLong(date)}`} auf der Liste.`,
     });
   }
+  const remove = (id) => {
+    /* Erkennung verwerfen: das Wort bleibt im Titel; Selbstgewähltes fällt zurück */
+    const kind = id === 'allDay' ? 'allDay' : id;
+    ignored[1]((x) => new Set(x).add(kind === 'allDay' ? 'allDay' : kind));
+    const o = Object.assign({}, m);
+    if (id === 'time' || id === 'allDay') delete o.mode;
+    if (id === 'time') {
+      delete o.time;
+      delete o.end;
+    }
+    if (id === 'repeat') {
+      delete o.repeat;
+      delete o.days;
+    }
+    if (id === 'date') delete o.date;
+    if (id === 'category') delete o.category;
+    manual[1](o);
+  };
+  const repHint =
+    repeat === 'monthly'
+      ? `Jeden Monat am ${parse(date).getDate()}.`
+      : repeat === 'yearly'
+        ? `Jedes Jahr am ${parse(date).toLocaleDateString('de-DE', { day: 'numeric', month: 'long' })}`
+        : repeat === 'workdays'
+          ? 'Montag bis Freitag'
+          : undefined;
+
   return (
     <N.Sheet
       inline={true}
@@ -97,85 +184,190 @@ function NewQuestSheet(props) {
       doneLabel="Hinzufügen"
       dirty={dirty && !props.invalid}
     >
-      <N.TextField
+      <N.TokenField
         id="qs-nq-title"
         label="Quest"
         size="lg"
         required={true}
-        placeholder="z. B. Judo-Tasche packen"
-        value={title[0]}
-        onChange={title[1]}
+        placeholder="z. B. Judo-Tasche packen morgen 18:30"
+        value={text[0]}
+        onChange={(v) => {
+          text[1](v);
+          if (!v.trim()) ignored[1](new Set());
+          /* neu Getipptes gewinnt: was der Satz jetzt nennt, ersetzt die frühere eigene Wahl derselben Art */
+          const np = parseQuest(v, today, ignored[0]);
+          const o = Object.assign({}, m);
+          if (np.hits.time || np.hits.allDay) ['mode', 'time', 'end'].forEach((k) => delete o[k]);
+          if (np.hits.date) delete o.date;
+          if (np.hits.repeat) ['repeat', 'days'].forEach((k) => delete o[k]);
+          if (np.hits.category) delete o.category;
+          if (Object.keys(o).length !== Object.keys(m).length) manual[1](o);
+        }}
+        onSubmit={add}
         error={errTitle}
+        tokens={title || text[0].trim() ? tokens : []}
+        tokensLabel="Erkannt und gewählt"
+        onTokenClick={() => {
+          open[1](true);
+        }}
+        onTokenRemove={remove}
       />
-      <N.DateField label="Datum" value={iDate} onChange={date[1]} min={t.date} />
+      {!text[0].trim() && again.items.length ? (
+        <div className="nh-field">
+          <span className="nh-label">{again.label}</span>
+          <div className="qs-nq-again">
+            {again.items.map((x) => (
+              <Chip
+                key={x}
+                label={x}
+                onClick={() => {
+                  text[1](x);
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
       {errDate ? (
         <N.Notice tone="danger" title="Datum außerhalb der Woche">
           {errDate}
         </N.Notice>
       ) : null}
-      {/* Zeit: drei kurze Werte – Schnellwahl; Uhrzeiten nur, wenn es eine gibt */}
-      <div className="nh-field">
-        <span className="nh-label">Zeit</span>
-        <N.ChoiceRow.Quick
-          label="Zeit"
-          value={mode[0]}
-          onChange={(v) => {
-            mode[1](v);
-            remind[1]('Keine');
-          }}
-          options={[
-            { value: 'time', label: 'Uhrzeit' },
-            { value: 'allday', label: 'Ganztägig' },
-            { value: 'none', label: 'Ohne Uhrzeit' },
-          ]}
-        />
-      </div>
-      {!noTime[0] ? (
-        <N.FieldRow>
-          <N.TimeField label="Beginn" value={start[0]} onChange={start[1]} minuteStep={5} />
-          <N.TimeField id="qs-nq-end" label="Ende" value={end[0]} onChange={end[1]} minuteStep={5} error={errTime} />
-        </N.FieldRow>
+      {/* Der Tag als Messstrecke: freie Zeit lesen, bevor man festlegt; Überschneidung als Satz mit Ausweg */}
+      {day && mode !== 'allday' ? (
+        <div className="nh-field">
+          <span className="nh-label">{`Dein ${date === today ? 'Tag' : parse(date).toLocaleDateString('de-DE', { weekday: 'long' })}`}</span>
+          <N.DayScale
+            busy={busy}
+            value={mode === 'time' ? { start, end } : null}
+            now={date === today ? demo.NOW_H : undefined}
+          />
+          {hits.length ? (
+            <p className="qs-nq-conflict" role="status">
+              <N.Led state="danger" />
+              <span>
+                {`Überschneidet sich mit ${hits.map((b) => `${b.label} ${b.start}–${b.end}`).join(' und ')}.`}
+              </span>
+              {free != null ? (
+                <Button
+                  variant="text"
+                  size="sm"
+                  onClick={() => {
+                    set({ mode: 'time', time: clock(free), end: clock(free + len) });
+                  }}
+                >
+                  {`Auf ${clock(free)} legen`}
+                </Button>
+              ) : null}
+            </p>
+          ) : null}
+        </div>
       ) : null}
-      {/* Wiederholung als Auswahlfeld: eine Zeile für beliebig viele Rhythmen; das Detail erscheint nur, wo es etwas zu wählen gibt */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-        <N.Select label="Wiederholung" value={rep[0]} onChange={rep[1]} options={REPEAT} hint={repHint} />
-        {rep[0] === 'weekly' || rep[0] === 'biweekly' ? (
-          <N.WeekdayPicker label="An diesen Tagen" value={days[0]} onChange={days[1]} />
-        ) : null}
-      </div>
-      <N.Select
-        label="Erinnerung"
-        value={remind[0]}
-        onChange={remind[1]}
-        options={mode[0] === 'time' ? REMIND_TIME : REMIND_DAY}
-      />
-      <N.Select
-        label="Bereich"
-        value={cat[0]}
-        onChange={cat[1]}
-        options={Object.keys(CATEGORIES).map((k) => ({
-          value: k,
-          label: CATEGORIES[k].label,
-        }))}
-        hint={
-          cat[0] === 'birthday'
-            ? 'Den Geburtstag selbst legst du in Leben an („+ Geburtstag“) – hier entsteht eine Aufgabe dazu, z. B. „Geschenk besorgen“.'
-            : undefined
-        }
-      />
-      {/* Teilaufgaben: jede Zeile ein Schritt; daraus entstehen Zählwerk und Schrittliste im Detail */}
-      <div className="nh-field">
-        <span className="nh-label">
-          Schritte <span className="nh-opt">· optional</span>
-        </span>
-        <N.EditableList
-          value={steps[0]}
-          onChange={steps[1]}
-          addLabel="Schritt hinzufügen"
-          placeholder="Schritt beschreiben"
-        />
-      </div>
-      <N.TextArea label="Notiz" optional={true} value={note[0]} onChange={note[1]} placeholder="Was gehört dazu?" />
+      <N.Accordion
+        title="Details"
+        meta={open[0] ? undefined : 'Zeit, Wiederholung, Schritte, Notiz'}
+        open={open[0]}
+        onToggle={open[1]}
+      >
+        <div className="qs-nq-details">
+          <N.DateField
+            label="Datum"
+            value={date}
+            onChange={(v) => {
+              set({ date: v });
+            }}
+            min={today}
+          />
+          <div className="nh-field">
+            <span className="nh-label">Zeit</span>
+            <N.ChoiceRow.Quick
+              label="Zeit"
+              value={mode}
+              onChange={(v) => {
+                set({ mode: v });
+                remind[1]('Keine');
+              }}
+              options={[
+                { value: 'time', label: 'Uhrzeit' },
+                { value: 'allday', label: 'Ganztägig' },
+                { value: 'none', label: 'Ohne Uhrzeit' },
+              ]}
+            />
+          </div>
+          {mode === 'time' ? (
+            <N.FieldRow>
+              <N.TimeField
+                label="Beginn"
+                value={start}
+                onChange={(v) => {
+                  set({ mode: 'time', time: v, end: clock(Math.min(23.75, hmn(v) + Math.max(len, 0.25))) });
+                }}
+                minuteStep={5}
+              />
+              <N.TimeField
+                id="qs-nq-end"
+                label="Ende"
+                value={end}
+                onChange={(v) => {
+                  set({ mode: 'time', time: start, end: v });
+                }}
+                minuteStep={5}
+                error={errTime}
+              />
+            </N.FieldRow>
+          ) : null}
+          <N.Select
+            label="Wiederholung"
+            value={repeat}
+            onChange={(v) => {
+              set({ repeat: v });
+            }}
+            options={REPEAT}
+            hint={repHint}
+          />
+          {repeat === 'weekly' || repeat === 'biweekly' ? (
+            <N.WeekdayPicker
+              label="An diesen Tagen"
+              value={days}
+              onChange={(v) => {
+                set({ days: v });
+              }}
+            />
+          ) : null}
+          <N.Select
+            label="Erinnerung"
+            value={remind[0]}
+            onChange={remind[1]}
+            options={mode === 'time' ? REMIND_TIME : REMIND_DAY}
+          />
+          <N.Select
+            label="Bereich"
+            value={cat}
+            onChange={(v) => {
+              set({ category: v });
+            }}
+            options={Object.keys(CATEGORIES).map((k) => ({ value: k, label: CATEGORIES[k].label }))}
+            hint={
+              cat === 'birthday'
+                ? 'Den Geburtstag selbst legst du in Leben an („+ Geburtstag“) – hier entsteht eine Aufgabe dazu, z. B. „Geschenk besorgen“.'
+                : undefined
+            }
+          />
+          {/* Teilaufgaben: jede Zeile ein Schritt; daraus entstehen Zählwerk und Schrittliste im Detail */}
+          <div className="nh-field">
+            <span className="nh-label">
+              Schritte <span className="nh-opt">· optional</span>
+            </span>
+            <N.EditableList
+              value={steps[0]}
+              onChange={steps[1]}
+              addLabel="Schritt hinzufügen"
+              placeholder="Schritt beschreiben"
+            />
+          </div>
+          <N.TextArea label="Notiz" optional={true} value={note[0]} onChange={note[1]} placeholder="Was gehört dazu?" />
+        </div>
+      </N.Accordion>
     </N.Sheet>
   );
 }

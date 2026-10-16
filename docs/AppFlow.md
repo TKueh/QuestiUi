@@ -25,7 +25,7 @@ Rückmeldung nach jeder Handlung, die etwas sichert oder abhakt: ein Toast über
 | | `EinkaufScreen` | Heute → Einkauf | Detail-Sheet (groß) | Artikel abhaken; vollständig = Quest erledigt |
 | | `TrainingScreen` | Heute → Training; Termin → Starten | Detail-Sheet (groß) | Sätze · Gewicht (Stepper) · Training abschließen |
 | | `TrainingAbschlussScreen` | Training → abschließen | Detail-Sheet | Training sichern → Heute |
-| | `NeueQuestScreen` | **+** in jedem Tab; Leben → Planen; Tagespanel → Quest | Formular-Sheet | Zeit (Uhrzeit · Ganztägig · Ohne), Wiederholung, Erinnerung, Bereich, Schritte, Notiz · Hinzufügen |
+| | `NeueQuestScreen` | **+** in jedem Tab; Leben → Planen; Tagespanel → Quest | Formular-Sheet | Ein Satz (erkannte Zellen) · Tag als Messstrecke mit Konflikt und „Auf … legen“ · Details · Hinzufügen oder Enter |
 | | `NeueQuestFehlerScreen` | Neue Quest → Hinzufügen ohne Titel, Ende vor Beginn | Formular-Sheet | Felder korrigieren |
 | 2 Kalender | `KalenderScreen` | Tab Kalender (Liste ist Standard) | Tab | Tag wählen → Tagespanel → Termin |
 | | `KalenderWocheScreen` | Kalender → Woche | Register | Termin · Tageskopf → Liste des Tages |
