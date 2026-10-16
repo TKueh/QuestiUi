@@ -304,17 +304,21 @@ function App(props) {
         : props.theme
       : s.theme + (s.contrast ? '-hc' : '');
   const scrollKey = `${route.tab}/${route.views[route.tab] || ''}/${route.stack.join('/')}`;
+  // Unterseite: vom linken Rand zurückziehen (Touch) – wie die Zurück-Taste; der Editor fragt bei Änderungen
+  const edDirty = top === 'editor' && !!ed[0].items && diffCount(s.planA, ed[0].items) > 0;
+  const back = top ? (edDirty ? () => nav.dialog('unsaved') : nav.back) : undefined;
   return (
     <Phone device={props.device} theme={theme} className="qs-app">
       <NavCtx.Provider value={nav}>
-        <main
-          key={scrollKey}
-          className="qs-screen-scroll"
-          style={flex ? { display: 'flex', flexDirection: 'column', overflow: 'hidden' } : null}
-        >
-          {body}
-        </main>
-        {footer ? <section aria-label="Aktionen">{footer}</section> : null}
+        <N.SwipeBack key={scrollKey} onBack={back} dirty={edDirty}>
+          <main
+            className="qs-screen-scroll"
+            style={flex ? { display: 'flex', flexDirection: 'column', overflow: 'hidden' } : null}
+          >
+            {body}
+          </main>
+          {footer ? <section aria-label="Aktionen">{footer}</section> : null}
+        </N.SwipeBack>
         <N.TabBar
           value={route.tab}
           onChange={(id) => {
