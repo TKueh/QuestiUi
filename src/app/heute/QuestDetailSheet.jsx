@@ -54,11 +54,6 @@ function QuestDetailSheet({ id }) {
           </Button>
         ) : (
           [
-            q.steps ? (
-              <Button key="s" variant="secondary" onClick={nav.close}>
-                Später
-              </Button>
-            ) : null,
             <Button
               key="a"
               variant="accent"
