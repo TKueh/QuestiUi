@@ -15,8 +15,11 @@ function SearchSheet() {
     q[0].trim().length < 2
       ? []
       : all
+          /* Titel, Beschreibung und Notiz – man sucht, was man sich gemerkt hat */
           .filter((x) =>
-            x.title
+            [x.title, x.description, x.note]
+              .filter(Boolean)
+              .join(' ')
               .replace(/\u00AD/g, '')
               .toLowerCase()
               .includes(q[0].trim().toLowerCase()),
