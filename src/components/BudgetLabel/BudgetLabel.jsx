@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import N from 'nordhaus-ui/src/bare.js';
 
 const { cx, eur } = N.utils;
+/* glatte Beträge ohne Cent, alle anderen mit – nie gerundet */
+const glatt = (v) => eur(v, { maximumFractionDigits: v % 1 ? 2 : 0 });
 
 function BudgetLabel({ spent, amount, className, label }) {
   const over = spent != null && amount != null && spent > amount;
@@ -9,11 +11,11 @@ function BudgetLabel({ spent, amount, className, label }) {
     <span className={cx('qs-budget', over && 'is-over', className)}>
       {spent != null ? (
         <Fragment>
-          <b>{eur(spent, { maximumFractionDigits: 0 })}</b>
-          <span>{` / ${eur(amount, { maximumFractionDigits: 0 })}`}</span>
+          <b>{glatt(spent)}</b>
+          <span>{` / ${glatt(amount)}`}</span>
         </Fragment>
       ) : (
-        <b>{eur(amount, { maximumFractionDigits: amount % 1 ? 2 : 0 })}</b>
+        <b>{glatt(amount)}</b>
       )}
       {over ? <span className="qs-budget-over">überschritten</span> : null}
       {label ? <small>{label}</small> : null}

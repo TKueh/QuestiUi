@@ -4,7 +4,7 @@ import { QuestRow } from '../components/QuestRow/QuestRow.jsx';
 import { demo } from '../data/demo.js';
 
 const U = N.utils;
-const { eur, iso, omit, parse } = N.utils;
+const { cx, eur, iso, omit, parse } = N.utils;
 
 /* ================= Screens =================
    Jeder Screen ist eine Komponente, die aus demo liest und über die Navigation (useNav) weiterführt.
@@ -61,46 +61,80 @@ function rangeLabel(s) {
 }
 function relDays(d) {
   const n = Math.round((parse(d) - parse(iso(new Date()))) / 864e5);
-  return n === 0 ? 'Heute' : n === 1 ? 'Morgen' : n > 1 ? `In ${n} Tagen` : `Vor ${-n} Tagen`;
+  return n === 0 ? 'Heute' : n === 1 ? 'Morgen' : n === -1 ? 'Gestern' : n > 1 ? `In ${n} Tagen` : `Vor ${-n} Tagen`;
 }
+/* Beträge: glatte ohne Cent, alle anderen mit – „75 €“, „34,90 €“; nie gerundet (gleiche Daten, gleiche Zahl) */
 function money(v) {
-  return eur(v, { maximumFractionDigits: 0 });
+  return eur(v, { maximumFractionDigits: v % 1 ? 2 : 0 });
 }
+/* Faltkopf (Regel 11): FoldCtx trägt den Scrollbereich des Screens. Die Statusleiste hat immer eine Fläche; ist der Screen
+   gescrollt (großer Titel ab 104 pt aus dem Blick), steht darunter die kompakte Leiste (Glas) mit Titel und Aktionen. Reiter und Ansichtswahl kleben in FoldUnder darunter. */
+const FoldCtx = React.createContext(null);
+function Fold({ bar, threshold }) {
+  const on = N.useScrolled(React.useContext(FoldCtx), threshold);
+  return <div className={cx('qs-fold', on && 'is-on')}>{on ? bar : null}</div>;
+}
+const FoldUnder = ({ children }) => <div className="qs-fold-under">{children}</div>;
 /* Kopf eines Hauptbereichs: Wortmarke, Suche, + (Neue Quest – in jedem Tab dieselbe Bedeutung) */
 function MainBar(props) {
   const nav = useNav();
+  const actions = [
+    <IconButton
+      key="s"
+      icon="search"
+      label="Suchen"
+      onClick={() => {
+        nav.open('search');
+      }}
+    />,
+    <N.AddButton
+      key="a"
+      label="Neue Quest"
+      onClick={() => {
+        nav.open('newQuest', props.addParams || {});
+      }}
+    />,
+  ];
   return (
-    <N.TopBar
-      large={true}
-      brand="questi"
-      actions={[
-        <IconButton
-          key="s"
-          icon="search"
-          label="Suchen"
-          onClick={() => {
-            nav.open('search');
-          }}
-        />,
-        <N.AddButton
-          key="a"
-          label="Neue Quest"
-          onClick={() => {
-            nav.open('newQuest', props.addParams || {});
-          }}
-        />,
-      ]}
-      {...omit(props, ['addParams'])}
-    />
+    <React.Fragment>
+      <Fold
+        threshold={104}
+        bar={
+          <N.TopBar
+            large={true}
+            collapsed={true}
+            glass={true}
+            title={props.title}
+            tools={props.tools}
+            toolsLabel={props.toolsLabel}
+            actions={actions}
+          />
+        }
+      />
+      <N.TopBar large={true} brand="questi" actions={actions} {...omit(props, ['addParams'])} />
+    </React.Fragment>
   );
 }
 function SubBar(props) {
   const nav = useNav();
+  const back = () => React.createElement(N.BackButton, { label: props.backLabel, onClick: props.onBack || nav.back });
   return (
-    <N.TopBar
-      leading={React.createElement(N.BackButton, { label: props.backLabel, onClick: props.onBack || nav.back })}
-      {...omit(props, ['backLabel', 'onBack'])}
-    />
+    <React.Fragment>
+      <Fold
+        threshold={props.large ? 104 : 1}
+        bar={
+          <N.TopBar
+            nav={true}
+            glass={true}
+            border={true}
+            leading={back()}
+            title={props.title}
+            actions={props.actions}
+          />
+        }
+      />
+      <N.TopBar leading={back()} {...omit(props, ['backLabel', 'onBack'])} />
+    </React.Fragment>
   );
 }
 /* ---------- 1 · Heute ---------- */
@@ -147,5 +181,7 @@ export {
   dateShort,
   money,
   NavCtx,
+  FoldCtx,
+  FoldUnder,
   TABS,
 };

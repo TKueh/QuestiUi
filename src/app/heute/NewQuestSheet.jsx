@@ -20,10 +20,6 @@ function NewQuestSheet(props) {
   const days = useState([1, 3]);
   const cat = useState(props.category || 'personal');
   const tried = useState(!!props.invalid);
-  const dates = [
-    { value: 'today', label: 'Heute' },
-    { value: 'tomorrow', label: 'Morgen' },
-  ];
   const iDate = date[0] === 'today' ? t.date : date[0] === 'tomorrow' ? iso(addDays(parse(t.date), 1)) : date[0];
   const errTitle = tried[0] && !title[0].trim() ? 'Gib der Quest einen Namen.' : null;
   const errTime =
@@ -78,10 +74,7 @@ function NewQuestSheet(props) {
         onChange={title[1]}
         error={errTitle}
       />
-      <div className="nh-field">
-        <span className="nh-label">Datum</span>
-        <N.ChoiceRow.Quick label="Datum" value={date[0]} onChange={date[1]} options={dates} />
-      </div>
+      <N.DateField label="Datum" value={iDate} onChange={date[1]} min={t.date} />
       {errDate ? (
         <N.Notice tone="danger" title="Datum außerhalb der Woche">
           {errDate}
@@ -98,8 +91,7 @@ function NewQuestSheet(props) {
       </div>
       <div className="nh-field">
         <span className="nh-label">Wiederholung</span>
-        <N.SegmentedControl
-          block={true}
+        <N.ChoiceRow.Quick
           label="Wiederholung"
           value={rep[0]}
           onChange={rep[1]}

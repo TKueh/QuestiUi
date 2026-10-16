@@ -47,7 +47,7 @@ function TrainingSheet({ id, preset }) {
       eyebrow={`${early ? `${WD_LONG[(parse(q.date).getDay() + 6) % 7]} · vorgezogen` : dateLong(q.date)} · ${q.time}`}
       title={q.title}
       description={`${ex.length} Übungen · Startgewichte aus dem Trainingsplan.`}
-      status={`${st.done} von ${st.total} Sätzen`}
+      status={`${N.utils.frac(st.done, st.total)} Sätze`}
       progress={st.total ? st.done / st.total : 0}
       actions={React.createElement(
         Button,
@@ -63,7 +63,7 @@ function TrainingSheet({ id, preset }) {
       )}
     >
       <section>
-        <N.SectionHeader title="Übungen" meta={`${st.exercisesDone} von ${st.exercises}`} />
+        <N.SectionHeader title="Übungen" meta={N.utils.frac(st.exercisesDone, st.exercises)} />
         <div>
           {ex.map((e, i) => (
             <ExerciseRow

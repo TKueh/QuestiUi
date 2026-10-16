@@ -26,7 +26,7 @@ function PlansPage() {
         title="Meine Pläne"
         eyebrow={`${pl.active} aktiv · ${pl.paused} pausiert · ${pl.archived} archiviert`}
       />
-      <div style={col(6, '0 var(--gutter) var(--space-8)')}>
+      <div style={col(8, '0 var(--gutter) var(--space-8)')}>
         <N.TopBar variant="toolbar" leading={<span className="nh-label">PDF · Text · Questi-JSON</span>}>
           <Button
             variant="key"

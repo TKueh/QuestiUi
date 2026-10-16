@@ -7,7 +7,7 @@
 /* Grundregeln aus Nordhaus base.css/shared.css (Stand 6.3) gelten dort nur für nh-Klassen – hier dieselben für den eigenen Präfix qs-:
    Box-Modell, tabellarische Ziffern, Schrift der Bedienelemente, ein Fokus-Kanal, reduzierte Bewegung. Nichts Eigenes, nur der Präfix.
    Den Innenring (outline-offset −4, auf Graphit in on-ink) brauchen nur Nordhaus-Zeilen und -Tasten; qs- hat keine randabfallende
-   Taste und keine fokussierbare Stelle auf Graphit – die Haken-Taste der ShoppingRow trägt den Ring außen wie die Nordhaus-Checkbox. */
+   Taste und keine fokussierbare Stelle auf Graphit */
 [class^='qs-'],
 [class*=' qs-'],
 [class^='qs-'] *,

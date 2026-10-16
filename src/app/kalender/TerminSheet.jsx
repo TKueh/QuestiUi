@@ -17,7 +17,7 @@ function TerminSheet({ date, title }) {
   const evs = S.dayEvents(d);
   const e = evs.filter((x) => x.title === title)[0] || evs.filter((x) => x.questId).slice(-1)[0] || evs[0];
   const q = e && e.questId ? S.findQuest(s, e.questId) : null;
-  const rest = evs.filter((x) => x !== e && !x.allDay && x.start >= '12:00');
+  const rest = evs.filter((x) => x !== e && !x.allDay);
   const actions = q
     ? [
         <Button
@@ -42,18 +42,28 @@ function TerminSheet({ date, title }) {
           >
             Starten
           </Button>
+        ) : S.qDone(q) ? (
+          /* erledigt: nichts mehr abzuschließen – der Rückweg ohne accent (Regel 10) */
+          <Button
+            key="s"
+            variant="secondary"
+            onClick={() => {
+              demo.act.toggle(q.id, false);
+            }}
+          >
+            Wieder öffnen
+          </Button>
         ) : (
           <Button
             key="s"
             variant="accent"
             arrow={true}
-            disabled={S.qDone(q)}
             onClick={() => {
               demo.act.toggle(q.id, true);
               nav.close();
             }}
           >
-            {S.qDone(q) ? 'Erledigt' : 'Abhaken'}
+            Abhaken
           </Button>
         ),
       ]

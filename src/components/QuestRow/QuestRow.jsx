@@ -21,7 +21,9 @@ function QuestRow(props) {
       done={st[0]}
       paused={props.paused}
       meta={
-        props.steps && !st[0] && props.steps[0] > 0 ? `${props.steps[0]}/${props.steps[1]}` : props.time || undefined
+        props.steps && !st[0] && props.steps[0] > 0
+          ? N.utils.frac(props.steps[0], props.steps[1])
+          : props.time || undefined
       }
       check={{
         pressed: st[0],

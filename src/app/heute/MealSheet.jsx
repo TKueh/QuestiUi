@@ -57,6 +57,15 @@ function MealSheet({ id }) {
             onClick={() => {
               demo.act.toggle(q.id, true);
               nav.close();
+              nav.toast({
+                message: `„${q.title}“ erledigt.`,
+                action: {
+                  label: 'Widerrufen',
+                  onClick: () => {
+                    demo.act.toggle(q.id, false);
+                  },
+                },
+              });
             }}
           >
             Abhaken

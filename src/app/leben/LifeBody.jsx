@@ -18,7 +18,7 @@ function LifeBody() {
       <Fragment>
         <N.TopBar variant="toolbar" leading={React.createElement('span', { className: 'nh-label' }, 'Nächste 60 Tage')}>
           <Button variant="text" size="sm" disabled={true}>
-            {`Archiv (${s.archive.birthdays})`}
+            {`Archiv ${N.utils.idx(s.archive.birthdays)}`}
           </Button>
           <Button
             variant="key"
@@ -84,11 +84,11 @@ function LifeBody() {
           leading={React.createElement(
             'span',
             { className: 'nh-label' },
-            `${c.projects} offen · ${c.projectsDone} erledigt`,
+            `Offen ${N.utils.idx(c.projects)} · Erledigt ${N.utils.idx(c.projectsDone)}`,
           )}
         >
           <Button variant="text" size="sm" disabled={true}>
-            {`Archiv (${s.archive.projects})`}
+            {`Archiv ${N.utils.idx(s.archive.projects)}`}
           </Button>
         </N.TopBar>
         <List>
@@ -97,6 +97,7 @@ function LifeBody() {
               key={x.id}
               kind="project"
               title={x.title}
+              done={x.done}
               meta={x.meta}
               onOpen={
                 x.done

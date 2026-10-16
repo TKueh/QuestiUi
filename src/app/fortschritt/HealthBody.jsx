@@ -20,7 +20,7 @@ function HealthBody({ register }) {
   const v = range[0] === '30' ? all.slice(-5) : range[0] === 'y' ? year : all;
   const span = range[0] === '30' ? '30 Tagen' : range[0] === 'y' ? 'einem Jahr' : '90 Tagen';
   return (
-    <div style={col(6, register ? 'var(--space-4) var(--gutter) var(--space-8)' : '0 var(--gutter) var(--space-8)')}>
+    <div style={col(8, register ? 'var(--space-4) var(--gutter) var(--space-8)' : '0 var(--gutter) var(--space-8)')}>
       {register ? (
         <N.TopBar
           variant="toolbar"

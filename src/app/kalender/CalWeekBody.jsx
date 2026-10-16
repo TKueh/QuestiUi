@@ -10,7 +10,7 @@ function CalWeekBody() {
   return (
     <Fragment>
       <CalBar mode="week" />
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', padding: '0 var(--space-1)' }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', padding: '0 var(--gutter)' }}>
         <N.CalendarWeek
           events={S.weekEvents(s)}
           hours={[6, 23]}

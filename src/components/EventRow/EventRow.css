@@ -1,0 +1,10 @@
+/* Kalenderblock (fremder Termin, Regel 6 Kontext): die Bereichslinie gestrichelt als Haarlinie, Titel ink-muted – wie die Tafel
+   im Wochenraster, ohne Schraffur (die gehört dem Raster) */
+.qs-event.is-context .nh-li-rule {
+  width: 0;
+  background: none;
+  border-inline-start: var(--hairline) dashed var(--line-strong);
+}
+.qs-event.is-context .nh-li-title {
+  color: var(--ink-muted);
+}

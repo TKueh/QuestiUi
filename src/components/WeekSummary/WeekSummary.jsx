@@ -29,7 +29,9 @@ function WeekSummary(props) {
                 full[i] + (d.today ? ', heute' : '')
               }: ${d.paused ? 'pausiert' : d.total ? `${d.done} von ${d.total} erledigt` : 'nichts geplant'}`}
             >
-              <span className="qs-weeksum-val">{d.paused ? 'Pause' : d.total ? `${d.done}/${d.total}` : '–'}</span>
+              <span className="qs-weeksum-val">
+                {d.paused ? 'Pause' : d.total ? N.utils.frac(d.done, d.total) : '–'}
+              </span>
               <span className="qs-weeksum-bar" aria-hidden={true}>
                 {Array.from({ length: n }, (_, k) => (
                   <i key={k} className={k < on ? 'is-on' : ''} />

@@ -8,6 +8,37 @@
 .qs-screen-scroll::-webkit-scrollbar {
   display: none;
 }
+/* Faltkopf (Regel 4, 11): die Statusleiste hat eine Fläche und klebt oben; gescrollt hängt die kompakte Leiste darunter.
+   Die Höhe bleibt safe-top, die Leiste liegt außerhalb des Flusses – nichts springt. */
+/* sticky rechnet ab der Innenkante des Scrollbereichs (nach padding-top: safe-top) – daher die negativen bzw. kürzeren Versätze */
+.qs-fold {
+  position: sticky;
+  top: calc(var(--safe-top) * -1);
+  z-index: 30;
+  height: var(--safe-top);
+  margin-top: calc(var(--safe-top) * -1);
+  background: var(--paper);
+}
+.qs-fold.is-on {
+  background: var(--glass);
+  -webkit-backdrop-filter: saturate(1.4) blur(20px);
+  backdrop-filter: saturate(1.4) blur(20px);
+}
+.qs-fold > .nh-topbar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+/* Reiter und Ansichtswahl falten nie: sie kleben unter der kompakten Leiste */
+.qs-fold-under {
+  position: sticky;
+  top: var(--bar-h);
+  z-index: 20;
+  background: var(--glass);
+  -webkit-backdrop-filter: saturate(1.4) blur(20px);
+  backdrop-filter: saturate(1.4) blur(20px);
+}
 /* Toast über der TabBar – im Gerät, nicht über der Seite */
 .qs-toast {
   position: absolute;
@@ -54,4 +85,9 @@
   .qs-proto .qs-device {
     width: 100%;
   }
+}
+/* Mehr: Benutzer und Fuß stehen in der Spalte schon auf dem gutter – ohne eigenen Einzug (Regel 12) */
+.qs-mehr .nh-user,
+.qs-mehr .nh-footer {
+  padding-inline: 0;
 }

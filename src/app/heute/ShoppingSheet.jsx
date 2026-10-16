@@ -50,12 +50,17 @@ function ShoppingSheet({ id }) {
       eyebrow={dateLong(q.date)}
       title={q.title.replace(' erledigen', '')}
       description={`${q.description}.`}
-      status={`${st.done} / ${st.total} eingekauft`}
+      status={`${N.utils.frac(st.done, st.total)} eingekauft`}
       progress={st.done / st.total}
       actions={
         S.qDone(q) ? (
-          <Button variant="secondary" onClick={nav.close}>
-            Schließen
+          <Button
+            variant="secondary"
+            onClick={() => {
+              demo.act.toggle(q.id, false);
+            }}
+          >
+            Wieder öffnen
           </Button>
         ) : (
           <Button variant="accent" arrow={true} onClick={finish}>
@@ -81,7 +86,7 @@ function ShoppingSheet({ id }) {
           <section key={g.title} className="qs-shopgroup" aria-label={g.title}>
             <div className="nh-lgroup-head">
               <h3>{g.title}</h3>
-              <span>{`${g.items.filter((x) => x.checked).length}/${g.items.length}`}</span>
+              <span>{N.utils.frac(g.items.filter((x) => x.checked).length, g.items.length)}</span>
             </div>
             <List>
               {g.items.map((x) => (

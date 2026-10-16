@@ -22,6 +22,7 @@ function LifeRow(props) {
         )
       }
       title={props.title}
+      done={!!props.done}
       subtitle={props.meta}
       description={
         props.gift ? (

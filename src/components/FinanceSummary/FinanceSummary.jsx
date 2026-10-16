@@ -12,14 +12,14 @@ function FinanceSummary(props) {
       <div className="qs-finance-top">
         <Metric
           label={props.label || 'Monatlich fix'}
-          value={eur(props.total, { maximumFractionDigits: 0 }).replace(/\s?€/, '')}
+          value={eur(props.total, { maximumFractionDigits: props.total % 1 ? 2 : 0 }).replace(/\s?€/, '')}
           unit="€"
           caption={props.caption}
         />
         {props.free != null ? (
           <Metric
             label="Frei verfügbar"
-            value={eur(props.free, { maximumFractionDigits: 0 }).replace(/\s?€/, '')}
+            value={eur(props.free, { maximumFractionDigits: props.free % 1 ? 2 : 0 }).replace(/\s?€/, '')}
             unit="€"
             size="sm"
           />
@@ -31,7 +31,7 @@ function FinanceSummary(props) {
           label: r.label,
           value: r.amount,
           tone: r.tone,
-          display: eur(r.amount, { maximumFractionDigits: 0 }),
+          display: eur(r.amount, { maximumFractionDigits: r.amount % 1 ? 2 : 0 }),
         }))}
       />
     </div>

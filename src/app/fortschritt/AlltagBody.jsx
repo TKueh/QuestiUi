@@ -11,13 +11,16 @@ function AlltagBody() {
   const ti = demo.todayIndex();
   const order = ['food', 'training', 'movement', 'household', 'birthday', 'personal'];
   return (
-    <div style={col(8, 'var(--space-5) var(--gutter) var(--space-8)')}>
+    <div style={col(8)}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
         <N.Dial done={w.done} total={w.total} size={112} label={`${w.done} von ${w.total} Quests dieser Woche`}>
           <div>
-            <div className="nh-dial-value">{String(w.done)}</div>
+            <div className="nh-dial-value">
+              {N.utils.idx(w.done)}
+              <span>{` / ${N.utils.idx(w.total)}`}</span>
+            </div>
             <div className="nh-label" style={{ marginTop: 'var(--space-1)' }}>
-              {`von ${w.total}`}
+              Woche
             </div>
           </div>
         </N.Dial>

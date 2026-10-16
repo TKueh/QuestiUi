@@ -1,29 +1,20 @@
 import React from 'react';
-import N, { List } from 'nordhaus-ui/src/bare.js';
+import N, { List, ListItem } from 'nordhaus-ui/src/bare.js';
 
-const { checkMark, cx, useCtl } = N.utils;
+const { cx, useCtl } = N.utils;
 
-/* Einkaufszeile: Haken, Artikel, Menge rechts (tabellarisch) */
+/* Einkaufszeile: Abhak-Ring wie jede Aufgabe (Grundsätze „Wann welche“), Artikel, Menge rechts; abgehakt durchgestrichen */
 function ShoppingRow({ checked, defaultChecked, onChange, pantry, className, name, note, quantity }) {
   const st = useCtl(checked, !!defaultChecked, onChange);
   return (
-    <label className={cx('qs-shop', st[0] && 'is-done', pantry && 'is-pantry', className)}>
-      <input
-        type="checkbox"
-        checked={st[0]}
-        onChange={(e) => {
-          st[1](e.target.checked);
-        }}
-      />
-      <span className="nh-check-box" aria-hidden={true}>
-        {checkMark()}
-      </span>
-      <span className="qs-shop-name">
-        {name}
-        {note ? <small>{note}</small> : null}
-      </span>
-      <span className="qs-shop-qty">{quantity}</span>
-    </label>
+    <ListItem
+      className={cx('qs-shop', pantry && 'is-pantry', className)}
+      title={name}
+      description={note}
+      done={st[0]}
+      meta={pantry ? `${quantity} · Vorrat` : quantity}
+      check={{ pressed: st[0], onChange: st[1], label: name }}
+    />
   );
 }
 function ShoppingList(props) {
@@ -42,7 +33,7 @@ function ShoppingList(props) {
           <section key={gi} className="qs-shopgroup" aria-label={g.title}>
             <div className="nh-lgroup-head">
               <h3>{g.title}</h3>
-              <span aria-label={`${done} von ${g.items.length} im Korb`}>{`${done}/${g.items.length}`}</span>
+              <span aria-label={`${done} von ${g.items.length} im Korb`}>{N.utils.frac(done, g.items.length)}</span>
             </div>
             <List>
               {g.items.map((it, i) => (

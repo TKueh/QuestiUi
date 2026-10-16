@@ -36,3 +36,7 @@
   text-align: right;
   white-space: nowrap;
 }
+/* ohne Tafel: der Kopf fluchtet mit den Zeilen auf dem gutter (Regel 12) */
+.qs-ingr .nh-lgroup-head {
+  padding-inline: 0;
+}

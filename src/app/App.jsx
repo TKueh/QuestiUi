@@ -25,7 +25,7 @@ import {
   SettingsPage,
   diffCount,
 } from './mehr.jsx';
-import { NavCtx, S, TABS } from './shared.jsx';
+import { FoldCtx, NavCtx, S, TABS } from './shared.jsx';
 import { demo } from '../data/demo.js';
 
 /* ================= Die App: ein Ablauf aus allen Screens =================
@@ -197,6 +197,7 @@ function App(props) {
   const route = r[0];
   const ed = useState(() => (def.editor ? def.editor(demo.get()) : { items: null }));
   const toast = useState(null);
+  const scrollRef = useRef(null);
   const toastKey = useRef(0);
   function set(patch) {
     r[1]((x) => Object.assign({}, x, typeof patch === 'function' ? patch(x) : patch));
@@ -288,7 +289,7 @@ function App(props) {
             nav.toast({ tone: 'success', message: 'Trainingsplan gesichert – gilt ab Montag.' });
           }}
         >
-          Übernehmen
+          {ed[0].error ? 'Erneut versuchen' : 'Übernehmen'}
         </Button>
       </N.ActionBar>
     );
@@ -311,86 +312,91 @@ function App(props) {
   const prev = top ? route.stack[route.stack.length - 2] : undefined;
   const behind = top ? (
     <div className="qs-screen-scroll">
-      {prev === 'editor' ? (
-        <PlanEditorPage editor={ed[0]} setEditor={ed[1]} />
-      ) : prev && PAGES[prev] ? (
-        React.createElement(PAGES[prev])
-      ) : (
-        <MehrBody />
-      )}
+      <FoldCtx.Provider value={null}>
+        {prev === 'editor' ? (
+          <PlanEditorPage editor={ed[0]} setEditor={ed[1]} />
+        ) : prev && PAGES[prev] ? (
+          React.createElement(PAGES[prev])
+        ) : (
+          <MehrBody />
+        )}
+      </FoldCtx.Provider>
     </div>
   ) : null;
   return (
     <Phone device={props.device} theme={theme} className="qs-app">
       <NavCtx.Provider value={nav}>
-        <N.SwipeBack key={scrollKey} onBack={back} dirty={edDirty} behind={behind}>
-          <main
-            className="qs-screen-scroll"
-            style={flex ? { display: 'flex', flexDirection: 'column', overflow: 'hidden' } : null}
-          >
-            {body}
-          </main>
-          {footer ? <section aria-label="Aktionen">{footer}</section> : null}
-        </N.SwipeBack>
-        <N.TabBar
-          value={route.tab}
-          onChange={(id) => {
-            nav.tab(id);
-          }}
-          items={TABS}
-          glass={true}
-          safeArea={true}
-        />
-        {Sheet ? (
-          <Sheet key={route.sheet.name + JSON.stringify(route.sheet.params || {})} {...route.sheet.params} />
-        ) : null}
-        {route.dialog === 'unsaved' ? (
-          <N.UnsavedDialog
-            open={true}
-            inline={true}
-            count={ed[0].items ? diffCount(s.planA, ed[0].items) : 0}
-            onSave={() => {
-              if (ed[0].items) demo.act.savePlan(ed[0].items);
-              ed[1]({ items: null });
-              nav.back();
-              nav.toast({ tone: 'success', message: 'Trainingsplan gesichert.' });
+        <FoldCtx.Provider value={scrollRef}>
+          <N.SwipeBack key={scrollKey} onBack={back} dirty={edDirty} behind={behind}>
+            <main
+              ref={scrollRef}
+              className="qs-screen-scroll"
+              style={flex ? { display: 'flex', flexDirection: 'column', overflow: 'hidden' } : null}
+            >
+              {body}
+            </main>
+            {footer ? <section aria-label="Aktionen">{footer}</section> : null}
+          </N.SwipeBack>
+          <N.TabBar
+            value={route.tab}
+            onChange={(id) => {
+              nav.tab(id);
             }}
-            onDiscard={() => {
-              ed[1]({ items: null });
-              nav.back();
-            }}
-            onCancel={() => {
-              set({ dialog: null });
-            }}
+            items={TABS}
+            glass={true}
+            safeArea={true}
           />
-        ) : null}
-        {toast[0] ? (
-          <div className="qs-toast" key={toast[0].key}>
-            <N.Toast
-              tone={toast[0].tone || 'neutral'}
-              message={toast[0].message}
-              action={
-                toast[0].action
-                  ? {
-                      label: toast[0].action.label,
-                      onClick: () => {
-                        toast[0].action.onClick();
-                        toast[1](null);
-                      },
-                    }
-                  : undefined
-              }
-              timer={5000}
-              timerKey={toast[0].key}
-              onExpire={() => {
-                toast[1](null);
+          {Sheet ? (
+            <Sheet key={route.sheet.name + JSON.stringify(route.sheet.params || {})} {...route.sheet.params} />
+          ) : null}
+          {route.dialog === 'unsaved' ? (
+            <N.UnsavedDialog
+              open={true}
+              inline={true}
+              count={ed[0].items ? diffCount(s.planA, ed[0].items) : 0}
+              onSave={() => {
+                if (ed[0].items) demo.act.savePlan(ed[0].items);
+                ed[1]({ items: null });
+                nav.back();
+                nav.toast({ tone: 'success', message: 'Trainingsplan gesichert.' });
               }}
-              onClose={() => {
-                toast[1](null);
+              onDiscard={() => {
+                ed[1]({ items: null });
+                nav.back();
+              }}
+              onCancel={() => {
+                set({ dialog: null });
               }}
             />
-          </div>
-        ) : null}
+          ) : null}
+          {toast[0] ? (
+            <div className="qs-toast" key={toast[0].key}>
+              <N.Toast
+                tone={toast[0].tone || 'neutral'}
+                message={toast[0].message}
+                action={
+                  toast[0].action
+                    ? {
+                        label: toast[0].action.label,
+                        onClick: () => {
+                          toast[0].action.onClick();
+                          toast[1](null);
+                        },
+                      }
+                    : undefined
+                }
+                timer={5000}
+                timerKey={toast[0].key}
+                onExpire={() => {
+                  toast[1](null);
+                }}
+                onClose={() => {
+                  toast[1](null);
+                }}
+              />
+            </div>
+          ) : null}
+        </FoldCtx.Provider>
       </NavCtx.Provider>
     </Phone>
   );

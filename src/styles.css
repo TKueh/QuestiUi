@@ -2,7 +2,7 @@
 @import './styles/shared.css';
 @import './components/NutritionPanel/NutritionPanel.css';
 @import './components/LifeRow/LifeRow.css';
-@import './components/ShoppingList/ShoppingList.css';
+@import './components/EventRow/EventRow.css';
 @import './components/Phone/Phone.css';
 @import './app/App.css';
 @import './components/DocLink/DocLink.css';

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import N, { Button, IconButton } from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
-import { MainBar, rangeLabel, useNav } from '../shared.jsx';
+import { FoldUnder, MainBar, rangeLabel, useNav } from '../shared.jsx';
 
 const { iso, parse } = N.utils;
 
@@ -59,21 +59,23 @@ function CalBar(props) {
             : null
         }
       />
-      <div style={{ padding: '0 var(--gutter) var(--space-3)' }}>
-        <N.SegmentedControl
-          block={true}
-          label="Ansicht"
-          value={props.mode}
-          onChange={(v) => {
-            nav.view('cal', v);
-          }}
-          options={[
-            { value: 'list', label: 'Liste' },
-            { value: 'week', label: 'Woche' },
-            { value: 'month', label: 'Monat' },
-          ]}
-        />
-      </div>
+      <FoldUnder>
+        <div style={{ padding: '0 var(--gutter) var(--space-3)' }}>
+          <N.SegmentedControl
+            block={true}
+            label="Ansicht"
+            value={props.mode}
+            onChange={(v) => {
+              nav.view('cal', v);
+            }}
+            options={[
+              { value: 'list', label: 'Liste' },
+              { value: 'week', label: 'Woche' },
+              { value: 'month', label: 'Monat' },
+            ]}
+          />
+        </div>
+      </FoldUnder>
     </Fragment>
   );
 }

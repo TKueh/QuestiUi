@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { List } from 'nordhaus-ui/src/bare.js';
+import N from 'nordhaus-ui/src/bare.js';
 import { demo } from '../../data/demo.js';
 import { MainBar, S, col, useNav } from '../shared.jsx';
 
@@ -13,29 +13,29 @@ function MehrBody() {
   return (
     <Fragment>
       <MainBar title="Mehr" eyebrow="Dein Bereich" />
-      <div style={col(6, '0 var(--gutter) var(--space-8)')}>
+      <div className="qs-mehr" style={col(8, '0 var(--gutter) var(--space-8)')}>
         <N.UserChip name="Tobias" subtitle="Persönlicher Bereich · lokal gespeichert" size={44} />
-        <List>
-          <N.ChoiceRow
+        <N.SettingsGroup title="Bereiche">
+          <N.SettingsRow
             icon="heart"
-            title="Gesundheit"
+            label="Gesundheit"
             description="Gewicht, Ruhepuls, Schritte und Training"
             onClick={() => {
               nav.go('health');
             }}
           />
-          <N.ChoiceRow
+          <N.SettingsRow
             icon="note"
-            title="Meine Pläne"
+            label="Meine Pläne"
             description="Inhalte, Wiederholungen und eigene Pläne"
-            value={String(pl.inUse)}
+            value={N.utils.idx(pl.inUse)}
             onClick={() => {
               nav.go('plans');
             }}
           />
-          <N.ChoiceRow
+          <N.SettingsRow
             icon="thermometer"
-            title="Krank & Urlaub"
+            label="Krank & Urlaub"
             description={
               s.mode.value === 'normal'
                 ? 'Pläne passend pausieren'
@@ -47,15 +47,15 @@ function MehrBody() {
               nav.open('dayMode');
             }}
           />
-          <N.ChoiceRow
+          <N.SettingsRow
             icon="settings"
-            title="Einstellungen"
+            label="Einstellungen"
             description="Darstellung, Woche, Verbindungen"
             onClick={() => {
               nav.go('settings');
             }}
           />
-        </List>
+        </N.SettingsGroup>
         <N.SettingsGroup
           title="Daten"
           footer="Alles bleibt auf diesem Gerät. Kalender und Apple Health werden als Datei abgeglichen."

@@ -18,7 +18,7 @@ function QuestList(props) {
             {g.title ? (
               <div className="nh-lgroup-head">
                 <h3>{g.title}</h3>
-                <span aria-label={`${done} von ${g.items.length} erledigt`}>{`${done}/${g.items.length}`}</span>
+                <span aria-label={`${done} von ${g.items.length} erledigt`}>{N.utils.frac(done, g.items.length)}</span>
               </div>
             ) : null}
             <List>

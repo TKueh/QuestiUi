@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import N, { Button } from 'nordhaus-ui/src/bare.js';
+import N from 'nordhaus-ui/src/bare.js';
 import { PlanPreviewWeek } from '../../components/PlanPreviewWeek/PlanPreviewWeek.jsx';
 import { demo } from '../../data/demo.js';
 import { S, SubBar, col, useNav } from '../shared.jsx';
@@ -18,11 +18,6 @@ function PlanEditorPage({ editor, setEditor }) {
     short: t,
     state: st,
   });
-  function save() {
-    demo.act.savePlan(items);
-    set({ items: null });
-    nav.toast({ tone: 'success', message: `Trainingsplan übernommen – gilt ab ${S.dshort(S.nextMonday())}.` });
-  }
   return (
     <Fragment>
       <SubBar
@@ -37,22 +32,15 @@ function PlanEditorPage({ editor, setEditor }) {
         actions={
           <N.SaveStatus
             state={ed.error ? 'error' : changes ? 'dirty' : 'saved'}
-            label={ed.error ? 'Fehler' : changes ? 'Entwurf' : 'Übernommen'}
+            label={ed.error ? 'Ungesichert' : changes ? 'Entwurf' : 'Übernommen'}
           />
         }
       />
-      <div style={col(6)}>
+      <div style={col(8)}>
         {ed.error ? (
-          <N.Notice
-            tone="danger"
-            title="Nicht gesichert"
-            action={
-              <Button variant="key" size="sm" icon="repeat" onClick={save}>
-                Erneut versuchen
-              </Button>
-            }
-          >
-            {`Der Speicher des Geräts war nicht erreichbar. Deine ${changes}${changes === 1 ? ' Änderung bleibt' : ' Änderungen bleiben'} im Entwurf erhalten.`}
+          /* eine Handlung, eine Taste: erneut versucht wird unten in der Leiste (accent) */
+          <N.Notice tone="danger" title="Nicht gesichert">
+            {`Der Speicher des Geräts war nicht erreichbar. Deine ${changes}${changes === 1 ? ' Änderung bleibt' : ' Änderungen bleiben'} im Entwurf erhalten – versuch es unten erneut.`}
           </N.Notice>
         ) : null}
         <div>

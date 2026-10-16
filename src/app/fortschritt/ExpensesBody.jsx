@@ -28,13 +28,13 @@ function ExpensesBody() {
     return s.expenses.filter((e) => k === 'all' || (GROUP[e.category] || 'o') === k).length;
   }
   return (
-    <div style={col(6)}>
+    <div style={col(8)}>
       <N.TopBar
         variant="toolbar"
         leading={React.createElement(
           'span',
           { className: 'nh-label' },
-          `${NOW.toLocaleDateString('de-DE', { month: 'long' })} · ${s.expenses.length}`,
+          `${NOW.toLocaleDateString('de-DE', { month: 'long' })} · ${N.utils.idx(s.expenses.length)} Ausgaben`,
         )}
       >
         <Button

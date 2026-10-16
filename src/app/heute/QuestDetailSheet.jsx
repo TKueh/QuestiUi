@@ -39,7 +39,7 @@ function QuestDetailSheet({ id }) {
       eyebrow={dateLong(q.date)}
       title={q.title}
       description={q.description}
-      status={q.steps ? `${q.stepsDone} / ${q.steps} Schritte erledigt` : S.qDone(q) ? 'Erledigt' : 'Offen'}
+      status={q.steps ? `${N.utils.frac(q.stepsDone, q.steps)} Schritte erledigt` : S.qDone(q) ? 'Erledigt' : 'Offen'}
       progress={q.steps ? q.stepsDone / q.steps : undefined}
       actions={
         S.qDone(q) ? (

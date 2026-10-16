@@ -29,7 +29,7 @@ function Demo() {
       <div className="nh-demo-w">
         <Q.DayModePicker defaultValue="normal" />
       </div>
-      {cap(2, 'ThemePicker – System · Hell · Dunkel mit Theme-Miniaturen')}
+      {cap(2, 'ThemePicker – Automatisch · Hell · Dunkel mit Theme-Miniaturen')}
       <div className="nh-demo-w">
         <Q.ThemePicker defaultValue="system" />
       </div>

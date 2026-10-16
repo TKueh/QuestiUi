@@ -14,7 +14,7 @@ function PlanRow({ className, category, icon, title, description, count, updated
       title={title}
       description={description}
       subtitle={[count != null ? `${count} Einträge` : null, updated].filter(Boolean).join(' · ') || undefined}
-      paused={status === 'paused' || status === 'archived'}
+      paused={status === 'paused'}
       badge={status === 'paused' ? <Badge>Pausiert</Badge> : status === 'archived' ? <Badge>Archiv</Badge> : null}
       trailing={onClick ? 'chevron' : undefined}
       onClick={onClick}

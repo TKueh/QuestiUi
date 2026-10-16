@@ -48,16 +48,15 @@ function TodayBody() {
           nav.tab('cal', { day: v });
         }}
       />
-      <div style={{ padding: 'var(--space-3) var(--gutter)' }}>
-        <N.SegmentedControl
-          block={true}
+      <div style={{ padding: 'var(--space-3) 0' }}>
+        <N.FilterChips
           label="Status"
           value={filter[0]}
           onChange={filter[1]}
-          options={[
-            { value: 'all', label: `Alle · ${st.total}` },
-            { value: 'open', label: `Offen · ${st.open}` },
-            { value: 'done', label: `Erledigt · ${st.done}` },
+          items={[
+            { id: 'all', label: 'Alle', count: st.total },
+            { id: 'open', label: 'Offen', count: st.open },
+            { id: 'done', label: 'Erledigt', count: st.done },
           ]}
         />
       </div>
@@ -80,7 +79,7 @@ function TodayBody() {
         )}
         {filter[0] === 'all' && done.length ? (
           <div className="qs-done">
-            <N.Accordion title="Erledigt" meta={String(done.length)} open={showDone[0]} onToggle={showDone[1]}>
+            <N.Accordion title="Erledigt" meta={N.utils.idx(done.length)} open={showDone[0]} onToggle={showDone[1]}>
               <QuestRows items={done} />
             </N.Accordion>
           </div>
@@ -109,7 +108,7 @@ function TodayBody() {
                   ? 'heute'
                   : WD_LONG[parse(shopQ.date).getDay() === 0 ? 6 : parse(shopQ.date).getDay() - 1]
               }`}
-              value={S.qDone(shopQ) ? 'erledigt' : `${shop.done}/${shop.total}`}
+              value={S.qDone(shopQ) ? 'erledigt' : N.utils.frac(shop.done, shop.total)}
               size="sm"
               onClick={() => {
                 nav.open('shopping', { id: shopQ.id });

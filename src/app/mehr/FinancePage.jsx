@@ -2,13 +2,12 @@ import React, { Fragment, useState } from 'react';
 import N, { Badge, BarChart, IconButton, List, ListItem } from 'nordhaus-ui/src/bare.js';
 import { FinanceSummary } from '../../components/FinanceSummary/FinanceSummary.jsx';
 import { LifeRow } from '../../components/LifeRow/LifeRow.jsx';
-import { SubBar, col, money, useNav } from '../shared.jsx';
+import { FoldUnder, SubBar, col, money } from '../shared.jsx';
 import { CONTRACTS, GOALS } from './shared.jsx';
 
 const { addDays, eur, iso, parse } = N.utils;
 
 function FinancePage() {
-  const nav = useNav();
   const tab = useState('o');
   const groups = {};
   const order = [];
@@ -92,26 +91,28 @@ function FinancePage() {
         backLabel="Pläne"
         title="Finanzplan"
         actions={
-          <IconButton
-            icon="edit"
-            label="Plan bearbeiten"
-            onClick={() => {
-              nav.toast({ message: 'Der Finanzplan ist pausiert – zum Bearbeiten erst fortsetzen.' });
-            }}
-          />
+          /* pausiert: Bearbeiten ist verriegelt (gestrichelt, sichtbar – Regel 6) */
+          <IconButton icon="edit" label="Plan bearbeiten" disabled={true} />
         }
       />
-      <N.Tabs
-        label="Finanzen"
-        value={tab[0]}
-        onChange={tab[1]}
-        items={[
-          { id: 'o', label: 'Übersicht' },
-          { id: 'c', label: 'Verträge', count: CONTRACTS.length },
-          { id: 'g', label: 'Ziele', count: GOALS.length },
-        ]}
-      />
-      <div style={col(8, 'var(--space-5) var(--gutter) var(--space-8)')}>{body}</div>
+      <FoldUnder>
+        <N.Tabs
+          label="Finanzen"
+          value={tab[0]}
+          onChange={tab[1]}
+          items={[
+            { id: 'o', label: 'Übersicht' },
+            { id: 'c', label: 'Verträge', count: CONTRACTS.length },
+            { id: 'g', label: 'Ziele', count: GOALS.length },
+          ]}
+        />
+      </FoldUnder>
+      <div style={col(8)}>
+        <N.Notice icon="pause" eyebrow="Pausiert" title="Der Finanzplan ruht">
+          Fristen und Beträge bleiben sichtbar; neue Quests entstehen erst, wenn du ihn fortsetzt.
+        </N.Notice>
+        {body}
+      </div>
     </Fragment>
   );
 }
