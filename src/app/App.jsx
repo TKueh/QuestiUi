@@ -307,10 +307,23 @@ function App(props) {
   // Unterseite: vom linken Rand zurückziehen (Touch) – wie die Zurück-Taste; der Editor fragt bei Änderungen
   const edDirty = top === 'editor' && !!ed[0].items && diffCount(s.planA, ed[0].items) > 0;
   const back = top ? (edDirty ? () => nav.dialog('unsaved') : nav.back) : undefined;
+  // darunter die vorige Seite des Stapels (inert, nur zu sehen, solange gezogen wird)
+  const prev = top ? route.stack[route.stack.length - 2] : undefined;
+  const behind = top ? (
+    <div className="qs-screen-scroll">
+      {prev === 'editor' ? (
+        <PlanEditorPage editor={ed[0]} setEditor={ed[1]} />
+      ) : prev && PAGES[prev] ? (
+        React.createElement(PAGES[prev])
+      ) : (
+        <MehrBody />
+      )}
+    </div>
+  ) : null;
   return (
     <Phone device={props.device} theme={theme} className="qs-app">
       <NavCtx.Provider value={nav}>
-        <N.SwipeBack key={scrollKey} onBack={back} dirty={edDirty}>
+        <N.SwipeBack key={scrollKey} onBack={back} dirty={edDirty} behind={behind}>
           <main
             className="qs-screen-scroll"
             style={flex ? { display: 'flex', flexDirection: 'column', overflow: 'hidden' } : null}
