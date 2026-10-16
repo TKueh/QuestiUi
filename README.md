@@ -1,4 +1,4 @@
-# Questi UI 2.3
+# Questi UI 2.4
 
 Die Questi-App zum Durchspielen: 32 Screens in fünf Tabs, ein Datenstand, echte Navigation – gebaut aus Nordhaus UI.
 
@@ -35,6 +35,14 @@ Nordhaus (`npm run dev` dort) läuft auf Port 61000, Questi auf 61001 – beide 
 Übernommen aus der Artefakt-Mappe „Questi UI“ (Stand 2.2, 15. Oktober 2026). Jede Karte und jeder Screen wurde gegen das Original gerendert und ist in Hell und Dunkel pixelgleich. Die gespiegelte Nordhaus-Kopie und `werkzeug/build.mjs` entfallen – Nordhaus wird direkt aus `../NordhausUI` geladen. Die Prüfskripte der Mappe (`pruefung/`) sind nicht übernommen.
 
 ## Änderungen
+
+### 2.4 · Durchsicht der 32 Screens (16. Oktober 2026)
+
+- **Auf Nordhaus 6.6.3:** Faltkopf (Statusleiste mit Fläche, kompakte Glasleiste, Reiter und Ansichtswahl kleben), Zählwerk überall über `frac`/`idx`, Beträge nie gerundet, Zweitzeilen brechen um.
+- **Eine Quelle:** Geschenke und Wünsche lesen ihr Ausgegebenes aus dem Ausgabenbuch (`ref`); Abschluss, Ø-Werte, Messung, Kalenderabgleich und Planvorschau rechnen aus den Daten.
+- **Bausteine:** FilterChips, Schnellwahl, DateField und Abhak-Ring statt Segment und Checkbox; `SettingsRow` in Mehr; `ItemSheet` für „+ Vorhaben“ und „+ Wunsch“.
+- **Zustände und Begriffe:** Wieder öffnen, Kalenderblock gestrichelt, Pause im Finanzplan, eine Taste beim Speicherfehler; ein Wort je Handlung (Sichern, Entfällt, Mittagsportion, Krank & Urlaub).
+- Alle Befunde, Stand und bewusste Ausnahmen: `docs/Durchsicht.md`.
 
 ### 2.3 · Nordhaus 6.3 übernommen (16. Oktober 2026)
 
