@@ -11,6 +11,8 @@ Nordhaus kommt aus dem Nachbarordner `../NordhausUI` (`nordhaus-ui`, direkt aus 
 - `docs/AppFlow.md` – jeder Screen mit Einstieg, Form und Weg weiter. `docs/Inventar.md` – welcher Baustein welche App-Komponente abdeckt. `docs/screens/` – Beschreibung je Screen.
 
 ## Effizient arbeiten
+- Arbeitsweise: Skill `ponytail` (kleinste vollständige Änderung, Antwort in einem Durchgang lesbar); Runden an Durchsicht, Fixes oder Ausbau mit Skill `designsystem-runde`.
+- Umgebung wie in Nordhaus (`../NordhausUI/CLAUDE.md`, Effizient arbeiten): Bilder nur in der Linux-Sandbox oder Cloud rendern, nie unter Windows; `lint` läuft überall.
 - Eine Runde: ändern → `npm run lint` (Sekunden) → am Ende einmal `npm run check` (Lint → nur veraltete Bilder, parallel → Lint). Einzeln: `npm run shots -- <Name>`, `--changed` nur veraltete, `--no-build` mit vorhandenem Build, `--parallel=N` (Standard Kerne − 2, höchstens 12).
 - Veraltet heißt: Bild älter als der eigene Ordner (Baustein) bzw. `src/app` (Screen), oder als `src/data`, `src/styles`, `src/categories.js`, `.ladle` oder `../NordhausUI/src`. Eine Nordhaus-Änderung rendert hier also alles neu – gewollt, die Bilder sind byte-gleich, wenn sich nichts geändert hat, und `git status` zeigt nur echte Änderungen.
 - Ansehen: `npm run bogen -- --git` legt alle seit dem letzten Commit neu gerenderten Bilder (Bausteine und Screens) auf Bögen in `build/bogen/`; gezielt `npm run bogen -- HeuteScreen QuestRow`.
